@@ -9,7 +9,7 @@ use Carp;
 
 our $SHARED = '/usr/share/text-vimcolor';
 
-our $VERSION = 0.04;
+our $VERSION = 0.05;
 our $VIM_COMMAND = 'vim';
 our @VIM_OPTIONS = qw( -RXZ -i NONE -u NONE -N );
 our $NAMESPACE_ID = 'http://ns.laxan.com/text-vimcolor/1';
