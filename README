@@ -9,17 +9,4 @@ The module comes with a command line program, text-vimcolor, which makes
 it easy to do 'ad-hoc' syntax coloring jobs.
 
 
-Installation
-------------
-
-This module mostly installs like any other.  The only tricky bit is
-that it currently doesn't cleanly install the files in the 'shared'
-directory.  By default it looks for these under /usr/share/text-vimcolor.
-You'll need to copy them there by hand to have this module fully
-installed and working.  If they need to go somewhere else instead,
-alter the definition of the $SHARED variable in lib/Text/VimColor.pm
-
-If anyone knows a way of doing this stuff automatically, let me know.
-
-
    Geoff Richards <qef@laxan.com>

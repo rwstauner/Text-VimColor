@@ -1,0 +1,13 @@
+ChangeLog
+MANIFEST
+META.yml                                 Module meta-data (added by MakeMaker)
+Makefile.PL
+README
+lib/Text/VimColor.pm
+lib/Text/VimColor/light.css
+lib/Text/VimColor/light.xsl
+lib/Text/VimColor/mark.vim
+t/01array.t
+t/02file.t
+t/99pod.t
+text-vimcolor

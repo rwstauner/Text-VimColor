@@ -5,11 +5,13 @@ use strict;
 use IO::File;
 use File::Copy;
 use File::Temp qw( tempfile );
+use Path::Class qw( file );
 use Carp;
 
-our $SHARED = '/usr/share/text-vimcolor';
+our $SHARED = file($INC{file('Text', 'VimColor.pm')})
+              ->dir->subdir('VimColor')->stringify;
 
-our $VERSION = 0.05;
+our $VERSION = 0.06;
 our $VIM_COMMAND = 'vim';
 our @VIM_OPTIONS = qw( -RXZ -i NONE -u NONE -N );
 our $NAMESPACE_ID = 'http://ns.laxan.com/text-vimcolor/1';
@@ -166,7 +168,9 @@ sub _html_header
          $stylesheet .= _xml_escape($self->{html_stylesheet});
       }
       else {
-         my $file = $self->{html_stylesheet_file} || "$SHARED/light.css";
+         my $file = $self->{html_stylesheet_file};
+         $file = file($SHARED, 'light.css')->stringify
+            unless defined $file;
          unless (ref $file) {
             $file = IO::File->new($file, 'r')
                or croak "error reading stylesheet '$file': $!";
@@ -212,7 +216,7 @@ sub _xml_escape
 sub _do_markup
 {
    my ($self) = @_;
-   my $vim_syntax_script = "$SHARED/mark.vim";
+   my $vim_syntax_script = file($SHARED, 'mark.vim')->stringify;
 
    die "Text::VimColor: syntax script '$vim_syntax_script' not installed.\n"
       unless -f $vim_syntax_script && -r $vim_syntax_script;
@@ -662,12 +666,6 @@ Quite a few, actually:
 =item *
 
 It's really, really, really slow.
-
-=item *
-
-The architecture-independent files (XSL and CSS stylesheets and the Vim
-script to do the markup) aren't installed by MakeMaker, because I don't
-know how to make that work.
 
 =item *
 

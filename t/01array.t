@@ -11,9 +11,6 @@ use Text::VimColor;
 
 plan tests => 7;
 
-# Use the Vim script, etc., that are in the distro.
-$Text::VimColor::SHARED = 'shared';
-
 # Test 1: making an object.
 my $syntax = Text::VimColor->new;
 ok(ref $syntax eq 'Text::VimColor');

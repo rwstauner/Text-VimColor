@@ -10,5 +10,9 @@ WriteMakefile(
    AUTHOR => 'Geoff Richards <qef@laxan.com>',
    EXE_FILES => [ 'text-vimcolor' ],
 
-   #PM_FILTER => 'sed -e \\\'s%!!SHARED!!%$(INSTALLPRIVLIB)%g\\\'',
+   PREREQ_PM => {
+      'Path::Class' => 0.02,
+   },
 );
+
+# vi:ts=3 sw=3 expandtab

@@ -5,8 +5,9 @@ use Text::VimColor;
 use Getopt::Long;
 use File::Temp qw( tempfile );
 use IO::File;
+use Path::Class qw( file );
 
-my $XSL_STYLESHEET = "$Text::VimColor::SHARED/light.xsl";
+my $XSL_STYLESHEET = file($Text::VimColor::SHARED, 'light.xsl');
 
 # Default values for options.
 my $filetype;
@@ -84,7 +85,7 @@ __END__
 
 =head1 NAME
 
-text-vimcolor - syntax color a file in HTML, XML or PDF
+text-vimcolor - command-line program to syntax color a file in HTML, XML or PDF
 
 =head1 SYNOPSIS
 

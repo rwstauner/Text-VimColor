@@ -7,9 +7,6 @@ use Text::VimColor;
 
 plan tests => 1;
 
-# Use the Vim script, etc., that are in the distro.
-$Text::VimColor::SHARED = 'shared';
-
 # Test 1: we should get a sensible error message if the named file isn't there.
 eval { Text::VimColor->new( file => 'some-random-non-existant-file.txt' ) };
 ok($@ =~ /input file '.*' not found/);
