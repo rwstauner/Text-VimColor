@@ -1,22 +1,12 @@
 " mark.vim - turn Vim syntax highlighting into an ad-hoc markup language that
-" can be parsed by the Text::Highlight::Vim Perl module.
+" can be parsed by the Text::VimColor Perl module.
 "
 " Maintainer: Geoff Richards <qef@laxan.com>
 " Based loosely on 2html.vim, by Bram Moolenaar <Bram@vim.org>,
 "   modified by David Ne\v{c}as (Yeti) <yeti@physics.muni.cz>.
 
-" The filename and filetype are passed in the variables 's_filename' and
-"   's_filetype'.  For some reason setting variables like 's:filename' doesn't
-"   work from the command line.
-
-" TODO: eliminate the excess blank line at the end of the output file.
-
 set report=1000000
 
-" Set the filetype of the input.
-if exists("s_filetype")
-   exe "set filetype=" . s_filetype
-endif
 syn on
 
 " Set up the output buffer.
@@ -66,5 +56,3 @@ endwhile
 
 wincmd p
 normal dd
-exe "write! " . s_filename
-qall!

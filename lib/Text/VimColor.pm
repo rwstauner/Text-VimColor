@@ -11,7 +11,7 @@ use Carp;
 our $SHARED = file($INC{file('Text', 'VimColor.pm')})
               ->dir->subdir('VimColor')->stringify;
 
-our $VERSION = 0.06;
+our $VERSION = 0.07;
 our $VIM_COMMAND = 'vim';
 our @VIM_OPTIONS = qw( -RXZ -i NONE -u NONE -N );
 our $NAMESPACE_ID = 'http://ns.laxan.com/text-vimcolor/1';
@@ -250,20 +250,31 @@ sub _do_markup
    # Create a temp file to put the output in.
    my ($out_fh, $out_filename) = tempfile();
 
+   # Create a temp file for the 'script', which is given to vim
+   # with the -s option.  This is necessary because it tells Vim not
+   # to delay for 2 seconds after displaying a message.
+   my ($script_fh, $script_filename) = tempfile();
    my $filetype = $self->{filetype};
+   my $filetype_set = defined $filetype ? ":set filetype=$filetype" : '';
+   print $script_fh ":filetype on\n",
+                    "$filetype_set\n",
+                    ":source $vim_syntax_script\n",
+                    ":write! $out_filename\n",
+                    ":qall!\n";
+   close $script_fh;
+
    $self->_run(
       $self->{vim_command},
       @{$self->{vim_options}},
       $filename,
       '-c', "let perl_include_pod = 1",
-      '-c', "let s_filename = \"$out_filename\"",
-      (defined $filetype ? ('-c', "let s_filetype = \"$filetype\"") : ()),
-      '-c', "source $vim_syntax_script",
+      '-s', $script_filename,
    );
 
    unlink $filename
       if $input_is_temporary;
    unlink $out_filename;
+   unlink $script_filename;
 
    my $data = do { local $/; <$out_fh> };
 
@@ -330,8 +341,8 @@ sub _run
       defined $pid
          or die "$0: error forking to run $prog: $!\n";
       open STDIN, '/dev/null';
-      open STDOUT, '/dev/null';
-      open STDERR, '/dev/null';
+      open STDOUT, '>/dev/null';
+      open STDERR, '>/dev/null';
       exec($prog, @args);
       die "$0: error execing $prog: $!\n";
    }
@@ -665,10 +676,6 @@ Quite a few, actually:
 
 =item *
 
-It's really, really, really slow.
-
-=item *
-
 Things can break if there is already a Vim swapfile, but sometimes it
 seems to work.
 
@@ -691,6 +698,16 @@ There should be a way of getting a DOM object back instead of an XML string.
 It should be possible to choose between HTML and XHTML, and perhaps there
 should be some control over the DOCTYPE declaration when a complete file is
 produced.
+
+=item *
+
+With Vim versions earlier than 6.2 there is a 2 second delay each time
+Vim is run.
+
+=item *
+
+It doesn't work on Windows.  I am unlikely to fix this, but if anyone
+who knows Windows can sort it out let me know.
 
 =back
 

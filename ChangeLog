@@ -1,3 +1,17 @@
+libtext-vimcolor-perl (0.07-1) unstable; urgency=low
+
+  * Now much faster!  By using the '-s' option when Vim is run, we
+    avoid a 2 second delay while it tells us about the stdout not
+    being connected to a terminal.
+
+  * Fixed a bug reported by Giuseppe Maxia.  When Vim was run, it
+    didn't do ":filetype on", so passing in a filetype explicitly
+    didn't work.  It only worked if it could auto-detect the filetype.
+    Added a test in 't/10cmp.t' which checks this, by using a string
+    as input (so that there's no filename to guess the file type from).
+
+ -- Geoff Richards <qef@laxan.com>  Tue, 9 Dec 2003 19:19:45 +0000
+
 libtext-vimcolor-perl (0.06-1) unstable; urgency=low
 
   * The files which were in the 'shared' directory (XSLT and CSS
