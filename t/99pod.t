@@ -15,6 +15,7 @@ use IO::File;
 # there are before we plan the tests.
 my @pm;
 find({ wanted => \&wanted, no_chdir => 1 }, 'lib');
+push @pm, 'text-vimcolor';
 
 sub wanted
 {

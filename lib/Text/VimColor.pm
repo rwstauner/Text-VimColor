@@ -11,10 +11,15 @@ use Carp;
 our $SHARED = file($INC{file('Text', 'VimColor.pm')})
               ->dir->subdir('VimColor')->stringify;
 
-our $VERSION = 0.08;
+our $VERSION = 0.09;
 our $VIM_COMMAND = 'vim';
-our @VIM_OPTIONS = qw( -RXZ -i NONE -u NONE -N );
+our @VIM_OPTIONS = (qw( -RXZ -i NONE -u NONE -N ), "+set nomodeline");
 our $NAMESPACE_ID = 'http://ns.laxan.com/text-vimcolor/1';
+
+our %VIM_LET = (
+   perl_include_pod => 1,
+   'b:is_bash' => 1,
+);
 
 our %SYNTAX_TYPE = (
    Comment    => 1,
@@ -46,12 +51,28 @@ sub new
    $options{xml_root_element} = 1
       unless exists $options{xml_root_element};
 
+   $options{vim_let} = {
+      %VIM_LET,
+      (exists $options{vim_let} ? %{$options{vim_let}} : ()),
+   };
+
    croak "only one of the 'file' or 'string' options should be used"
       if defined $options{file} && defined $options{string};
 
    my $self = bless \%options, $class;
    $self->_do_markup
       if defined $options{file} || defined $options{string};
+
+   return $self;
+}
+
+sub vim_let
+{
+   my ($self, %option) = @_;
+
+   while (my ($name, $value) = each %option) {
+      $self->{vim_let}->{$name} = $value;
+   }
 
    return $self;
 }
@@ -256,7 +277,11 @@ sub _do_markup
    my ($script_fh, $script_filename) = tempfile();
    my $filetype = $self->{filetype};
    my $filetype_set = defined $filetype ? ":set filetype=$filetype" : '';
-   print $script_fh ":filetype on\n",
+   my $vim_let = $self->{vim_let};
+   print $script_fh (map { ":let $_=$vim_let->{$_}\n" }
+                     grep { defined $vim_let->{$_} }
+                     keys %$vim_let),
+                    ":filetype on\n",
                     "$filetype_set\n",
                     ":source $vim_syntax_script\n",
                     ":write! $out_filename\n",
@@ -267,7 +292,6 @@ sub _do_markup
       $self->{vim_command},
       @{$self->{vim_options}},
       $filename,
-      '-c', "let perl_include_pod = 1",
       '-s', $script_filename,
    );
 
@@ -334,8 +358,8 @@ sub _run
    my $pid = fork;
    if ($pid) {
       waitpid($pid, 0);
-      $? == 0
-         or die "$0: $prog returned an error code of '$?'.\n";
+      my $error = $? >> 8;
+      die "$0: $prog returned an error code of '$error'.\n" if $error;
    }
    else {
       defined $pid
@@ -427,10 +451,22 @@ Text::VimColor object to be used with multiple input files.
 =item string
 
 Use this to pass a string to be used as the input.  This is an alternative
-to the C<file> option.
+to the C<file> option.  A reference to a string will also work.
 
 The C<syntax_mark_string> method (see below) is another way to use a string
 as input.
+
+=item filetype
+
+Specify the type of file Vim should expect, in case Vim's automatic
+detection by filename or contents doesn't get it right.  This is
+particularly important when providing the file as a string of file
+handle, since Vim won't be able to use the file extension to guess
+the file type.
+
+The filetypes recognised by Vim are short strings like 'perl' or 'lisp'.
+They are the names of files in the 'syntax' directory in the Vim
+distribution.
 
 =item html_full_page
 
@@ -502,7 +538,30 @@ A reference to an array of options to pass to Vim.  The default options are:
 
    qw( -RXZ -i NONE -u NONE -N )
 
+=item vim_let
+
+A reference to a hash of options to set in Vim before the syntax file
+is loaded.  Each of these is set using the C<:let> command to the value
+specified.  No escaping is done on the values, they are executed exactly
+as specified.
+
+Values in this hash override some default options.  Use a value of
+C<undef> to prevent a default option from being set at all.  The
+defaults are as follows:
+
+   (
+      perl_include_pod => 1,     # Recognize POD inside Perl code
+      'b:is_bash' => 1,          # Allow Bash syntax in shell scripts
+   )
+
+These settings can be modified later with the C<vim_let()> method.
+
 =back
+
+=item vim_let(I<name> =E<gt> I<value>, ...)
+
+Change the options that are set with the Vim C<let> command when Vim
+is run.  See C<new()> for details.
 
 =item syntax_mark_file(I<file>)
 
@@ -524,6 +583,7 @@ on it directly:
 =item syntax_mark_string(I<string>)
 
 Does the same as C<syntax_mark_file> (see above) but uses a string as input.
+I<string> can also be a reference to a string.
 Returns the object it was called on.
 
 =item html()
@@ -676,13 +736,14 @@ Quite a few, actually:
 
 =item *
 
-Things can break if there is already a Vim swapfile, but sometimes it
-seems to work.
+Apparently this module doesn't always work if run from within a 'gvim'
+window, although I've been unable to reproduce this so far.
+CPAN bug #11555.
 
 =item *
 
-The 'string' option to new() and the syntax_mark_string() function should
-both accept a reference to a string as well as just a string.
+Things can break if there is already a Vim swapfile, but sometimes it
+seems to work.
 
 =item *
 
@@ -709,6 +770,12 @@ Vim is run.
 It doesn't work on Windows.  I am unlikely to fix this, but if anyone
 who knows Windows can sort it out let me know.
 
+=item *
+
+I should think about whether to add control characters other than
+tab to the C<isprint> setting.  Would that do any harm?  If not,
+I might as well avoid Vim fiddling with those characters.
+
 =back
 
 =head1 AUTHOR
@@ -721,7 +788,7 @@ David Ne\v{c}as (Yeti) E<lt>yeti@physics.muni.czE<gt>.
 
 =head1 COPYRIGHT
 
-Copyright 2002-2004, Geoff Richards.
+Copyright 2002-2005, Geoff Richards.
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

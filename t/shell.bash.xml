@@ -1,0 +1,2 @@
+<syn:syntax xmlns:syn="http://ns.laxan.com/text-vimcolor/1"><syn:Statement>echo</syn:Statement><syn:Constant> </syn:Constant><syn:PreProc>$(</syn:PreProc><syn:Special>date</syn:Special><syn:PreProc>)</syn:PreProc>
+</syn:syntax>

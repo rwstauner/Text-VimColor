@@ -15,6 +15,8 @@ my $format;
 my $output_filename;
 my $html_full_page;
 my $html_no_inline_stylesheet;
+my @let;
+my @unlet;
 
 my $option = GetOptions(
    'debug' => \$Text::VimColor::DEBUG,
@@ -23,6 +25,8 @@ my $option = GetOptions(
    'output=s' => \$output_filename,
    'full-page' => \$html_full_page,
    'no-inline-stylesheet' => \$html_no_inline_stylesheet,
+   'let=s' => \@let,
+   'unlet=s' => \@unlet,
 );
 
 defined $format
@@ -51,11 +55,23 @@ else {
 my $file = @ARGV ? shift : \*STDIN;
 
 my $syntax = Text::VimColor->new(
-   file => $file,
    filetype => $filetype,
    html_full_page => $html_full_page,
    html_inline_stylesheet => !$html_no_inline_stylesheet,
 );
+
+# Handle the --let and --unlet options.
+foreach (@unlet) {
+   $syntax->vim_let($_ => undef);
+}
+foreach (@let) {
+   my ($name, $value) = /^(.*?)=(.*)\z/
+      or die "$0: bad --let option '$_'\n";
+   print STDERR "[$name] [$value]\n";
+   $syntax->vim_let($name => $value);
+}
+
+$syntax->syntax_mark_file($file);
 
 if ($format eq 'xml') {
    print $output $syntax->xml
@@ -178,6 +194,24 @@ inserted inline into the output, so the output will be useable as it is.
 When the output format is HTML and C<--fullpage> is given, a stylesheet
 is normally inserted in-line in the output file.  If this option is given it
 will instead be referenced with a C<E<lt>linkE<gt>> element.
+
+=item --let I<name>=I<value>
+
+When Vim is run the value of I<name> will be set to I<value> using
+Vim's C<let> command.  More than one of these options can be set.
+The value is not quoted or escaped in any way, so it can be an expression.
+These settings take precedence over C<--unlet> options.
+
+This option corresponds to the C<vim_let> setting and method in
+the Perl module.
+
+=item --unlet I<name>
+
+Prevent the value of I<name> being set with Vim's C<let> command.
+This can be used to turn off default settings.
+
+This option corresponds to the C<vim_let> setting and method in
+the Perl module, when used with a value of C<undef>.
 
 =back
 

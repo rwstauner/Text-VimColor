@@ -1,3 +1,33 @@
+libtext-vimcolor-perl (0.09-1) unstable; urgency=low
+
+  * Allow Vim options to be set with ':let' and provide a default
+    option to make shell scripts be interpretted as Bash syntax,
+    since it's a superset of Bourne shell.  Added corresponding
+    options to 'text-vimcolor' script.
+
+  * Added "+set nomodeline" option to Vim for belt-and-braces
+    security.  Vim shouldn't read modelines with the default
+    configuration enforced by the other options, but there's
+    no harm being extra cautious.  Suggested by Ian Langworth.
+
+  * If the 'vim' command fails, print the correct exit code in
+    the error message.  Thanks to Smylers for the fix, and for
+    reporting all the following bugs.
+    (closes CPAN bug #11556).
+
+  * Add documentation for the 'filetype' option to 'new()'.
+    (closes CPAN bug #11558).
+
+  * Document and test for using a reference to a scalar rather
+    than just a plain scalar as the 'string' argument to 'new()'
+    and the argument to 'syntax_mark_string()'.  It was already
+    implemented but was mistakenly documented as a TODO.
+    (closes CPAN bug #11557).
+
+  * Document potential problem from CPAN bug #11555.
+
+ -- Geoff Richards <qef@laxan.com>  Sat, 19 Feb 2005 13:28:28 +0000
+
 libtext-vimcolor-perl (0.08-1) unstable; urgency=low
 
   * Tab characters weren't comming out right (you get "^I" instead

@@ -11,7 +11,11 @@ t/01array.t
 t/02file.t
 t/05xml.t
 t/10cmp.t
+t/15let.t
 t/99pod.t
 t/has_tabs.pl
 t/hello.c
+t/shell.bash.xml
+t/shell.sh
+t/shell.sh.xml
 text-vimcolor

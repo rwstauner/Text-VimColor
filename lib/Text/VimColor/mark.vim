@@ -20,7 +20,7 @@ new
 set modifiable
 set paste
 
-" Expand tabs.: Without this they come out as '^I'.
+" Expand tabs. Without this they come out as '^I'.
 set isprint+=9
 
 wincmd p
