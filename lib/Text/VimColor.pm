@@ -11,7 +11,7 @@ use Carp;
 our $SHARED = file($INC{file('Text', 'VimColor.pm')})
               ->dir->subdir('VimColor')->stringify;
 
-our $VERSION = 0.07;
+our $VERSION = 0.08;
 our $VIM_COMMAND = 'vim';
 our @VIM_OPTIONS = qw( -RXZ -i NONE -u NONE -N );
 our $NAMESPACE_ID = 'http://ns.laxan.com/text-vimcolor/1';
@@ -109,7 +109,7 @@ sub xml
    if ($self->{xml_root_element}) {
       my $filename = $self->input_filename;
       $xml .= "<syn:syntax xmlns:syn=\"$NAMESPACE_ID\"";
-      $xml .= ' filename="' . _xml_escape($filename) . '">'
+      $xml .= ' filename="' . _xml_escape($filename) . '"'
          if defined $filename;;
       $xml .= '>';
    }
@@ -721,7 +721,7 @@ David Ne\v{c}as (Yeti) E<lt>yeti@physics.muni.czE<gt>.
 
 =head1 COPYRIGHT
 
-Copyright 2002-2003, Geoff Richards.
+Copyright 2002-2004, Geoff Richards.
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

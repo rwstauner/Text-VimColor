@@ -1,8 +1,27 @@
+libtext-vimcolor-perl (0.08-1) unstable; urgency=low
+
+  * Tab characters weren't comming out right (you get "^I" instead
+    of a literal tab).  Added ":set isprint+=9" to mark.vim to fix
+    that.  Spotted and patched by Mario Xerri.
+
+  * For some reason the filetype wasn't getting set right, so I've
+    changed mark.vim to do ":filetype detect" when it wasn't already
+    detected, and that seems to make it work.
+
+  * The XML output sometimes produced an extra '>' after the start
+    tag of the root element.  Fixed.
+
+  * Added new file 05xml.t to the test suite and changed most of
+    the tests to use Test::More instead of Test.
+
+ -- Geoff Richards <qef@laxan.com>  Wed, 25 Feb 2004 22:03:17 +0000
+
 libtext-vimcolor-perl (0.07-1) unstable; urgency=low
 
   * Now much faster!  By using the '-s' option when Vim is run, we
     avoid a 2 second delay while it tells us about the stdout not
-    being connected to a terminal.
+    being connected to a terminal.  This only has an effect in Vim
+    version 6.2 or later (behaviour changed in patch 6.1.191).
 
   * Fixed a bug reported by Giuseppe Maxia.  When Vim was run, it
     didn't do ":filetype on", so passing in a filetype explicitly
@@ -10,7 +29,7 @@ libtext-vimcolor-perl (0.07-1) unstable; urgency=low
     Added a test in 't/10cmp.t' which checks this, by using a string
     as input (so that there's no filename to guess the file type from).
 
- -- Geoff Richards <qef@laxan.com>  Tue, 9 Dec 2003 19:19:45 +0000
+ -- Geoff Richards <qef@laxan.com>  Tue, 9 Dec 2003 19:40:11 +0000
 
 libtext-vimcolor-perl (0.06-1) unstable; urgency=low
 

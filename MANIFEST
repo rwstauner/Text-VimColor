@@ -9,7 +9,9 @@ lib/Text/VimColor/light.xsl
 lib/Text/VimColor/mark.vim
 t/01array.t
 t/02file.t
+t/05xml.t
 t/10cmp.t
 t/99pod.t
+t/has_tabs.pl
 t/hello.c
 text-vimcolor

@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test;
+use Test::More;
 use Text::VimColor;
 use Path::Class qw( file );
 
@@ -18,13 +18,10 @@ my $syntax1 = Text::VimColor->new(
 open my $file, '<', $filename or die "error opening file '$filename': $!";
 my $text = do { local $/; <$file> };
 my $syntax2 = Text::VimColor->new(
-    string  => $text,
-    filetype => 'c',
+   string  => $text,
+   filetype => 'c',
 );
-ok($syntax1->html eq $syntax2->html);
+is($syntax1->html, $syntax2->html,
+   'check that HTML output for hello.c comes out right');
 
-# Local Variables:
-# mode: perl
-# perl-indent-level: 3
-# End:
 # vim:ft=perl ts=3 sw=3 expandtab:

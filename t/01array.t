@@ -6,25 +6,29 @@
 
 use strict;
 use warnings;
-use Test;
+use Test::More;
 use Text::VimColor;
 
-plan tests => 7;
+plan tests => 7 + 2 * 3;
 
-# Test 1: making an object.
+# Making an object.
 my $syntax = Text::VimColor->new;
-ok(ref $syntax eq 'Text::VimColor');
+is(ref $syntax, 'Text::VimColor',
+   'new() should return Text::VimColor object');
 
-# Tests 2-3: without a filename or string specified, marked() should die.
+# Without a filename or string specified, marked() should die.
 eval { $syntax->marked };
-ok($@ =~ /an input file or string must be specified/);
-ok(!defined $syntax->input_filename);
+ok($@ =~ /an input file or string must be specified/,
+   'without a filename or string specified, marked() should die');
+is($syntax->input_filename, undef,
+   'without a filename or string specified, input_filename() should be undef');
 
-# Test 4: the 'string' and 'file' options should be mutually exclusive.
+# The 'string' and 'file' options should be mutually exclusive.
 eval { Text::VimColor->new( file => 'foo', string => 'bar') };
-ok($@ =~ /only one of the 'file' or 'string' options/);
+ok($@ =~ /only one of the 'file' or 'string' options/,
+   "the 'string' and 'file' options should be mutually exclusive");
 
-# Tests 5-6: test markup of some XML, and check format of Perl array output.
+# Test markup of some XML, and check format of Perl array output.
 my $xml_input = "<element>text</element>\n";
 my $xml_expected = [
    [ 'Identifier', '<element>' ],
@@ -36,52 +40,49 @@ $syntax = Text::VimColor->new(filetype => 'xml');
 my $xml_marked1 = $syntax->syntax_mark_string($xml_input)->marked;
 $syntax = Text::VimColor->new(string => $xml_input, filetype => 'xml');
 my $xml_marked2 = $syntax->marked;
-ok(syncheck($xml_expected, $xml_marked1));
-ok(syncheck($xml_expected, $xml_marked2));
+ok(syncheck($xml_expected, $xml_marked1),
+   'markup works with string input to syntax_mark_string()');
+ok(syncheck($xml_expected, $xml_marked2),
+   'markup works using string input and marked()');
 
-# Test 7: check filename when input was a string.
-ok(!defined $syntax->input_filename);
+# Check filename when input was a string.
+is($syntax->input_filename, undef,
+   'when input is a string, input_filename() should be undef');
 
 
+# Runs 3 tests through the testing infrastructure.
 sub syncheck
 {
    my ($expected, $marked) = @_;
 
-   unless (defined $marked) {
-      warn "syntax markup undefined";
-      return;
-   }
-   unless (ref $marked eq 'ARRAY') {
-      warn "syntax markup not an array ref";
-      return;
-   }
-
-   unless (@$expected == @$marked) {
-      warn "syntax markup has not the expected number of elements";
-      return;
-   }
+   isnt($marked, undef,
+      "syntax markup shouldn't be undef");
+   is(ref $marked, 'ARRAY',
+      "syntax markup should be an array ref");
+   is(@$marked, @$expected,
+      "syntax markup should have the expected number of elements");
 
    for my $i (0 .. $#$expected) {
       my $e = $expected->[$i];
       my $m = $marked->[$i];
       unless (defined $m) {
-         warn "element $i not defined";
+         diag "element $i not defined";
          return;
       }
       unless (ref $m eq 'ARRAY') {
-         warn "element $i not an array ref";
+         diag "element $i not an array ref";
          return;
       }
       unless (@$m == 2) {
-         warn "element $i has size " . scalar(@$m) . ", not two";
+         diag "element $i has size " . scalar(@$m) . ", not two";
          return;
       }
       unless ($m->[0] eq $e->[0]) {
-         warn "element $i has type '$m->[0]', not '$e->[0]'";
+         diag "element $i has type '$m->[0]', not '$e->[0]'";
          return;
       }
       unless ($m->[1] eq $e->[1]) {
-         warn "element $i has text '$m->[0]', not '$e->[0]'";
+         diag "element $i has text '$m->[0]', not '$e->[0]'";
          return;
       }
    }
@@ -89,8 +90,4 @@ sub syncheck
    return 1;
 }
 
-# Local Variables:
-# mode: perl
-# perl-indent-level: 3
-# End:
 # vim:ft=perl ts=3 sw=3 expandtab:

@@ -7,12 +7,21 @@
 
 set report=1000000
 
+" For some reason (I'm sure it used to work) we now need to get Vim
+" to make another attempt to detect the filetype if it wasn't set
+" explicitly.
+if !strlen(&filetype)
+   filetype detect
+endif
 syn on
 
 " Set up the output buffer.
 new
 set modifiable
 set paste
+
+" Expand tabs.: Without this they come out as '^I'.
+set isprint+=9
 
 wincmd p
 
