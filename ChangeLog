@@ -1,3 +1,33 @@
+libtext-vimcolor-perl (0.11-1) unstable; urgency=low
+
+  * No code changes, just packaging fixes.
+
+ -- Geoff Richards <qef@laxan.com>  Sun, 19 Feb 2006 19:32:27 +0000
+
+libtext-vimcolor-perl (0.10-1) unstable; urgency=low
+
+  * Be more careful about how 'exec' is called (belt & braces)
+
+  * Improve error reporting.  Errors printed by the 'vim' command,
+    as well as problems reported from 'exec' (like not being able
+    to find the program) will now be reported (by getting passed
+    through a temporary file).  Also, some 'die' calls were changed
+    to 'croak'.
+
+  * Allow the 'filetype' option to be overridden for each file
+    processed, so that an object can be reused for multiple files
+    of different types.
+
+  * Provide a help/usage message in the text-vimcolor program.
+
+  * Document which other CPAN modules use Text::VimColor, since
+    you might find one of them be more useful than using it
+    directly.
+
+  * Various small corrections to the documentation.
+
+ -- Geoff Richards <qef@laxan.com>  Sun, 19 Feb 2006 00:22:35 +0000
+
 libtext-vimcolor-perl (0.09-1) unstable; urgency=low
 
   * Allow Vim options to be set with ':let' and provide a default

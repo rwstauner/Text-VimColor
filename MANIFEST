@@ -1,6 +1,6 @@
 ChangeLog
 MANIFEST
-META.yml                                 Module meta-data (added by MakeMaker)
+META.yml
 Makefile.PL
 README
 lib/Text/VimColor.pm

@@ -8,6 +8,7 @@ WriteMakefile(
    ABSTRACT_FROM => 'lib/Text/VimColor.pm',
    VERSION_FROM => 'lib/Text/VimColor.pm',
    AUTHOR => 'Geoff Richards <qef@laxan.com>',
+   NO_META => 1,
    EXE_FILES => [ 'text-vimcolor' ],
 
    PREREQ_PM => {

@@ -12,7 +12,7 @@ die "Text::VimColor can't see where it's installed"
    unless -f __FILE__;
 our $SHARED = file(__FILE__)->dir->subdir('VimColor')->stringify;
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 our $VIM_COMMAND = 'vim';
 our @VIM_OPTIONS = (qw( -RXZ -i NONE -u NONE -N ), "+set nomodeline");
 our $NAMESPACE_ID = 'http://ns.laxan.com/text-vimcolor/1';

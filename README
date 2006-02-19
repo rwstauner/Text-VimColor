@@ -15,7 +15,7 @@ it easy to do 'ad-hoc' syntax coloring jobs.
 Release procedure
 -----------------
 
- * Update the version number in lib/Text/VimColor.pm
+ * Update the version number in lib/Text/VimColor.pm and META.yml
  * Update the changelog with a new section for a matching version number
    and the correct date and time
  * Copy the ChangeLog into place (from 'debian' directory in my CVS)
