@@ -12,10 +12,14 @@ t/02file.t
 t/05xml.t
 t/10cmp.t
 t/15let.t
+t/20override.t
 t/99pod.t
 t/has_tabs.pl
 t/hello.c
 t/shell.bash.xml
 t/shell.sh
 t/shell.sh.xml
+t/table.borked.xml
+t/table.sql
+t/table.sql.xml
 text-vimcolor

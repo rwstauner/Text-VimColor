@@ -9,7 +9,7 @@ use Path::Class qw( file );
 plan tests => 2;
 
 # Check that passing coloring with the 'filetype' option has the same output
-# whether Vim knows the filename or now.
+# whether Vim knows the filename or not.
 my $filename = file('t', 'hello.c')->stringify;
 my $syntax1 = Text::VimColor->new(
    file => $filename,

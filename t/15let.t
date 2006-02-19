@@ -12,6 +12,8 @@ use Path::Class qw( file );
    open my $vim, '-|', 'vim --version'
       or die "error running 'vim --version': $!";
    my $line = <$vim>;
+   die "couldn't read version from 'vim --version'"
+      unless defined $line;
    if ($line =~ / (\d+)\.(\d+) / && ($1 >= 7 || ($1 == 6 && $2 >= 3))) {
       plan tests => 7;
    }

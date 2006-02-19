@@ -1,0 +1,4 @@
+<syn:syntax xmlns:syn="http://ns.laxan.com/text-vimcolor/1"><syn:Statement>create</syn:Statement> <syn:Special>table</syn:Special> foo (
+    id <syn:Type>integer</syn:Type> <syn:Statement>not</syn:Statement> <syn:Special>null</syn:Special>
+);
+</syn:syntax>

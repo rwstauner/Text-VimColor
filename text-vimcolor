@@ -12,6 +12,7 @@ my $XSL_STYLESHEET = file($Text::VimColor::SHARED, 'light.xsl');
 # Default values for options.
 my $filetype;
 my $format;
+my $usage;
 my $output_filename;
 my $html_full_page;
 my $html_no_inline_stylesheet;
@@ -22,12 +23,37 @@ my $option = GetOptions(
    'debug' => \$Text::VimColor::DEBUG,
    'filetype=s' => \$filetype,
    'format=s' => \$format,
+   'help' => \$usage,
    'output=s' => \$output_filename,
    'full-page' => \$html_full_page,
    'no-inline-stylesheet' => \$html_no_inline_stylesheet,
    'let=s' => \@let,
    'unlet=s' => \@unlet,
+   'usage' => \$usage,
 );
+
+if ($usage) {
+   print STDERR
+      "Usage: $0 --format html|xml [options] filename\n",
+      "       $0 --format pdf --output foo.pdf [options] filename\n",
+      "(the output is written to standard output, except in PDF\n",
+      "mode, where you have to supply a filename for the output.)\n",
+      "\n",
+      "Options:\n",
+      "    --debug      turn on Text::VimColor debugging mode\n",
+      "    --filetype   set Vim filetype name, if it can't be guessed from\n",
+      "                 the file's name or contents\n",
+      "    --format     set format to use for output, can be xml,\n",
+      "                 html, or pdf\n",
+      "    --help       show this helpful message\n",
+      "    --output     set filename to write output to (required with\n",
+      "                 PDF format, otherwise defaults to standard output)\n",
+      "    --full-page  output a complete HTML page, not just a fragment\n",
+      "    --no-inline-stylesheet\n",
+      "                 don't include the stylesheet in a complete HTML page\n",
+      "    --let        set a Vim variable with the Vim :let command\n",
+      "    --unlet      turn off default setting of a Vim variable\n";
+}
 
 defined $format
    or die "$0: an output format must be specified (html, pdf or xml).\n";
@@ -134,6 +160,10 @@ The following options are understood:
 
 =over 4
 
+=item --help
+
+Show a summary of the usage, including a list of options.
+
 =item --debug
 
 Turns on debugging in the underlying Perl module.  This makes it print
@@ -238,7 +268,7 @@ Geoff Richards E<lt>qef@laxan.comE<gt>
 
 =head1 COPYRIGHT
 
-Copyright 2002-2004, Geoff Richards.
+Copyright 2002-2006, Geoff Richards.
 
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl.

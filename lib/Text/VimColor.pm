@@ -3,15 +3,16 @@ use warnings;
 use strict;
 
 use IO::File;
-use File::Copy;
+use File::Copy qw( copy );
 use File::Temp qw( tempfile );
 use Path::Class qw( file );
 use Carp;
 
-our $SHARED = file($INC{file('Text', 'VimColor.pm')})
-              ->dir->subdir('VimColor')->stringify;
+die "Text::VimColor can't see where it's installed"
+   unless -f __FILE__;
+our $SHARED = file(__FILE__)->dir->subdir('VimColor')->stringify;
 
-our $VERSION = 0.09;
+our $VERSION = '0.10';
 our $VIM_COMMAND = 'vim';
 our @VIM_OPTIONS = (qw( -RXZ -i NONE -u NONE -N ), "+set nomodeline");
 our $NAMESPACE_ID = 'http://ns.laxan.com/text-vimcolor/1';
@@ -79,7 +80,10 @@ sub vim_let
 
 sub syntax_mark_file
 {
-   my ($self, $file) = @_;
+   my ($self, $file, %options) = @_;
+
+   local $self->{filetype} = exists $options{filetype} ? $options{filetype}
+                                                       : $self->{filetype};
 
    local $self->{file} = $file;
    $self->_do_markup;
@@ -89,7 +93,10 @@ sub syntax_mark_file
 
 sub syntax_mark_string
 {
-   my ($self, $string) = @_;
+   my ($self, $string, %options) = @_;
+
+   local $self->{filetype} = exists $options{filetype} ? $options{filetype}
+                                                       : $self->{filetype};
 
    local $self->{string} = $string;
    $self->_do_markup;
@@ -239,7 +246,7 @@ sub _do_markup
    my ($self) = @_;
    my $vim_syntax_script = file($SHARED, 'mark.vim')->stringify;
 
-   die "Text::VimColor: syntax script '$vim_syntax_script' not installed.\n"
+   croak "Text::VimColor syntax script '$vim_syntax_script' not installed"
       unless -f $vim_syntax_script && -r $vim_syntax_script;
 
    my $filename = $self->{file};
@@ -302,7 +309,7 @@ sub _do_markup
 
    my $data = do { local $/; <$out_fh> };
 
-   # Convert line endings to Unix ones.
+   # Convert line endings to ones appropriate for the current platform.
    $data =~ s/\x0D\x0A?/\n/g;
 
    my $syntax = [];
@@ -355,20 +362,38 @@ sub _run
             join(' ', map { s/'/'\\''/g; "'$_'" } @args) . "\n";
    }
 
+   my ($err_fh, $err_filename) = tempfile();
+   my $old_fh = select($err_fh);
+   $| = 1;
+   select($old_fh);
+
    my $pid = fork;
    if ($pid) {
-      waitpid($pid, 0);
+      my $gotpid = waitpid($pid, 0);
+      croak "couldn't run the program '$prog'" if $gotpid == -1;
       my $error = $? >> 8;
-      die "$0: $prog returned an error code of '$error'.\n" if $error;
+      if ($error) {
+         seek $err_fh, 0, 0;
+         my $errout = do { local $/; <$err_fh> };
+         $errout =~ s/\n+\z//;
+         close $err_fh;
+         unlink $err_filename;
+         my $details = $errout eq '' ? '' :
+                       "\nVim wrote this error output:\n$errout\n";
+         croak "$prog returned an error code of '$error'$details";
+      }
+      close $err_fh;
+      unlink $err_filename;
    }
    else {
       defined $pid
-         or die "$0: error forking to run $prog: $!\n";
+         or croak "error forking to run $prog: $!";
       open STDIN, '/dev/null';
       open STDOUT, '>/dev/null';
-      open STDERR, '>/dev/null';
-      exec($prog, @args);
-      die "$0: error execing $prog: $!\n";
+      open STDERR, '>&=' . fileno($err_fh)
+         or croak "can't connect STDERR to temporary file '$err_filename': $!";
+      exec $prog $prog, @args;
+      die "\n";   # exec() will already have sent a suitable error message.
    }
 }
 
@@ -468,13 +493,17 @@ The filetypes recognised by Vim are short strings like 'perl' or 'lisp'.
 They are the names of files in the 'syntax' directory in the Vim
 distribution.
 
+This option, whether or not it is passed to C<new()>, can be overridden
+when calling C<syntax_mark_file> and C<syntax_mark_string>, so you can
+use the same object to process multiple files of different types.
+
 =item html_full_page
 
 By default the C<html()> output method returns a fragment of HTML, not a
 full file.  To make useful output this must be wrapped in a C<E<lt>preE<gt>>
 element and a stylesheet must be included from somewhere.  Setting the
 C<html_full_page> option will instead make the C<html()> method return a
-complete stand-alone HTML file.
+complete stand-alone XHTML file.
 
 Note that while this is useful for testing, most of the time you'll want to
 put the syntax highlighted source code in a page with some other content,
@@ -563,7 +592,7 @@ These settings can be modified later with the C<vim_let()> method.
 Change the options that are set with the Vim C<let> command when Vim
 is run.  See C<new()> for details.
 
-=item syntax_mark_file(I<file>)
+=item syntax_mark_file(I<file>, I<options...>)
 
 Mark up the specified file.  Subsequent calls to the output methods will then
 return the markup.  It is not necessary to call this if a C<file> or C<string>
@@ -580,11 +609,20 @@ on it directly:
       print $syntax->syntax_mark_file($_)->html;
    }
 
-=item syntax_mark_string(I<string>)
+You can override the filetype set in new() by passing in a C<filetype>
+option, like so:
+
+   $syntax->syntax_mark_file($filename, filetype => 'perl');
+
+This option will only affect the syntax colouring for that one call,
+not for any subsequent ones on the same object.
+
+=item syntax_mark_string(I<string>, I<options...>)
 
 Does the same as C<syntax_mark_file> (see above) but uses a string as input.
 I<string> can also be a reference to a string.
-Returns the object it was called on.
+Returns the object it was called on.  Supports the C<filetype> option
+just as C<syntax_mark_file> does.
 
 =item html()
 
@@ -609,7 +647,7 @@ document, with all the markup inside a C<E<lt>syntaxE<gt>> element.
 
 This XML output can be transformed into other formats, either using programs
 which read it with an XML parser, or using XSLT.  See the
-text-highlight-vim(1) program for an example of how XSLT can be used with
+text-vimcolor(1) program for an example of how XSLT can be used with
 XSL-FO to turn this into PDF.
 
 The markup will consist of mixed content with elements wrapping pieces
@@ -707,11 +745,26 @@ Todo
 
 =back
 
+=head1 RELATED  MODULES
+
+These modules allow Text::VimColor to be used more easily in particular
+environments:
+
+=over 4
+
+=item L<Apache::VimColor>
+
+=item L<Kwiki::VimMode>
+
+=item L<Template-Plugin-VimColor>
+
+=back
+
 =head1 SEE ALSO
 
 =over 4
 
-=item text-highlight-vim(1)
+=item text-vimcolor(1)
 
 A simple command line interface to this module's features.  It can be used
 to produce HTML and XML output, and can also generate PDF output using
@@ -747,11 +800,6 @@ seems to work.
 
 =item *
 
-If Vim returns an exit code, it should be interpreted and a human-readable
-error message given.
-
-=item *
-
 There should be a way of getting a DOM object back instead of an XML string.
 
 =item *
@@ -770,12 +818,6 @@ Vim is run.
 It doesn't work on Windows.  I am unlikely to fix this, but if anyone
 who knows Windows can sort it out let me know.
 
-=item *
-
-I should think about whether to add control characters other than
-tab to the C<isprint> setting.  Would that do any harm?  If not,
-I might as well avoid Vim fiddling with those characters.
-
 =back
 
 =head1 AUTHOR
@@ -788,7 +830,7 @@ David Ne\v{c}as (Yeti) E<lt>yeti@physics.muni.czE<gt>.
 
 =head1 COPYRIGHT
 
-Copyright 2002-2005, Geoff Richards.
+Copyright 2002-2006, Geoff Richards.
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.

@@ -18,15 +18,15 @@ is(ref $syntax, 'Text::VimColor',
 
 # Without a filename or string specified, marked() should die.
 eval { $syntax->marked };
-ok($@ =~ /an input file or string must be specified/,
-   'without a filename or string specified, marked() should die');
+like($@, qr/an input file or string must be specified/,
+     'without a filename or string specified, marked() should die');
 is($syntax->input_filename, undef,
    'without a filename or string specified, input_filename() should be undef');
 
 # The 'string' and 'file' options should be mutually exclusive.
 eval { Text::VimColor->new( file => 'foo', string => 'bar') };
-ok($@ =~ /only one of the 'file' or 'string' options/,
-   "the 'string' and 'file' options should be mutually exclusive");
+like($@, qr/only one of the 'file' or 'string' options/,
+     "the 'string' and 'file' options should be mutually exclusive");
 
 # Test markup of some XML, and check format of Perl array output.
 my $xml_input = "<element>text</element>\n";
@@ -56,7 +56,7 @@ sub syncheck
    my ($expected, $marked) = @_;
 
    isnt($marked, undef,
-      "syntax markup shouldn't be undef");
+        "syntax markup shouldn't be undef");
    is(ref $marked, 'ARRAY',
       "syntax markup should be an array ref");
    is(@$marked, @$expected,

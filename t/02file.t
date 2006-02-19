@@ -9,7 +9,7 @@ plan tests => 1;
 
 # We should get a sensible error message if the named file isn't there.
 eval { Text::VimColor->new( file => 'some-random-non-existant-file.txt' ) };
-ok($@ =~ /input file '.*' not found/,
-   "check we get the right error if the file doesn't exist");
+like($@, qr/input file '.*' not found/,
+     "check we get the right error if the file doesn't exist");
 
 # vim:ft=perl ts=3 sw=3 expandtab:
