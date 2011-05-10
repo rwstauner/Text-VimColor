@@ -14,7 +14,7 @@ our $SHARED = file(__FILE__)->dir->subdir('VimColor')->stringify;
 
 our $VERSION = '0.11';
 our $VIM_COMMAND = 'vim';
-our @VIM_OPTIONS = (qw( -RXZ -i NONE -u NONE -N ), "+set nomodeline");
+our @VIM_OPTIONS = (qw( -RXZ -i NONE -u NONE -N -n ), "+set nomodeline");
 our $NAMESPACE_ID = 'http://ns.laxan.com/text-vimcolor/1';
 
 our %VIM_LET = (
@@ -565,7 +565,7 @@ The default is C<vim>.
 
 A reference to an array of options to pass to Vim.  The default options are:
 
-   qw( -RXZ -i NONE -u NONE -N )
+   qw( -RXZ -i NONE -u NONE -N -n ), "+set nomodeline"
 
 =item vim_let
 
@@ -792,11 +792,6 @@ Quite a few, actually:
 Apparently this module doesn't always work if run from within a 'gvim'
 window, although I've been unable to reproduce this so far.
 CPAN bug #11555.
-
-=item *
-
-Things can break if there is already a Vim swapfile, but sometimes it
-seems to work.
 
 =item *
 
