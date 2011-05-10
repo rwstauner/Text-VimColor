@@ -388,6 +388,7 @@ sub _run
    else {
       defined $pid
          or croak "error forking to run $prog: $!";
+      tied $_ and untie $_ for *STDOUT, *STDERR, *STDIN;
       open STDIN, '/dev/null';
       open STDOUT, '>/dev/null';
       open STDERR, '>&=' . fileno($err_fh)
