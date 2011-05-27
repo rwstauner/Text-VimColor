@@ -5,6 +5,7 @@ use strict;
 use warnings;
 use Test::More;
 use Text::VimColor;
+require "t/test_env.pm";
 use Path::Class qw( file );
 
 plan tests => 4;

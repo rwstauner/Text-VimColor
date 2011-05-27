@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Test::More;
 use Text::VimColor;
+require "t/test_env.pm";
 use Path::Class qw( file );
 
 # If the version of Vim is too old to do the right shell-script highlighting,
