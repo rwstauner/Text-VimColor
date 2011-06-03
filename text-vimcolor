@@ -11,7 +11,7 @@ my $XSL_STYLESHEET = file($Text::VimColor::SHARED, 'light.xsl');
 
 # Default values for options.
 my $filetype;
-my $format;
+my $format = 'ansi';
 my $usage;
 my $output_filename;
 my $html_full_page;
@@ -135,6 +135,8 @@ text-vimcolor - command-line program to syntax color a file in ANSI, HTML, XML o
 
 =head1 SYNOPSIS
 
+   $ text-vimcolor FILENAME
+     # (like a colored "cat" (same as "text-vimcolor --format ansi FILENAME"))
    $ text-vimcolor --format html --full-page FILENAME > OUTPUT.html
    $ text-vimcolor --format xml FILENAME > OUTPUT.xml
    $ text-vimcolor --format pdf FILENAME --output OUTPUT.pdf
