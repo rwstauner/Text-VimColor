@@ -13,6 +13,7 @@ WriteMakefile(
 
    PREREQ_PM => {
       'Path::Class' => 0.02,
+      'Term::ANSIColor' => 0,
    },
 );
 
