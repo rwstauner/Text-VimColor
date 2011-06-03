@@ -35,6 +35,19 @@ our %SYNTAX_TYPE = (
    Todo       => 1,
 );
 
+our %ANSI_COLORS = (
+   Comment    =>  'blue',
+   Constant   =>  'red',
+   Identifier =>  'cyan',
+   Statement  =>  'yellow',
+   PreProc    =>  'magenta',
+   Type       =>  'green',
+   Special    =>  'bright_magenta',
+   Underlined =>  'underline',
+   Error      =>  'on_red',
+   Todo       =>  'on_cyan',
+);
+
 # Set to true to print the command line used to run Vim.
 our $DEBUG = 0;
 
@@ -102,6 +115,28 @@ sub syntax_mark_string
    $self->_do_markup;
 
    return $self;
+}
+
+sub ansi
+{
+   my ($self) = @_;
+   my $syntax = $self->marked;
+
+   require Term::ANSIColor;
+   # allow the environment to overwrite;
+   my %colors = (%ANSI_COLORS,
+      split(/\s*[=;]\s*/, $ENV{TEXT_VIMCOLOR_ANSI} || '')
+   );
+
+   my $ansi = '';
+   foreach (@$syntax) {
+      $ansi .= $_->[1], next
+         if $_->[0] eq '';
+
+      $ansi .= Term::ANSIColor::colored([ $colors{$_->[0]} ], $_->[1]);
+   }
+
+   return $ansi;
 }
 
 sub html
