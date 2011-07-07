@@ -1,0 +1,7 @@
+[95m#[0m [36mText[0m[95m::[0m[36mVimColor[0m test file [95m#[0m
+
+Marked with [31mt/tvctestsyn.vim[0m
+this file is used for reliably testing syntax marking
+[95m([0m[34mrather than relying on an external [0m[46mvim[0m[34m file [0m[32mthat[0m[34m may change[0m[95m)[0m.
+
+[95m([0m[34m [0m[46mvim[0m[34m: set ft=tvctestsyn : [0m[95m)[0m

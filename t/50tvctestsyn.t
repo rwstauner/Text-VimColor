@@ -7,11 +7,13 @@ use Text::VimColor;
 use Path::Class qw( file );
 
 # clear out possible user customizations that could upset the tests
+$ENV{TEXT_VIMCOLOR_ANSI} = '';
 $ENV{HOME} = 't';
 
 my @formats = qw(
    html
    xml
+   ansi
 );
 
 plan tests => scalar @formats;
