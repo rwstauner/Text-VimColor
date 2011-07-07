@@ -133,7 +133,7 @@ sub ansi
       $ansi .= $_->[1], next
          if $_->[0] eq '';
 
-      $ansi .= Term::ANSIColor::colored([ $colors{$_->[0]} ], $_->[1]);
+      $ansi .= Term::ANSIColor::colored([ $colors{ $_->[0] } ], $_->[1]);
    }
 
    return $ansi;
@@ -658,6 +658,20 @@ Does the same as C<syntax_mark_file> (see above) but uses a string as input.
 I<string> can also be a reference to a string.
 Returns the object it was called on.  Supports the C<filetype> option
 just as C<syntax_mark_file> does.
+
+=item ansi()
+
+Return the string marked with ANSI escape sequences (using L<Term::ANSIColor>)
+based on the Vim syntax colouring of the input file.
+
+This is the default format for the included L<text-vimcolor> script
+which makes it like a colored version of C<cat>.
+
+You can alter the color scheme using the C<TEXT_VIMCOLOR_ANSI>
+environment variable in the format of C<< "SynGroup=color;" >>.
+For example:
+
+   TEXT_VIMCOLOR_ANSI='Comment=green;Statement = magenta; '
 
 =item html()
 
