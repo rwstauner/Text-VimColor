@@ -193,6 +193,12 @@ The output format to generate.  Must be one of the following:
 Output text marked up with ANSI escape sequences (using L<Term::ANSIColor>).
 This is like a colorized version of C<cat>.
 
+You can alter the color scheme using the C<TEXT_VIMCOLOR_ANSI>
+environment variable in the format of C<< "SynGroup=color;" >>.
+For example:
+
+   TEXT_VIMCOLOR_ANSI='Comment=green;Statement = magenta; '
+
 =item html
 
 Generate XHTML output, with text marked with C<E<lt>spanE<gt>> elements
