@@ -35,6 +35,19 @@ our %SYNTAX_TYPE = (
    Todo       => 1,
 );
 
+our %ANSI_COLORS = (
+   Comment    =>  'blue',
+   Constant   =>  'red',
+   Identifier =>  'cyan',
+   Statement  =>  'yellow',
+   PreProc    =>  'magenta',
+   Type       =>  'green',
+   Special    =>  'bright_magenta',
+   Underlined =>  'underline',
+   Error      =>  'on_red',
+   Todo       =>  'on_cyan',
+);
+
 # Set to true to print the command line used to run Vim.
 our $DEBUG = 0;
 
@@ -102,6 +115,28 @@ sub syntax_mark_string
    $self->_do_markup;
 
    return $self;
+}
+
+sub ansi
+{
+   my ($self) = @_;
+   my $syntax = $self->marked;
+
+   require Term::ANSIColor;
+   # allow the environment to overwrite;
+   my %colors = (%ANSI_COLORS,
+      split(/\s*[=;]\s*/, $ENV{TEXT_VIMCOLOR_ANSI} || '')
+   );
+
+   my $ansi = '';
+   foreach (@$syntax) {
+      $ansi .= $_->[1], next
+         if $_->[0] eq '';
+
+      $ansi .= Term::ANSIColor::colored([ $colors{ $_->[0] } ], $_->[1]);
+   }
+
+   return $ansi;
 }
 
 sub html
@@ -624,6 +659,20 @@ Does the same as C<syntax_mark_file> (see above) but uses a string as input.
 I<string> can also be a reference to a string.
 Returns the object it was called on.  Supports the C<filetype> option
 just as C<syntax_mark_file> does.
+
+=item ansi()
+
+Return the string marked with ANSI escape sequences (using L<Term::ANSIColor>)
+based on the Vim syntax colouring of the input file.
+
+This is the default format for the included L<text-vimcolor> script
+which makes it like a colored version of C<cat>.
+
+You can alter the color scheme using the C<TEXT_VIMCOLOR_ANSI>
+environment variable in the format of C<< "SynGroup=color;" >>.
+For example:
+
+   TEXT_VIMCOLOR_ANSI='Comment=green;Statement = magenta; '
 
 =item html()
 

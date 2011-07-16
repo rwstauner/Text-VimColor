@@ -1,0 +1,7 @@
+# Text::VimColor test file #
+
+Marked with t/tvctestsyn.vim
+this file is used for reliably testing syntax marking
+(rather than relying on an external vim file that may change).
+
+( vim: set ft=tvctestsyn : )

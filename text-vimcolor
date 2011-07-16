@@ -11,7 +11,7 @@ my $XSL_STYLESHEET = file($Text::VimColor::SHARED, 'light.xsl');
 
 # Default values for options.
 my $filetype;
-my $format;
+my $format = 'ansi';
 my $usage;
 my $output_filename;
 my $html_full_page;
@@ -34,7 +34,7 @@ my $option = GetOptions(
 
 if ($usage) {
    print STDERR
-      "Usage: $0 --format html|xml [options] filename\n",
+      "Usage: $0 --format ansi|html|xml [options] filename\n",
       "       $0 --format pdf --output foo.pdf [options] filename\n",
       "(the output is written to standard output, except in PDF\n",
       "mode, where you have to supply a filename for the output.)\n",
@@ -43,8 +43,8 @@ if ($usage) {
       "    --debug      turn on Text::VimColor debugging mode\n",
       "    --filetype   set Vim filetype name, if it can't be guessed from\n",
       "                 the file's name or contents\n",
-      "    --format     set format to use for output, can be xml,\n",
-      "                 html, or pdf\n",
+      "    --format     set format to use for output, can be ansi,\n",
+      "                 html, xml, or pdf\n",
       "    --help       show this helpful message\n",
       "    --output     set filename to write output to (required with\n",
       "                 PDF format, otherwise defaults to standard output)\n",
@@ -56,11 +56,11 @@ if ($usage) {
 }
 
 defined $format
-   or die "$0: an output format must be specified (html, pdf or xml).\n";
+   or die "$0: an output format must be specified (ansi, html, pdf or xml).\n";
 
 $format = lc $format;
-$format eq 'html' || $format eq 'pdf' || $format eq 'xml'
-   or die "$0: invalid output format '$format' (must be html, pdf or xml).\n";
+$format eq 'ansi' || $format eq 'html' || $format eq 'pdf' || $format eq 'xml'
+   or die "$0: invalid output format '$format' (must be ansi, html, pdf or xml).\n";
 
 my $output;
 if (defined $output_filename) {
@@ -107,6 +107,10 @@ elsif ($format eq 'html') {
    print $output $syntax->html
       or die "$0: error writing to output file '$output_filename': $!\n";
 }
+elsif ($format eq 'ansi') {
+   print $output $syntax->ansi
+      or die "$0: error writing to output file '$output_filename': $!\n";
+}
 else {   # ($format eq 'pdf')
    my ($fh, $tmp_filename) = tempfile();
    print $fh $syntax->xml
@@ -127,10 +131,12 @@ __END__
 
 =head1 NAME
 
-text-vimcolor - command-line program to syntax color a file in HTML, XML or PDF
+text-vimcolor - command-line program to syntax color a file in ANSI, HTML, XML or PDF
 
 =head1 SYNOPSIS
 
+   $ text-vimcolor FILENAME
+     # (like a colored "cat" (same as "text-vimcolor --format ansi FILENAME"))
    $ text-vimcolor --format html --full-page FILENAME > OUTPUT.html
    $ text-vimcolor --format xml FILENAME > OUTPUT.xml
    $ text-vimcolor --format pdf FILENAME --output OUTPUT.pdf
@@ -138,7 +144,7 @@ text-vimcolor - command-line program to syntax color a file in HTML, XML or PDF
 =head1 DESCRIPTION
 
 This program uses the Vim text editor to highlight text according to its
-syntax, and turn the highlighting into HTML, XML or PDF output.  It works
+syntax, and turn the highlighting into ANSI, HTML, XML or PDF output.  It works
 with any file type which Vim itself can highlight.  Usually Vim will be
 able to autodetect the file format based on the filename (and sometimes the
 contents of the file).
@@ -182,6 +188,17 @@ The output format to generate.  Must be one of the following:
 
 =over 4
 
+=item ansi
+
+Output text marked up with ANSI escape sequences (using L<Term::ANSIColor>).
+This is like a colorized version of C<cat>.
+
+You can alter the color scheme using the C<TEXT_VIMCOLOR_ANSI>
+environment variable in the format of C<< "SynGroup=color;" >>.
+For example:
+
+   TEXT_VIMCOLOR_ANSI='Comment=green;Statement = magenta; '
+
 =item html
 
 Generate XHTML output, with text marked with C<E<lt>spanE<gt>> elements
@@ -208,8 +225,8 @@ documentation for Text::VimColor.
 
 =item --output I<output-filename>
 
-Specifies the name of the output file (which will end up containing either
-HTML, XML or PDF).  If this option is omitted, the output will be sent
+Specifies the name of the output file.
+If this option is omitted, the output will be sent
 to stdout (the standard output).  This option is required when the output
 format is PDF (because of limitations in FOP).
 
