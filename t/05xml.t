@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Test::More;
 use Text::VimColor;
-require "t/test_env.pm";
+require "t/lib/test_env.pm";
 use IO::File;
 
 my $NS = 'http://ns.laxan.com/text-vimcolor/1';

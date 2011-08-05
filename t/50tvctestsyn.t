@@ -34,7 +34,7 @@ foreach my $format (@formats) {
 sub load_file
 {
    my ($filename) = @_;
-   $filename = file('t', $filename)->stringify;
+   $filename = file('t', 'data', $filename)->stringify;
    open my $file, '<', $filename
       or die "error opening file '$filename': $!";
 
