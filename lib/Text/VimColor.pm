@@ -2,7 +2,9 @@ use warnings;
 use strict;
 
 package Text::VimColor;
-our $VERSION = '0.12';
+# ABSTRACT: Syntax highlight text using Vim
+# VERSION
+# AUTHORITY
 
 use IO::File;
 use File::Copy qw( copy );
@@ -437,10 +439,6 @@ sub _run
 1;
 
 __END__
-
-=head1 NAME
-
-Text::VimColor - syntax color text in HTML or XML using Vim
 
 =head1 SYNOPSIS
 
