@@ -872,6 +872,8 @@ who knows Windows can sort it out let me know.
 
 Geoff Richards E<lt>qef@laxan.comE<gt>
 
+Currently maintained by Randy Stauner C<< rwstauner@cpan.org >>.
+
 The Vim script F<mark.vim> is a crufted version of F<2html.vim> by
 Bram Moolenaar E<lt>Bram@vim.orgE<gt> and
 David Ne\v{c}as (Yeti) E<lt>yeti@physics.muni.czE<gt>.
@@ -879,6 +881,7 @@ David Ne\v{c}as (Yeti) E<lt>yeti@physics.muni.czE<gt>.
 =head1 COPYRIGHT
 
 Copyright 2002-2006, Geoff Richards.
+Copyright 2011 Randy Stauner.
 
 This library is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
