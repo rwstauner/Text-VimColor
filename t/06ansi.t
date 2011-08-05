@@ -16,24 +16,24 @@ $ENV{HOME} = 't';
 
 plan tests => 2;
 
-my $filetype = 'perl';
+my $filetype = 'tvctestsyn';
 my $syntax = Text::VimColor->new(
    filetype => $filetype,
 );
 
-   my $input = "# comment\nuse Mod::Name;\nour \$VERSION = 1.0;\n";
+   my $input = "# Text::VimColor # (test)\n";
 
    $syntax->syntax_mark_string($input);
-   is($syntax->ansi, tag_input(qw(Comment blue Statement yellow Identifier cyan Constant red)), 'default ansi colors');
+   is($syntax->ansi, tag_input(qw(Comment blue Special bright_magenta)), 'default ansi colors');
 
-   $ENV{TEXT_VIMCOLOR_ANSI} = 'Comment=green;Statement = magenta; ';
+   $ENV{TEXT_VIMCOLOR_ANSI} = 'Comment=green;Special = yellow; ';
 
    $syntax->syntax_mark_string($input);
-   is($syntax->ansi, tag_input(qw(Comment green Statement magenta Identifier cyan Constant red)), 'custom ansi colors');
+   is($syntax->ansi, tag_input(qw(Comment green Special yellow)), 'custom ansi colors');
 
 sub tag_input {
-   my %c= @_;
-   return "[$c{Comment}]# comment[]\n[$c{Statement}]use []Mod::Name;\n[$c{Statement}]our[] [$c{Identifier}]\$VERSION[] = [$c{Constant}]1.0[];\n";
+   my %c = @_;
+   return "[$c{Special}]#[] [cyan]Text[][$c{Special}]::[][cyan]VimColor[] [$c{Special}]#[] [$c{Special}]([][$c{Comment}]test[][$c{Special}])[]\n";
 }
 
 # vim:ft=perl ts=3 sw=3 expandtab:
