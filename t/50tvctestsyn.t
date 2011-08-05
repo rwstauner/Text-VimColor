@@ -5,10 +5,10 @@ use warnings;
 use Test::More;
 use Text::VimColor;
 use Path::Class qw( file );
+require "t/lib/test_env.pm";
 
 # clear out possible user customizations that could upset the tests
 $ENV{TEXT_VIMCOLOR_ANSI} = '';
-$ENV{HOME} = 't';
 
 my @formats = qw(
    html
