@@ -1,5 +1,8 @@
+MANIFEST.bak
+MYMETA.*
 Makefile
 Makefile.old
 MYMETA.yml
 blib/
 pm_to_blib
+Text-VimColor-*.tar.gz
