@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
+# PODNAME: text-vimcolor
+# ABSTRACT: Use Text:VimColor from the command line
 
 use Text::VimColor;
 use Getopt::Long;
@@ -126,12 +128,6 @@ else {   # ($format eq 'pdf')
 }
 
 exit 0;
-
-__END__
-
-=head1 NAME
-
-text-vimcolor - command-line program to syntax color a file in ANSI, HTML, XML or PDF
 
 =head1 SYNOPSIS
 
