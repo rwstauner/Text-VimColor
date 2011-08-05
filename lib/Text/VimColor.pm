@@ -832,11 +832,6 @@ an XSLT/XSL-FO stylesheet and the FOP processor.
 
 Everything to do with the Vim text editor.
 
-=item http://ungwe.org/blog/
-
-The author's weblog, which uses this module.  It is used to make the code
-samples look pretty.
-
 =back
 
 =head1 BUGS
