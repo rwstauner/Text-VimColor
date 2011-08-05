@@ -820,7 +820,7 @@ environments:
 
 =over 4
 
-=item text-vimcolor(1)
+=item L<text-vimcolor>(1)
 
 A simple command line interface to this module's features.  It can be used
 to produce HTML and XML output,
