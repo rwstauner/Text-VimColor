@@ -451,6 +451,7 @@ Text::VimColor - syntax color text in HTML or XML using Vim
 
    print $syntax->html;
    print $syntax->xml;
+   print $syntax->ansi;
 
 =head1 DESCRIPTION
 
@@ -473,6 +474,11 @@ which can be converted to other formats, for example, using XSLT
 
 A simple Perl data structure, so that Perl code can be used to turn it
 into whatever is needed
+
+=item ANSI Escape Sequences
+
+A string marked with L<Term::ANSIColor>
+suitable for printing to a terminal.
 
 =back
 
@@ -817,7 +823,9 @@ environments:
 =item text-vimcolor(1)
 
 A simple command line interface to this module's features.  It can be used
-to produce HTML and XML output, and can also generate PDF output using
+to produce HTML and XML output,
+print to the screen (like a colored C<cat(1)>),
+and can also generate PDF output using
 an XSLT/XSL-FO stylesheet and the FOP processor.
 
 =item http://www.vim.org/
