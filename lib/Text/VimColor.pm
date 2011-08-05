@@ -1,6 +1,8 @@
-package Text::VimColor;
 use warnings;
 use strict;
+
+package Text::VimColor;
+our $VERSION = '0.12';
 
 use IO::File;
 use File::Copy qw( copy );
@@ -12,7 +14,6 @@ die "Text::VimColor can't see where it's installed"
    unless -f __FILE__;
 our $SHARED = file(__FILE__)->dir->subdir('VimColor')->stringify;
 
-our $VERSION = '0.11';
 our $VIM_COMMAND = 'vim';
 our @VIM_OPTIONS = (qw( -RXZ -i NONE -u NONE -N -n ), "+set nomodeline");
 our $NAMESPACE_ID = 'http://ns.laxan.com/text-vimcolor/1';
