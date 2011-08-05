@@ -1,3 +1,23 @@
+Revision history for Text-VimColor
+
+{{$NEXT}}
+
+  [Enhancements]
+  - Add Term::ANSIColor support
+    Closes RT #69338.
+  - Add '-n' (no swapfile) option (thanks hinrik.sig).
+    Closes RT #45623.
+
+  [Bug Fixes]
+  - Set $ENV{HOME} to keep user-customized syntax files from
+    breaking tests.  Closes RT #68513.
+  - Untie STD(IN|OUT|ERR) in child process (thanks shiar).
+    Closes RT #50646.
+
+  [Maintenance Status Change]
+  - Co-maintenance granted to Randy Stauner (RWSTAUNER) by PAUSE admins.
+    Much appreciation to Geoff Richards (GEOFFR) for his initial work.
+
 0.11     2006-02-19T19:32:27Z
 
   * No code changes, just packaging fixes.
