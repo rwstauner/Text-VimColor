@@ -275,17 +275,4 @@ background color on part of a line?
 
 =back
 
-=head1 AUTHOR
-
-Geoff Richards E<lt>qef@laxan.comE<gt>
-
-=head1 COPYRIGHT
-
-Copyright 2002-2006, Geoff Richards.
-
-This program is free software; you can redistribute it and/or
-modify it under the same terms as Perl.
-
-=cut
-
 # vi:ts=3 sw=3 expandtab
