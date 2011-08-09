@@ -9,8 +9,6 @@ use File::Temp qw( tempfile );
 use IO::File;
 use Path::Class qw( file );
 
-my $XSL_STYLESHEET = file($Text::VimColor::SHARED, 'light.xsl');
-
 # Default values for options.
 my $filetype;
 my $format = 'ansi';
@@ -118,7 +116,7 @@ else {   # ($format eq 'pdf')
    print $fh $syntax->xml
       or die "$0: error writing to temporary file '$tmp_filename': $!\n";
 
-   system('fop', '-xsl', $XSL_STYLESHEET,
+   system('fop', '-xsl', Text::VimColor->dist_file('light.xsl'),
                  '-xml', $tmp_filename,
                  '-pdf', $output_filename) == 0
       or die "$0: error running 'fop' (exit code was $?).\n";
