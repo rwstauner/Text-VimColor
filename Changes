@@ -1,6 +1,6 @@
 Revision history for Text-VimColor
 
-{{$NEXT}}
+0.12     2011-08-09T19:33:16Z
 
   [Enhancements]
   - Add Term::ANSIColor support

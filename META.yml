@@ -1,7 +1,11 @@
 --- #YAML:1.0
 
+abstract: 'Syntax highlight text using Vim'
+author:
+  - 'Geoff Richards <qef@laxan.com>'
+  - 'Randy Stauner <rwstauner@cpan.org>'
 name: Text-VimColor
-version: 0.11
+version: 0.12
 license: perl
 distribution_type: module
 
@@ -9,5 +13,20 @@ no_index:
   directory:
     - t
 
+build_requires:
+  Pod::Checker: 0
+  Test: 0
+  Test::More: 0
 requires:
-    Path::Class: 0.02
+  Carp: 0
+  File::Copy: 0
+  File::Temp: 0
+  Getopt::Long: 0
+  IO::File: 0
+  Path::Class: 0.02
+  Term::ANSIColor: 0
+  perl: 5.006
+resources:
+  bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Text-VimColor
+  homepage: https://github.com/rwstauner/Text-VimColor
+  repository: https://github.com/rwstauner/Text-VimColor

@@ -1,0 +1,12 @@
+^.build
+^.git
+^.gitignore
+^Makefile$
+^Makefile.old
+^MANIFEST.bak
+^MYMETA\..+
+^blib/
+^pm_to_blib
+^Text-VimColor-.+
+^TODO
+^text-vimcolor-.+.patch
