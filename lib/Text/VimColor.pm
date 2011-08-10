@@ -502,11 +502,9 @@ This is an object-oriented module.  To use it, create an object with
 the L</new> function (as shown in L</SYNOPSIS>) and then call methods
 to get the markup out.
 
-=head1 METHODS
+=method new
 
-=over 4
-
-=item new(I<options>)
+  my $tvc = Text::VimColor->new(%options)
 
 Returns a syntax highlighting object.  Pass it a hash of options.
 
@@ -621,7 +619,7 @@ A reference to an array of options to pass to Vim.  The default options are:
 =item vim_let
 
 A reference to a hash of options to set in Vim before the syntax file
-is loaded.  Each of these is set using the C<:let> command to the value
+is loaded.  Each of these is set using the C<let> command to the value
 specified.  No escaping is done on the values, they are executed exactly
 as specified.
 
@@ -638,12 +636,17 @@ These settings can be modified later with the C<vim_let()> method.
 
 =back
 
-=item vim_let(I<name> =E<gt> I<value>, ...)
+=method vim_let
+
+  $tvc->vim_let( %variables );
+  $tvc->vim_let( perl_no_extended_vars => 1 );
 
 Change the options that are set with the Vim C<let> command when Vim
-is run.  See C<new()> for details.
+is run.  See L</new> for details.
 
-=item syntax_mark_file(I<file>, I<options...>)
+=method syntax_mark_file
+
+  $tvc->syntax_mark_file( $file, %options )
 
 Mark up the specified file.  Subsequent calls to the output methods will then
 return the markup.  It is not necessary to call this if a C<file> or C<string>
@@ -652,23 +655,21 @@ option was passed to L</new>.
 Returns the object it was called on, so an output method can be called
 on it directly:
 
-   my $syntax = Text::VimColor->new(
-      vim_command => '/usr/local/bin/special-vim',
-   );
-
-   foreach (@files) {
-      print $syntax->syntax_mark_file($_)->html;
-   }
+  foreach (@files) {
+    print $tvc->syntax_mark_file($_)->html;
+  }
 
 You can override the file type set in new() by passing in a C<filetype>
 option, like so:
 
-   $syntax->syntax_mark_file($filename, filetype => 'perl');
+  $tvc->syntax_mark_file($filename, filetype => 'perl');
 
 This option will only affect the syntax coloring for that one call,
 not for any subsequent ones on the same object.
 
-=item syntax_mark_string(I<string>, I<options...>)
+=method syntax_mark_string
+
+  $tvc->syntax_mark_string($string, %options)
 
 Does the same as C<syntax_mark_file> (see above) but uses a string as input.
 The I<string> can also be a reference to a string.
@@ -676,7 +677,7 @@ The I<string> can also be a reference to a string.
 Returns the object it was called on.  Supports the C<filetype> option
 just as C<syntax_mark_file> does.
 
-=item ansi()
+=method ansi
 
 Return the string marked with ANSI escape sequences (using L<Term::ANSIColor>)
 based on the Vim syntax coloring of the input file.
@@ -690,7 +691,7 @@ For example:
 
    TEXT_VIMCOLOR_ANSI='Comment=green;Statement = magenta; '
 
-=item html()
+=method html
 
 Return XHTML markup based on the Vim syntax coloring of the input file.
 
@@ -705,7 +706,7 @@ color in a stylesheet.  The class names used will have the prefix C<syn>,
 for example C<synComment>.
 For the full list see L</HIGHLIGHTING TYPES>.
 
-=item xml()
+=method xml
 
 Returns markup in a simple XML vocabulary.  Unless the C<xml_root_element>
 option is turned off (it's on by default) this will produce a complete XML
@@ -729,14 +730,15 @@ other than undef.
 
 The XML namespace is also available as C<$Text::VimColor::NAMESPACE_ID>.
 
-=item marked()
+=method marked
 
 This output function returns the marked-up text in the format which the module
 stores it in internally.  The data looks like this:
 
    use Data::Dumper;
-   print Dumper($syntax->marked);
+   print Dumper($tvc->marked);
 
+   # produces
    $VAR1 = [
       [ 'Statement', 'my' ],
       [ '', ' ' ],
@@ -750,20 +752,23 @@ array is itself a reference to an array of two items: the first is one of
 the names listed in L<HIGHLIGHTING TYPES> (or an empty string if none apply),
 and the second is the actual piece of text.
 
-=item input_filename()
+=method input_filename
 
 Returns the filename of the input file, or undef if a filename wasn't
 specified.
 
-=item dist_file(I<file>)
+=method dist_file
+
+  my $full_path = Text::VimColor->dist_file($file);
+  my $xsl = $tvc->dist_file('light.xsl');
 
 Returns the path to the specified file that is part of the C<Text-VimColor> dist
 (for example, F<mark.vim> or F<light.css>).
 
+Can be called as an instance method or a class method.
+
 This is a thin wrapper around L<File::ShareDir/dist_file>
 and is mostly for internal use.
-
-=back
 
 =head1 HIGHLIGHTING TYPES
 
