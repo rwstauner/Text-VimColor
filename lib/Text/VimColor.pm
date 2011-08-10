@@ -218,7 +218,7 @@ sub input_filename
    my $file = $self->{file};
    return $file if defined $file && !ref $file;
 
-   return undef;
+   return;
 }
 
 # Return a string consisting of the start of an XHTML file, with a stylesheet
@@ -401,6 +401,7 @@ sub _run
    my ($self, $prog, @args) = @_;
 
    if ($DEBUG) {
+      ## no critic (MutatingListFunctions)
       print STDERR __PACKAGE__."::_run: $prog " .
             join(' ', map { s/'/'\\''/g; "'$_'" } @args) . "\n";
    }
@@ -432,6 +433,7 @@ sub _run
       defined $pid
          or croak "error forking to run $prog: $!";
       tied $_ and untie $_ for *STDOUT, *STDERR, *STDIN;
+      ## no critic (TwoArgOpen)
       open STDIN, '/dev/null';
       open STDOUT, '>/dev/null';
       open STDERR, '>&=' . fileno($err_fh)
