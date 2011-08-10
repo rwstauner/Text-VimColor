@@ -144,15 +144,14 @@ able to autodetect the file format based on the filename (and sometimes the
 contents of the file).
 
 Exactly one filename should be given on the command line to name the input
-file.  If none is given input will instead be read from stdin (the standard
-input).
+file.  If none is given input will instead be read from C<STDIN>.
 
 If Vim can't guess the file type automatically, it can be specified explicitly
 using the C<--filetype> option.  For example:
 
    $ text-vimcolor --format html --filetype prolog foo.pl > foo.html
 
-This program is a command line interface to the Perl module Text::VimColor.
+This program is a command line interface to the Perl module L<Text::VimColor>.
 
 =head1 OPTIONS
 
@@ -172,7 +171,7 @@ the command used to run Vim.
 =item --filetype I<file-type>
 
 Set the type of the file explicitly.  The I<file-type> argument should be
-something which Vim will recognise when set with its C<filetype> option.
+something which Vim will recognize when set with its C<filetype> option.
 Examples are C<perl>, C<cpp> (for C++) and C<sh> (for Unix shell scripts).
 These names are case sensitive, and should usually be all-lowercase.
 
@@ -185,7 +184,7 @@ The output format to generate.  Must be one of the following:
 =item ansi
 
 Output text marked up with ANSI escape sequences (using L<Term::ANSIColor>).
-This is like a colorized version of C<cat>.
+This is like a colorized version of C<cat(1)>.
 
 You can alter the color scheme using the C<TEXT_VIMCOLOR_ANSI>
 environment variable in the format of C<< "SynGroup=color;" >>.
@@ -195,7 +194,7 @@ For example:
 
 =item html
 
-Generate XHTML output, with text marked with C<E<lt>spanE<gt>> elements
+Generate XHTML output, with text marked with C<< <span> >> elements
 with C<class> attributes.  A CSS stylesheet should be used to define the
 coloring, etc., for the output.  See the C<--full-page> option below.
 
@@ -234,7 +233,7 @@ inserted inline into the output, so the output will be useable as it is.
 
 When the output format is HTML and C<--fullpage> is given, a stylesheet
 is normally inserted in-line in the output file.  If this option is given it
-will instead be referenced with a C<E<lt>linkE<gt>> element.
+will instead be referenced with a C<< <link> >> element.
 
 =item --let I<name>=I<value>
 
@@ -268,7 +267,7 @@ which often doesn't work.  This is also why it is mind numbingly slow.
 =item *
 
 FOP (0.20.3) seems to ignore the C<background-color> property on
-C<E<lt>fo:inlineE<gt>>.  If that's what it's meant to do, how do you set the
+C<< <fo:inline> >>.  If that's what it's meant to do, how do you set the
 background color on part of a line?
 
 =back

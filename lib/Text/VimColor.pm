@@ -498,7 +498,7 @@ strings, etc.  The Perl code then reads back this markup and converts it
 to the desired output format.
 
 This is an object-oriented module.  To use it, create an object with
-the C<new> function (as shown above in the SYNOPSIS) and then call methods
+the L</new> function (as shown in L</SYNOPSIS>) and then call methods
 to get the markup out.
 
 =head1 METHODS
@@ -521,22 +521,21 @@ Note that using a filename might allow Vim to guess the file type from its
 name if none is specified explicitly.
 
 If the file isn't specified while creating the object, it can be given later
-in a call to the C<syntax_mark_file> method (see below), allowing a single
-Text::VimColor object to be used with multiple input files.
+in a call to the L</syntax_mark_file> method (see below), allowing a single
+C<Text::VimColor> object to be used with multiple input files.
 
 =item string
 
 Use this to pass a string to be used as the input.  This is an alternative
 to the C<file> option.  A reference to a string will also work.
 
-The C<syntax_mark_string> method (see below) is another way to use a string
-as input.
+The L</syntax_mark_string> method is another way to use a string as input.
 
 =item filetype
 
 Specify the type of file Vim should expect, in case Vim's automatic
 detection by filename or contents doesn't get it right.  This is
-particularly important when providing the file as a string of file
+particularly important when providing the file as a string or file
 handle, since Vim won't be able to use the file extension to guess
 the file type.
 
@@ -544,30 +543,30 @@ The file types recognized by Vim are short strings like 'perl' or 'lisp'.
 They are the names of files in the 'syntax' directory in the Vim
 distribution.
 
-This option, whether or not it is passed to C<new()>, can be overridden
-when calling C<syntax_mark_file> and C<syntax_mark_string>, so you can
+This option, whether or not it is passed to L</new>, can be overridden
+when calling L</syntax_mark_file> and L</syntax_mark_string>, so you can
 use the same object to process multiple files of different types.
 
 =item html_full_page
 
-By default the C<html()> output method returns a fragment of HTML, not a
-full file.  To make useful output this must be wrapped in a C<E<lt>preE<gt>>
+By default the L</html> output method returns a fragment of HTML, not a
+full file.  To make useful output this must be wrapped in a C<< <pre> >>
 element and a stylesheet must be included from somewhere.  Setting the
-C<html_full_page> option will instead make the C<html()> method return a
+L</html_full_page> option will instead make the L</html> method return a
 complete stand-alone XHTML file.
 
 Note that while this is useful for testing, most of the time you'll want to
 put the syntax highlighted source code in a page with some other content,
-in which case the default output of the C<html()> method is more appropriate.
+in which case the default output of the L</html> method is more appropriate.
 
 =item html_inline_stylesheet
 
-Turned on by default, but has no effect unless C<html_full_page> is also
+Turned on by default, but has no effect unless L</html_full_page> is also
 enabled.
 
 This causes the CSS stylesheet defining the colors to be used
 to render the markup to be be included in the HTML output, in a
-C<E<lt>styleE<gt>> element.  Turn it off to instead use a C<E<lt>linkE<gt>>
+C<< <style> >> element.  Turn it off to instead use a C<< <link> >>
 to reference an external stylesheet (recommended if putting more than one
 page on the web).
 
@@ -594,14 +593,14 @@ Ignored unless C<html_full_page> is enabled and C<html_inline_stylesheet>
 is disabled.
 
 This can be used to supply the URL (relative or absolute) or the stylesheet
-to be referenced from the HTML C<E<lt>linkE<gt>> element in the header.
-If this isn't given it will default to using a C<file:> URL to reference
+to be referenced from the HTML C<< <link> >> element in the header.
+If this isn't given it will default to using a C<file://> URL to reference
 the supplied F<light.css> stylesheet, which is only really useful for testing.
 
 =item xml_root_element
 
 By default this is true.  If set to a false value, XML output will not be
-wrapped in a root element called <syn:syntax>, but will be otherwise the
+wrapped in a root element called C<< <syn:syntax> >>, but will be otherwise the
 same.  This could allow XML output for several files to be concatenated,
 but to make it valid XML a root element must be added.  Disabling this
 option will also remove the binding of the namespace prefix C<syn:>, so
@@ -647,7 +646,7 @@ is run.  See C<new()> for details.
 
 Mark up the specified file.  Subsequent calls to the output methods will then
 return the markup.  It is not necessary to call this if a C<file> or C<string>
-option was passed to C<new()>.
+option was passed to L</new>.
 
 Returns the object it was called on, so an output method can be called
 on it directly:
@@ -671,7 +670,8 @@ not for any subsequent ones on the same object.
 =item syntax_mark_string(I<string>, I<options...>)
 
 Does the same as C<syntax_mark_file> (see above) but uses a string as input.
-I<string> can also be a reference to a string.
+The I<string> can also be a reference to a string.
+
 Returns the object it was called on.  Supports the C<filetype> option
 just as C<syntax_mark_file> does.
 
@@ -681,7 +681,7 @@ Return the string marked with ANSI escape sequences (using L<Term::ANSIColor>)
 based on the Vim syntax coloring of the input file.
 
 This is the default format for the included L<text-vimcolor> script
-which makes it like a colored version of C<cat>.
+which makes it like a colored version of C<cat(1)>.
 
 You can alter the color scheme using the C<TEXT_VIMCOLOR_ANSI>
 environment variable in the format of C<< "SynGroup=color;" >>.
@@ -695,32 +695,32 @@ Return XHTML markup based on the Vim syntax coloring of the input file.
 
 Unless the C<html_full_page> option is set, this will only return a fragment
 of HTML, which can then be incorporated into a full page.  The fragment
-will be valid as either HTML and XHTML.
+will be valid as either HTML or XHTML.
 
-The only markup used for the actual text will be C<E<lt>spanE<gt>> elements
-wrapped round appropriate pieces of text.  Each one will have a C<class>
+The only markup used for the actual text will be C<< <span >> elements
+wrapped around appropriate pieces of text.  Each one will have a C<class>
 attribute set to a name which can be tied to a foreground and background
 color in a stylesheet.  The class names used will have the prefix C<syn>,
-for example C<synComment>.  For the full list see the section
-HIGHLIGHTING TYPES below.
+for example C<synComment>.
+For the full list see L</HIGHLIGHTING TYPES>.
 
 =item xml()
 
 Returns markup in a simple XML vocabulary.  Unless the C<xml_root_element>
 option is turned off (it's on by default) this will produce a complete XML
-document, with all the markup inside a C<E<lt>syntaxE<gt>> element.
+document, with all the markup inside a C<< <syntax> >> element.
 
 This XML output can be transformed into other formats, either using programs
 which read it with an XML parser, or using XSLT.  See the
-text-vimcolor(1) program for an example of how XSLT can be used with
+L<text-vimcolor>(1) program for an example of how XSLT can be used with
 XSL-FO to turn this into PDF.
 
 The markup will consist of mixed content with elements wrapping pieces
 of text which Vim recognized as being of a particular type.  The names of
-the elements used are the ones listed in the HIGHLIGHTING TYPES section
+the elements used are the ones listed in L</HIGHLIGHTING TYPES>.
 below.
 
-The C<E<lt>syntaxE<gt>> element will declare the namespace for all the
+The C<< <syntax> >> element will declare the namespace for all the
 elements produced, which will be C<http://ns.laxan.com/text-vimcolor/1>.
 It will also have an attribute called C<filename>, which will be set to the
 value returned by the C<input_filename> method, if that returns something
@@ -744,10 +744,10 @@ stores it in internally.  The data looks like this:
        ...
    ];
 
-The C<marked()> method returns a reference to an array.  Each item in the
+This method returns a reference to an array.  Each item in the
 array is itself a reference to an array of two items: the first is one of
-the names listed in the HIGHLIGHTING TYPES section below (or the empty
-string if none apply), and the second is the actual piece of text.
+the names listed in L<HIGHLIGHTING TYPES> (or an empty string if none apply),
+and the second is the actual piece of text.
 
 =item input_filename()
 
