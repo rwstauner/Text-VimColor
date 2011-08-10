@@ -2,6 +2,13 @@ Revision history for Text-VimColor
 
 {{$NEXT}}
 
+  [Dist Meta Changes]
+  - Convert to Dist::Zilla for releasing
+  - Use File::ShareDir to manage included files consistently
+  - Simplify and organize documentation and tests
+
+0.12     2011-08-09T19:33:16Z
+
   [Enhancements]
   - Add Term::ANSIColor support
     Closes RT #69338.
