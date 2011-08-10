@@ -8,13 +8,13 @@ package Text::VimColor;
 
 use IO::File;
 use File::Copy qw( copy );
+use File::ShareDir ();
 use File::Temp qw( tempfile );
 use Path::Class qw( file );
 use Carp;
 
-die "Text::VimColor can't see where it's installed"
-   unless -f __FILE__;
-our $SHARED = file(__FILE__)->dir->subdir('VimColor')->stringify;
+# for backward compatibility
+our $SHARED = File::ShareDir::dist_dir('Text-VimColor');
 
 our $VIM_COMMAND = 'vim';
 our @VIM_OPTIONS = (qw( -RXZ -i NONE -u NONE -N -n ), "+set nomodeline");
@@ -81,6 +81,11 @@ sub new
       if defined $options{file} || defined $options{string};
 
    return $self;
+}
+
+sub dist_file {
+  my $self = shift;
+  return File::ShareDir::dist_file('Text-VimColor', @_);
 }
 
 sub vim_let
@@ -235,7 +240,7 @@ sub _html_header
       }
       else {
          my $file = $self->{html_stylesheet_file};
-         $file = file($SHARED, 'light.css')->stringify
+         $file = $self->dist_file('light.css')
             unless defined $file;
          unless (ref $file) {
             $file = IO::File->new($file, 'r')
@@ -250,7 +255,7 @@ sub _html_header
       $stylesheet =
          "<link rel=\"stylesheet\" type=\"text/css\" href=\"" .
          _xml_escape($self->{html_stylesheet_url} ||
-                     "file://$SHARED/light.css") .
+                     "file://${\ file($self->dist_file('light.css'))->as_foreign('Unix') }") .
          "\" />\n";
    }
 
@@ -282,7 +287,7 @@ sub _xml_escape
 sub _do_markup
 {
    my ($self) = @_;
-   my $vim_syntax_script = file($SHARED, 'mark.vim')->stringify;
+   my $vim_syntax_script = $self->dist_file('mark.vim');
 
    croak "Text::VimColor syntax script '$vim_syntax_script' not installed"
       unless -f $vim_syntax_script && -r $vim_syntax_script;
@@ -741,6 +746,14 @@ string if none apply), and the second is the actual piece of text.
 
 Returns the filename of the input file, or undef if a filename wasn't
 specified.
+
+=item dist_file(I<file>)
+
+Returns the path to the specified file that is part of the C<Text-VimColor> dist
+(for example, F<mark.vim> or F<light.css>).
+
+This is a thin wrapper around L<File::ShareDir/dist_file>
+and is mostly for internal use.
 
 =back
 

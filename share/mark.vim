@@ -1,7 +1,8 @@
 " mark.vim - turn Vim syntax highlighting into an ad-hoc markup language that
 " can be parsed by the Text::VimColor Perl module.
 "
-" Maintainer: Geoff Richards <qef@laxan.com>
+" Author: Geoff Richards <qef@laxan.com>
+" Maintainer: Randy Stauner <rwstauner@cpan.org>
 " Based loosely on 2html.vim, by Bram Moolenaar <Bram@vim.org>,
 "   modified by David Ne\v{c}as (Yeti) <yeti@physics.muni.cz>.
 
