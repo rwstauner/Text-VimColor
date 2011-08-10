@@ -1,9 +1,9 @@
 use strict;
 use warnings;
 use Test::More;
-use Text::VimColor;
+use lib 't/lib';
+use TVC_Test;
 use Term::ANSIColor;
-use Path::Class qw( file );
 
 no warnings 'redefine';
 local *Term::ANSIColor::colored = sub {
@@ -12,7 +12,6 @@ local *Term::ANSIColor::colored = sub {
 
 # clear out possible user customizations that could upset the tests
 $ENV{TEXT_VIMCOLOR_ANSI} = '';
-$ENV{HOME} = 't';
 
 plan tests => 2;
 

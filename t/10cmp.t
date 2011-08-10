@@ -3,15 +3,14 @@
 use strict;
 use warnings;
 use Test::More;
-use Text::VimColor;
-require "t/lib/test_env.pm";
-use Path::Class qw( file );
+use lib 't/lib';
+use TVC_Test;
 
 plan tests => 2;
 
 # Check that passing coloring with the 'filetype' option has the same output
 # whether Vim knows the filename or not.
-my $filename = file('t', 'hello.c')->stringify;
+my $filename = file('t', 'data', 'hello.c')->stringify;
 my $syntax1 = Text::VimColor->new(
    file => $filename,
    filetype => 'c',

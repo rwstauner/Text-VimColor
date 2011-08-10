@@ -3,9 +3,8 @@
 use strict;
 use warnings;
 use Test::More;
-use Text::VimColor;
-use Path::Class qw( file );
-require "t/lib/test_env.pm";
+use lib 't/lib';
+use TVC_Test;
 
 # clear out possible user customizations that could upset the tests
 $ENV{TEXT_VIMCOLOR_ANSI} = '';
@@ -24,21 +23,11 @@ my $syntax = Text::VimColor->new(
 );
 
 foreach my $format (@formats) {
-   my $input = load_file("$filetype.txt");
-   my $expected = load_file("$filetype.$format");
+   my $input    = slurp_data("$filetype.txt");
+   my $expected = slurp_data("$filetype.$format");
 
    $syntax->syntax_mark_string($input);
    is($syntax->$format, $expected, 'got expected marked text');
-}
-
-sub load_file
-{
-   my ($filename) = @_;
-   $filename = file('t', 'data', $filename)->stringify;
-   open my $file, '<', $filename
-      or die "error opening file '$filename': $!";
-
-   return do { local $/; <$file> };
 }
 
 # vim:ft=perl ts=3 sw=3 expandtab:

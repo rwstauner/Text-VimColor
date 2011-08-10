@@ -4,8 +4,8 @@
 use strict;
 use warnings;
 use Test::More;
-use Text::VimColor;
-require "t/lib/test_env.pm";
+use lib 't/lib';
+use TVC_Test;
 use IO::File;
 
 my $NS = 'http://ns.laxan.com/text-vimcolor/1';

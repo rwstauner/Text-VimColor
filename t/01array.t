@@ -7,8 +7,8 @@
 use strict;
 use warnings;
 use Test::More;
-use Text::VimColor;
-require "t/lib/test_env.pm";
+use lib 't/lib';
+use TVC_Test;
 
 plan tests => 7 + 2 * 3;
 

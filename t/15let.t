@@ -3,9 +3,8 @@
 use strict;
 use warnings;
 use Test::More;
-use Text::VimColor;
-require "t/lib/test_env.pm";
-use Path::Class qw( file );
+use lib 't/lib';
+use TVC_Test;
 
 # If the version of Vim is too old to do the right shell-script highlighting,
 # then just don't bother.
@@ -23,9 +22,9 @@ use Path::Class qw( file );
    }
 }
 
-my $input = load_file('shell.sh');
-my $expected_sh_output = load_file('shell.sh.xml');
-my $expected_bash_output = load_file('shell.bash.xml');
+my $input                = slurp_data('shell.sh');
+my $expected_sh_output   = slurp_data('shell-sh.xml');
+my $expected_bash_output = slurp_data('shell-bash.xml');
 
 
 # First test setting 'let' values in the constructor.
@@ -99,17 +98,6 @@ my $expected_bash_output = load_file('shell.bash.xml');
    $syntax->syntax_mark_string($input);
    is($syntax->xml, $expected_bash_output,
       'shell should enable bash features with vim_let(b:is_bash=>1)');
-}
-
-
-sub load_file
-{
-   my ($filename) = @_;
-   $filename = file('t', $filename)->stringify;
-   open my $file, '<', $filename
-      or die "error opening file '$filename': $!";
-
-   return do { local $/; <$file> };
 }
 
 # vim:ft=perl ts=3 sw=3 expandtab:
