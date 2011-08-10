@@ -445,6 +445,11 @@ sub _run
 
 1;
 
+=for :stopwords
+XHTML XSL XSLT DOCTYPE inline stylesheet
+XSL-FO PDF
+filetype
+
 =head1 SYNOPSIS
 
    use Text::VimColor;
@@ -460,14 +465,14 @@ sub _run
 =head1 DESCRIPTION
 
 This module tries to markup text files according to their syntax.  It can
-be used to produce web pages with pretty-printed colourful source code
+be used to produce web pages with pretty-printed colorful source code
 samples.  It can produce output in the following formats:
 
 =over 4
 
 =item HTML
 
-Valid XHTML 1.0, with the exact colouring and style left to a CSS stylesheet
+Valid XHTML 1.0, with the exact coloring and style left to a CSS stylesheet
 
 =item XML
 
@@ -504,7 +509,7 @@ to get the markup out.
 
 Returns a syntax highlighting object.  Pass it a hash of options.
 
-The following options are recognised:
+The following options are recognized:
 
 =over 4
 
@@ -535,7 +540,7 @@ particularly important when providing the file as a string of file
 handle, since Vim won't be able to use the file extension to guess
 the file type.
 
-The filetypes recognised by Vim are short strings like 'perl' or 'lisp'.
+The file types recognized by Vim are short strings like 'perl' or 'lisp'.
 They are the names of files in the 'syntax' directory in the Vim
 distribution.
 
@@ -560,7 +565,7 @@ in which case the default output of the C<html()> method is more appropriate.
 Turned on by default, but has no effect unless C<html_full_page> is also
 enabled.
 
-This causes the CSS stylesheet defining the colours to be used
+This causes the CSS stylesheet defining the colors to be used
 to render the markup to be be included in the HTML output, in a
 C<E<lt>styleE<gt>> element.  Turn it off to instead use a C<E<lt>linkE<gt>>
 to reference an external stylesheet (recommended if putting more than one
@@ -655,12 +660,12 @@ on it directly:
       print $syntax->syntax_mark_file($_)->html;
    }
 
-You can override the filetype set in new() by passing in a C<filetype>
+You can override the file type set in new() by passing in a C<filetype>
 option, like so:
 
    $syntax->syntax_mark_file($filename, filetype => 'perl');
 
-This option will only affect the syntax colouring for that one call,
+This option will only affect the syntax coloring for that one call,
 not for any subsequent ones on the same object.
 
 =item syntax_mark_string(I<string>, I<options...>)
@@ -673,7 +678,7 @@ just as C<syntax_mark_file> does.
 =item ansi()
 
 Return the string marked with ANSI escape sequences (using L<Term::ANSIColor>)
-based on the Vim syntax colouring of the input file.
+based on the Vim syntax coloring of the input file.
 
 This is the default format for the included L<text-vimcolor> script
 which makes it like a colored version of C<cat>.
@@ -686,7 +691,7 @@ For example:
 
 =item html()
 
-Return XHTML markup based on the Vim syntax colouring of the input file.
+Return XHTML markup based on the Vim syntax coloring of the input file.
 
 Unless the C<html_full_page> option is set, this will only return a fragment
 of HTML, which can then be incorporated into a full page.  The fragment
@@ -716,7 +721,7 @@ the elements used are the ones listed in the HIGHLIGHTING TYPES section
 below.
 
 The C<E<lt>syntaxE<gt>> element will declare the namespace for all the
-elements prodeced, which will be C<http://ns.laxan.com/text-vimcolor/1>.
+elements produced, which will be C<http://ns.laxan.com/text-vimcolor/1>.
 It will also have an attribute called C<filename>, which will be set to the
 value returned by the C<input_filename> method, if that returns something
 other than undef.
@@ -768,6 +773,8 @@ output, these will be the names of elements which will all be in the
 namespace C<http://ns.laxan.com/text-vimcolor/1>.
 
 Here is the complete list:
+
+=for :stopwords PreProc Todo
 
 =over 4
 
@@ -880,11 +887,15 @@ who knows Windows can sort it out let me know.
 
 =back
 
+=for :stopwords Moolenaar
+
 =head1 ACKNOWLEDGEMENTS
 
 The Vim script F<mark.vim> is a crufted version of F<2html.vim> by
 Bram Moolenaar E<lt>Bram@vim.orgE<gt> and
 David Ne\v{c}as (Yeti) E<lt>yeti@physics.muni.czE<gt>.
+
+=cut
 
 # Local Variables:
 # mode: perl
