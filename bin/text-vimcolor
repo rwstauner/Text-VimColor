@@ -274,3 +274,7 @@ background color on part of a line?
 
 =back
 
+=head1 SEE ALSO
+
+=for :list
+* L<Text::VimColor>
