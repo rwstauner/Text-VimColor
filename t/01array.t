@@ -1,3 +1,4 @@
+# vim: set ts=2 sts=2 sw=2 expandtab smarttab:
 # Check that the right things are being marked by the syntax highlighting
 # for some test cases, and make sure we can get the results out as a Perl
 # array of hashes.
@@ -90,5 +91,3 @@ sub syncheck
 
    return 1;
 }
-
-# vim:ft=perl ts=3 sw=3 expandtab:

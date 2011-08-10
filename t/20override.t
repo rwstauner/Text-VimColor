@@ -1,3 +1,4 @@
+# vim: set ts=2 sts=2 sw=2 expandtab smarttab:
 # Test that options in calls syntax_mark_file() and syntax_mark_string()
 # override the ones passed to new().
 
@@ -33,5 +34,3 @@ is($syntax->xml, $expected_sql, 'syntax_mark_string options override defaults');
 
 $syntax->syntax_mark_string($input);
 is($syntax->xml, $expected_borked, 'syntax_mark_string is back to defaults');
-
-# vim:ft=perl ts=3 sw=3 expandtab:

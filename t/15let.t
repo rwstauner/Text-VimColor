@@ -1,3 +1,4 @@
+# vim: set ts=2 sts=2 sw=2 expandtab smarttab:
 # Check that things which should produce identical output do.
 
 use strict;
@@ -99,5 +100,3 @@ my $expected_bash_output = slurp_data('shell-bash.xml');
    is($syntax->xml, $expected_bash_output,
       'shell should enable bash features with vim_let(b:is_bash=>1)');
 }
-
-# vim:ft=perl ts=3 sw=3 expandtab:

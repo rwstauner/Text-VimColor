@@ -1,3 +1,4 @@
+# vim: set ts=2 sts=2 sw=2 expandtab smarttab:
 use warnings;
 use strict;
 
@@ -902,4 +903,3 @@ David Ne\v{c}as (Yeti) E<lt>yeti@physics.muni.czE<gt>.
 # perl-indent-level: 3
 # perl-continued-statement-offset: 3
 # End:
-# vi:ts=3 sw=3 expandtab:

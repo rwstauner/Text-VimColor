@@ -1,3 +1,4 @@
+# vim: set ts=2 sts=2 sw=2 expandtab smarttab:
 # Check that things which should produce identical output do.
 
 use strict;
@@ -32,5 +33,3 @@ my $syntax3 = Text::VimColor->new(
 );
 is($syntax1->html, $syntax3->html,
    'check that HTML output for hello.c comes out right using a string ref');
-
-# vim:ft=perl ts=3 sw=3 expandtab:

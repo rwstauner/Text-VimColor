@@ -1,3 +1,4 @@
+# vim: set ts=2 sts=2 sw=2 expandtab smarttab:
 # Check that the XML output is correct.
 # Also checks that tabs aren't tampered with.
 
@@ -174,5 +175,3 @@ sub handle_default
    return unless $s =~ /\S/;
    die "unexpected XML event for text '$s'\n";
 }
-
-# vim:ft=perl ts=3 sw=3 expandtab:

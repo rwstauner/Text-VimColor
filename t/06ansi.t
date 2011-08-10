@@ -1,3 +1,4 @@
+# vim: set ts=2 sts=2 sw=2 expandtab smarttab:
 use strict;
 use warnings;
 use Test::More;
@@ -34,5 +35,3 @@ sub tag_input {
    my %c = @_;
    return "[$c{Special}]#[] [cyan]Text[][$c{Special}]::[][cyan]VimColor[] [$c{Special}]#[] [$c{Special}]([][$c{Comment}]test[][$c{Special}])[]\n";
 }
-
-# vim:ft=perl ts=3 sw=3 expandtab:

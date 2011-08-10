@@ -1,3 +1,4 @@
+# vim: set ts=2 sts=2 sw=2 expandtab smarttab:
 # Test exact output against a syntax file we define.
 
 use strict;
@@ -29,5 +30,3 @@ foreach my $format (@formats) {
    $syntax->syntax_mark_string($input);
    is($syntax->$format, $expected, 'got expected marked text');
 }
-
-# vim:ft=perl ts=3 sw=3 expandtab:
