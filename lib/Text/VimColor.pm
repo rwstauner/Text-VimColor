@@ -699,7 +699,7 @@ Unless the C<html_full_page> option is set, this will only return a fragment
 of HTML, which can then be incorporated into a full page.  The fragment
 will be valid as either HTML or XHTML.
 
-The only markup used for the actual text will be C<< <span >> elements
+The only markup used for the actual text will be C<< <span> >> elements
 wrapped around appropriate pieces of text.  Each one will have a C<class>
 attribute set to a name which can be tied to a foreground and background
 color in a stylesheet.  The class names used will have the prefix C<syn>,
