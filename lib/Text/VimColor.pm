@@ -782,64 +782,27 @@ Here is the complete list:
 
 =for :stopwords PreProc Todo
 
-=over 4
+=for :list
+* Comment
+* Constant
+* Identifier
+* Statement
+* PreProc
+* Type
+* Special
+* Underlined
+* Error
+* Todo
 
-=item *
+=head1 RELATED MODULES
 
-Comment
-
-=item *
-
-Constant
-
-=item *
-
-Identifier
-
-=item *
-
-Statement
-
-=item *
-
-PreProc
-
-=item *
-
-Type
-
-=item *
-
-Special
-
-=item *
-
-Underlined
-
-=item *
-
-Error
-
-=item *
-
-Todo
-
-=back
-
-=head1 RELATED  MODULES
-
-These modules allow Text::VimColor to be used more easily in particular
+These modules allow C<Text::VimColor> to be used more easily in particular
 environments:
 
-=over 4
-
-=item L<Apache::VimColor>
-
-=item L<Kwiki::VimMode>
-
-=item L<Template-Plugin-VimColor>
-
-=back
+=for :list
+* L<Apache::VimColor>
+* L<Kwiki::VimMode>
+* L<Template-Plugin-VimColor>
 
 =head1 SEE ALSO
 
@@ -869,7 +832,7 @@ Quite a few, actually:
 
 Apparently this module doesn't always work if run from within a 'gvim'
 window, although I've been unable to reproduce this so far.
-CPAN bug #11555.
+CPAN RT #11555.
 
 =item *
 
