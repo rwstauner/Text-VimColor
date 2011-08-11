@@ -446,11 +446,6 @@ sub _run
 
 1;
 
-=for :stopwords
-XHTML XSL XSLT DOCTYPE inline stylesheet
-XSL-FO PDF
-filetype
-
 =head1 SYNOPSIS
 
    use Text::VimColor;
