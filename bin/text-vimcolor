@@ -129,6 +129,10 @@ else {   # ($format eq 'pdf')
 
 exit 0;
 
+=for :stopwords
+--filetype --unlet --inline --no-inline-stylesheet
+text-vimcolor
+
 =head1 SYNOPSIS
 
    $ text-vimcolor FILENAME
@@ -142,7 +146,7 @@ exit 0;
 This program uses the Vim text editor to highlight text according to its
 syntax, and turn the highlighting into ANSI, HTML, XML or PDF output.  It works
 with any file type which Vim itself can highlight.  Usually Vim will be
-able to autodetect the file format based on the filename (and sometimes the
+able to auto-detect the file format based on the filename (and sometimes the
 contents of the file).
 
 Exactly one filename should be given on the command line to name the input
@@ -216,20 +220,20 @@ specified with C<--output> with this format.
 =back
 
 Full details of the HTML and XML output formats can be found in the
-documentation for Text::VimColor.
+documentation for L<Text::VimColor>.
 
 =item --output I<output-filename>
 
 Specifies the name of the output file.
 If this option is omitted, the output will be sent
-to stdout (the standard output).  This option is required when the output
+to <STDOUT>.  This option is required when the output
 format is PDF (because of limitations in FOP).
 
 =item --full-page
 
 When the output format is HTML, this option will make the output a complete
 HTML page, rather than just a fragment of HTML.  A CSS stylesheet will be
-inserted inline into the output, so the output will be useable as it is.
+inserted inline into the output, so the output will be usable as it is.
 
 =item --no-inline-stylesheet
 
