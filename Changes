@@ -3,6 +3,8 @@ Revision history for Text-VimColor
 {{$NEXT}}
 
   [Prereqs]
+  - Exit Makefile.PL early if `vim` fails to execute.
+    (Nothing else will work after that.)
   - Bump required version of Term::ANSIColor to 3.0.
     (Please let me know if this causes problems for anyone.)
 
