@@ -10,7 +10,8 @@ $ENV{HOME} = 't';
 
 use Text::VimColor;
 use Path::Class qw(file dir);
-use Exporter qw(import);
+use Exporter ();
+our @ISA = qw(Exporter);
 our @EXPORT = qw(
   file
   dir
