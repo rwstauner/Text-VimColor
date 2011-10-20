@@ -2,6 +2,11 @@ Revision history for Text-VimColor
 
 {{$NEXT}}
 
+0.14      2011-10-20T17:09:53Z
+
+  - Add test to confirm fix of rt-50646.
+  - Silence 'untie' warnings.
+
 0.13      2011-08-15T23:10:00Z
 
   [Prereqs]
