@@ -434,9 +434,11 @@ sub _run
       defined $pid
          or croak "error forking to run $prog: $!";
 
-      # if these have been tied we'll get "Not a GLOB reference" errors.
-      # STDIN first avoids "untie attempted while 1 inner references still exist" warning
-      tied $_ and untie $_ for *STDIN, *STDOUT, *STDERR;
+      {
+        no warnings 'untie';
+        # if tied we may get "Not a GLOB reference" errors (or other issues).
+        tied $_ and untie $_ for *STDIN, *STDOUT, *STDERR;
+      }
 
       ## no critic (TwoArgOpen)
       open STDIN, '/dev/null';
