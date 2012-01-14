@@ -24,7 +24,7 @@ my $syntax2 = Text::VimColor->new(
    filetype => 'c',
 );
 is($syntax1->html, $syntax2->html,
-   'check that HTML output for hello.c comes out right');
+   'HTML output for hello.c is the same from string and file');
 
 # Same again, but this time use a reference to a string.
 my $syntax3 = Text::VimColor->new(
@@ -32,4 +32,4 @@ my $syntax3 = Text::VimColor->new(
    filetype => 'c',
 );
 is($syntax1->html, $syntax3->html,
-   'check that HTML output for hello.c comes out right using a string ref');
+   'HTML output for hello.c is the same from file and reference to a string');
