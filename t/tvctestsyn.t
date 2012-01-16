@@ -28,5 +28,5 @@ foreach my $format (@formats) {
    my $expected = slurp_data("$filetype.$format");
 
    $syntax->syntax_mark_string($input);
-   is($syntax->$format, $expected, 'got expected marked text');
+   is($syntax->$format, $expected, "got expected marked text from $format");
 }

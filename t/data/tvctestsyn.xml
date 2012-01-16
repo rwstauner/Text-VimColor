@@ -1,8 +1,11 @@
 <syn:syntax xmlns:syn="http://ns.laxan.com/text-vimcolor/1"><syn:Special>#</syn:Special> <syn:Identifier>Text</syn:Identifier><syn:Special>::</syn:Special><syn:Identifier>VimColor</syn:Identifier> test file <syn:Special>#</syn:Special>
 
-Marked with <syn:Constant>t/tvctestsyn.vim</syn:Constant>
+Marked with <syn:Constant>t/.vim/syntax/tvctestsyn.vim</syn:Constant>
 this file is used for reliably testing syntax marking
 <syn:Special>(</syn:Special><syn:Comment>rather than relying on an external </syn:Comment><syn:Todo>vim</syn:Todo><syn:Comment> file </syn:Comment><syn:Type>that</syn:Type><syn:Comment> may change</syn:Comment><syn:Special>)</syn:Special>.
+                                    \/
+<syn:Special>(</syn:Special><syn:Type>this</syn:Type><syn:Comment> line ends with whitespace </syn:Comment><syn:Statement>-&gt;</syn:Statement><syn:Special>)</syn:Special>  
+                                    /\
 
 <syn:Special>(</syn:Special><syn:Comment> </syn:Comment><syn:Todo>vim</syn:Todo><syn:Comment>: set ft=tvctestsyn : </syn:Comment><syn:Special>)</syn:Special>
 </syn:syntax>

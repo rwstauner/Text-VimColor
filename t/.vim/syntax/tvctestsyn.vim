@@ -14,7 +14,8 @@ syn keyword tvctKW       Text VimColor
 syn match   tvctChars   "[~!@#$%^&*()_+:;]"
 syn match   tvctFile   "\S\/\S*\.\S\+"
 syn keyword tvctThisThat this that contained
-syn region  tvctParens matchgroup=tvctChars start=/(/ end=/)/ contains=tvctThisThat,tvctVim
+syn match   tvctArrow   "[-<>]" contained
+syn region  tvctParens matchgroup=tvctChars start=/(/ end=/)/ contains=tvctThisThat,tvctVim,tvctArrow
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
@@ -29,6 +30,7 @@ if version >= 508 || !exists("tvctestsyn")
     HiLink tvctVim        Todo
     HiLink tvctKW         Identifier
     HiLink tvctChars      Special
+    HiLink tvctArrow      Statement
     HiLink tvctFile       String
     HiLink tvctThisThat   Type
     HiLink tvctParens     Comment
