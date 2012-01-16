@@ -13,22 +13,22 @@ plan tests => 2 * 4;
 # whether Vim knows the filename or not.
 my $filename = file('t', 'data', 'hello.c')->stringify;
 my $syntax1 = Text::VimColor->new(
-   file => $filename,
-   filetype => 'c',
+  file => $filename,
+  filetype => 'c',
 );
 open my $file, '<', $filename or die "error opening file '$filename': $!";
 my $text = do { local $/; <$file> };
 
 my $syntax2 = Text::VimColor->new(
-   string  => $text,
-   filetype => 'c',
+  string  => $text,
+  filetype => 'c',
 );
 compare(file => $syntax1, 'string' => $syntax2);
 
 # Same again, but this time use a reference to a string.
 my $syntax3 = Text::VimColor->new(
-   string  => \$text,
-   filetype => 'c',
+  string  => \$text,
+  filetype => 'c',
 );
 compare(file => $syntax1, 'reference to a string' => $syntax3);
 
