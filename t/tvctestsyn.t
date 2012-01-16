@@ -16,8 +16,6 @@ my @formats = qw(
   ansi
 );
 
-plan tests => scalar @formats;
-
 my $filetype = 'tvctestsyn';
 my $syntax = Text::VimColor->new(
   filetype => $filetype,
@@ -27,3 +25,41 @@ $syntax->syntax_mark_string(slurp_data("$filetype.txt"));
 
 is $syntax->$_, slurp_data("$filetype.$_"), "got expected marked text from $_"
   for @formats;
+
+is_deeply
+  $syntax->marked,
+  [
+    [ 'Special',     "#" ],
+    [ '',            " " ],
+    [ 'Identifier',  "Text" ],
+    [ 'Special',     "::" ],
+    [ 'Identifier',  "VimColor" ],
+    [ '',            " test file " ],
+    [ 'Special',     "#" ],
+    [ '',            "\n\nMarked with " ],
+    [ 'Constant',    "t/.vim/syntax/tvctestsyn.vim" ],
+    [ '',            "\nthis file is used for reliably testing syntax marking\n" ],
+    [ 'Special',     "(" ],
+    [ 'Comment',     "rather than relying on an external " ],
+    [ 'Todo',        "vim" ],
+    [ 'Comment',     " file " ],
+    [ 'Type',        "that" ],
+    [ 'Comment',     " may change" ],
+    [ 'Special',     ")" ],
+    [ '',            ".\n                                    \\/\n" ],
+    [ 'Special',     "(" ],
+    [ 'Type',        "this" ],
+    [ 'Comment',     " line ends with whitespace " ],
+    [ 'Statement',   "->" ],
+    [ 'Special',     ")" ],
+    [ '',            "  \n                                    /\\\n\n" ],
+    [ 'Special',     "(" ],
+    [ 'Comment',     " " ],
+    [ 'Todo',        "vim" ],
+    [ 'Comment',     ": set ft=tvctestsyn : " ],
+    [ 'Special',     ")" ],
+    [ '',            "\n" ],
+  ],
+  'got expected arrayref structure for tvctestsyn';
+
+done_testing;
