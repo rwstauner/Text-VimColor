@@ -21,6 +21,12 @@ is eval { $syntax->marked; 1 }, undef,
 like $@, qr/an input file or string must be specified/,
   'error message states that intput is required';
 
+# We should get a sensible error message if the named file isn't there.
+is eval { Text::VimColor->new( file => 'file-that-does-not.exist' ) }, undef,
+  'new dies when the specified file does not exist';
+like($@, qr/input file '.*' not found/,
+  "check we get the right error if the file doesn't exist");
+
 # TODO: test other new() functionality
 
 done_testing;
