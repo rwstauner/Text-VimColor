@@ -20,13 +20,11 @@ my $expected_sql    = slurp_data('table-sql.xml');
 my $expected_borked = slurp_data('table-borked.xml');
 
 $syntax->syntax_mark_file($input_filename, filetype => 'sql');
-my $output = $syntax->xml;
-$output =~ s/ filename=".*?"//;
+my $output = xml_minus_filename($syntax->xml);
 is($output, $expected_sql, 'syntax_mark_file options override defaults');
 
 $syntax->syntax_mark_file($input_filename);
-$output = $syntax->xml;
-$output =~ s/ filename=".*?"//;
+$output = xml_minus_filename($syntax->xml);
 is($output, $expected_borked, 'syntax_mark_file goes back to defaults');
 
 $syntax->syntax_mark_string($input, filetype => 'sql');

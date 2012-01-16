@@ -41,8 +41,3 @@ sub compare {
   is($s1->ansi, $s2->ansi, "ANSI $desc");
   is_deeply($s1->marked, $s2->marked, "Array reference $desc");
 }
-sub xml_minus_filename {
-  my ($xml) = @_;
-  $xml =~ s{^(<syn:syntax xmlns:syn="[^"]+") filename="[^"]+"(>)}{$1$2}s;
-  $xml;
-}

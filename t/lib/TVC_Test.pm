@@ -17,6 +17,7 @@ our @EXPORT = qw(
   dir
   slurp_data
   tvc
+  xml_minus_filename
 );
 
 sub slurp_data {
@@ -30,6 +31,12 @@ sub slurp_data {
 
 sub tvc {
   main::new_ok('Text::VimColor', [@_])
+}
+
+sub xml_minus_filename {
+  my ($xml) = @_;
+  $xml =~ s{^(<syn:syntax xmlns:syn="[^"]+") filename="[^"]+"(>)}{$1$2}s;
+  $xml;
 }
 
 1;
