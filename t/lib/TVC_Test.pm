@@ -16,6 +16,7 @@ our @EXPORT = qw(
   file
   dir
   slurp_data
+  tvc
 );
 
 sub slurp_data {
@@ -25,6 +26,10 @@ sub slurp_data {
     or die "error opening file '$filename': $!";
 
   return do { local $/; <$file> };
+}
+
+sub tvc {
+  main::new_ok('Text::VimColor', [@_])
 }
 
 1;
