@@ -11,22 +11,19 @@ use TVC_Test;
 $ENV{TEXT_VIMCOLOR_ANSI} = '';
 
 my @formats = qw(
-   html
-   xml
-   ansi
+  html
+  xml
+  ansi
 );
 
 plan tests => scalar @formats;
 
 my $filetype = 'tvctestsyn';
 my $syntax = Text::VimColor->new(
-   filetype => $filetype,
+  filetype => $filetype,
 );
 
-foreach my $format (@formats) {
-   my $input    = slurp_data("$filetype.txt");
-   my $expected = slurp_data("$filetype.$format");
+$syntax->syntax_mark_string(slurp_data("$filetype.txt"));
 
-   $syntax->syntax_mark_string($input);
-   is($syntax->$format, $expected, "got expected marked text from $format");
-}
+is $syntax->$_, slurp_data("$filetype.$_"), "got expected marked text from $_"
+  for @formats;
