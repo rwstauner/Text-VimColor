@@ -9,7 +9,7 @@ use TVC_Test;
 is tvc()->input_filename, undef,
   'undef without filename or string specified';
 
-my $file = file(qw(t data hello.c)) . ''; # stringify
+my $file = file(qw(t data hello.c))->stringify;
 
 is tvc(file => $file)->input_filename, $file,
   'matches file provided';
