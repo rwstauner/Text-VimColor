@@ -51,7 +51,7 @@ our %ANSI_COLORS = (
 );
 
 # Set to true to print the command line used to run Vim.
-our $DEBUG = 0;
+our $DEBUG = $ENV{TEXT_VIMCOLOR_DEBUG};
 
 sub new
 {
@@ -290,6 +290,10 @@ sub _do_markup
 
    croak "Text::VimColor syntax script '$vim_syntax_script' not installed"
       unless -f $vim_syntax_script && -r $vim_syntax_script;
+
+   if ($DEBUG) {
+      print STDERR __PACKAGE__."::_do_markup: script: $vim_syntax_script\n";
+   }
 
    my $filename = $self->{file};
    my $input_is_temporary = 0;
