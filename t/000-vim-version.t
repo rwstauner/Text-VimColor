@@ -6,9 +6,6 @@ use Test::More;
 
 plan tests => 1;
 
-# we could parse version with something like:
-# vim -e -s --cmd 'exe "!echo " . version' --cmd q
-
 my $command = 'vim --version';
 # is 2>&1 portable?
 my @output  = qx/$command 2>&1/;
@@ -19,3 +16,16 @@ diag( $command, "\n", @output );
 
 # does vim always exit with 0 for --version?
 ok $status == 0, $command;
+
+# does this work consistently/portably?
+my $numver = eval {
+  local $SIG{ALRM} = sub { die "timed out\n" };
+  alarm 10;
+  my $v = eval { qx/vim -e --cmd "echo version" --cmd q 2>&1/; };
+  alarm 0;
+  $v ? ($v =~ /(\d+)/)[0] : $@;
+};
+if ($@) {
+  $numver = $@;
+}
+diag "numeric vim version: " . $numver;
