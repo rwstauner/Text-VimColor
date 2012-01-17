@@ -1,9 +1,10 @@
-#!/usr/bin/perl -w
+#!/usr/local/bin/perl
 # vim: set ts=2 sts=2 sw=2 expandtab smarttab:
 # PODNAME: text-vimcolor
 # ABSTRACT: Use Text:VimColor from the command line
 
 use strict;
+use warnings;
 
 use Text::VimColor;
 use Getopt::Long;
