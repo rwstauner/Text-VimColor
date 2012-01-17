@@ -333,6 +333,7 @@ sub _do_markup
    my $filetype = $self->{filetype};
    my $filetype_set = defined $filetype ? ":set filetype=$filetype" : '';
    my $vim_let = $self->{vim_let};
+   # TODO: make this script a method and print it for debugging
    print $script_fh (map { ":let $_=$vim_let->{$_}\n" }
                      grep { defined $vim_let->{$_} }
                      keys %$vim_let),
@@ -860,6 +861,19 @@ It doesn't work on Windows.  I am unlikely to fix this, but if anyone
 who knows Windows can sort it out let me know.
 
 =back
+
+=head1 TODO
+
+=for :list
+* L<https://github.com/rwstauner/Text-VimColor/issues/1>
+* option for 'set number'
+* option for path to executable?
+* die if `vim --version` =~ /-syntax/
+* extra_vim_options (additional instead of overwriting defaults)
+* make global vars available through methods
+* test constructor and then simplify it: copy default values into it
+* vim_version method (vim -e --cmd "echo version" --cmd q 2>&1)
+* list available syntaxes? (see L<IkiWiki::Plugin::syntax::Vim>)
 
 =for :stopwords Moolenaar
 
