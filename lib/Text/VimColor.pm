@@ -4,8 +4,6 @@ use strict;
 
 package Text::VimColor;
 # ABSTRACT: Syntax highlight text using Vim
-# VERSION
-# AUTHORITY
 
 use IO::File;
 use File::Copy qw( copy );
