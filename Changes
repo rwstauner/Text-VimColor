@@ -3,6 +3,7 @@ Revision history for Text-VimColor
 {{$NEXT}}
 
   - Allow debugging based on TEXT_VIMCOLOR_DEBUG env var
+  - More tests
 
 0.14      2011-10-20T17:09:53Z
 
