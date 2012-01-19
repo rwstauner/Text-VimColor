@@ -11,16 +11,22 @@ BEGIN {
 }
 
 my $filetype = 'tvctestsyn';
-my $input = qq[( i \x{2764} vim )\n];
+# use high latin1 chars (but not utf8)
+my $input = qq[( \x{fe}\x{ea}r\x{4c} \053 vim )\n];
 my $html =
   qq[<span class="synSpecial">(</span>] .
-  qq[<span class="synComment"> i \x{2764} </span>] .
+  qq[<span class="synComment"> \x{fe}\x{ea}r\x{4c} \053 </span>] .
   qq[<span class="synTodo">vim</span>] .
   qq[<span class="synComment"> </span>] .
   qq[<span class="synSpecial">)</span>\n];
 
 # some of these use cases were taken from actual code in other CPAN modules.
 # we'll test their usage here to ensure we don't break anything
+
+isnt nothing($filetype, $input), $html,
+  'doing nothing mangles the encoding';
+
+# can we alter $input (en/decode or change the utf8 flag) and get a different result?
 
 is prepend_bom($filetype, $input), $html,
   'used BOM to get vim to honor encoded text';
@@ -29,6 +35,10 @@ is pass_vim_options(undef, $input, {filetype => $filetype}), $html,
   'specify encoding by adding "+set fenc=..." to vim_options';
 
 done_testing;
+
+sub nothing {
+  Text::VimColor->new(filetype => $filetype, string => $input)->html;
+}
 
 # code from other modules copied verbatim
 
