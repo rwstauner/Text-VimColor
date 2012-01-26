@@ -27,6 +27,18 @@ is eval { Text::VimColor->new( file => 'file-that-does-not.exist' ) }, undef,
 like($@, qr/input file '.*' not found/,
   "check we get the right error if the file doesn't exist");
 
-# TODO: test other new() functionality
+# test default and custom options
+foreach my $test (
+  [vim_command              => 'vim', '/specific/vim'],
+  # vim_options has it's own script
+  [html_inline_stylesheet   => 1, 0],
+  [xml_root_element         => 1, 0],
+  # vim_let has it's own script
+){
+  my ($name, $default, $override) = @$test;
+  # don't look, we're breaking encapsulation
+  is tvc(                  )->{ $name }, $default,  "default $name";
+  is tvc($name => $override)->{ $name }, $override, "override $name";
+}
 
 done_testing;
