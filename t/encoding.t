@@ -12,6 +12,7 @@ BEGIN {
 
 my $filetype = 'tvctestsyn';
 # use high latin1 chars (but not utf8)
+# should we use something that is different from utf8 like decode("iso-8859-15", chr 0xa4)?
 my $input = qq[( \x{fe}\x{ea}r\x{4c} \053 vim )\n];
 my $html =
   qq[<span class="synSpecial">(</span>] .
@@ -22,6 +23,12 @@ my $html =
 
 # some of these use cases were taken from actual code in other CPAN modules.
 # we'll test their usage here to ensure we don't break anything
+
+is nothing($filetype, "( hi )\n"),
+  qq[<span class="synSpecial">(</span>] .
+  qq[<span class="synComment"> hi </span>] .
+  qq[<span class="synSpecial">)</span>\n],
+  'ascii is fine';
 
 isnt nothing($filetype, $input), $html,
   'doing nothing mangles the encoding';
@@ -37,6 +44,7 @@ is pass_vim_options(undef, $input, {filetype => $filetype}), $html,
 done_testing;
 
 sub nothing {
+  my ($filetype, $input) = @_;
   Text::VimColor->new(filetype => $filetype, string => $input)->html;
 }
 
