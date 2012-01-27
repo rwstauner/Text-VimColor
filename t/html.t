@@ -12,7 +12,7 @@ use File::Temp qw( tempfile );
 my $string = "( hi )\n";
 my $filetype = 'tvctestsyn';
 
-my ($fh, $path) = tempfile( 'tvc-XXXX', TMPDIR => 1, SUFFIX => 'txt' );
+my ($fh, $path) = tempfile( 'tvc-XXXX', TMPDIR => 1, UNLINK => 1 );
 print $fh $string;
 close $fh;
 
