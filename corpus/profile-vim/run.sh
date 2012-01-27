@@ -13,4 +13,6 @@ HOME=t/
 # vim @VIM_OPTIONS source.file -s commands.vim
 vim -RXZ -i NONE -u NONE -N -n '+set nomodeline' t/data/tvctestsyn.txt -s "$dir/profile.vim"
 
-diff -u "$dir/expectation.txt" "$dir/out.marked" && echo 'got expected output'
+diff -u "$dir/expectation.txt" "$dir/out.marked" && echo 'got expected markup'
+
+echo "profile output in $dir/out.prof"
