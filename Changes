@@ -2,6 +2,12 @@ Revision history for Text-VimColor
 
 {{$NEXT}}
 
+  [Performance]
+  - Improve efficiency of vim script.
+    Thanks to Joe Mullally (jhackworth) for the profiling tips
+    and for finding the first improvement.
+
+  [Testing]
   - Allow debugging based on TEXT_VIMCOLOR_DEBUG env var
   - More tests
 

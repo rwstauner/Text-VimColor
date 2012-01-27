@@ -61,8 +61,5 @@ while s:lnum <= s:end
   +
 endwhile
 
-" Strip whitespace from the ends of lines
-%s:\s\+$::e
-
 wincmd p
 normal dd
