@@ -1,0 +1,10 @@
+>Special>#<Special<>> <<>Identifier>Text<Identifier<>Special>::<Special<>Identifier>VimColor<Identifier<>> test file <<>Special>#<Special<
+
+>>Marked with <<>Constant>t/.vim/syntax/tvctestsyn.vim<Constant<
+>>this file is used for reliably testing syntax marking<<
+>Special>(<Special<>Comment>rather than relying on an external <Comment<>Todo>vim<Todo<>Comment> file <Comment<>Type>that<Type<>Comment> may change<Comment<>Special>)<Special<>>.<<
+>>                                    \/<<
+>Special>(<Special<>Type>this<Type<>Comment> line ends with whitespace <Comment<>Statement>-&g<Statement<>Special>)<Special<>>  <<
+>>                                    /\<<
+
+>Special>(<Special<>Comment> <Comment<>Todo>vim<Todo<>Comment>: set ft=tvctestsyn : <Comment<>Special>)<Special<
