@@ -7,17 +7,28 @@ if [[ "$0" != "$dir/run.sh" ]]; then
   exit 1
 fi
 
-if [[ $# -eq 0 ]]; then
-  src=t/data/tvctestsyn.txt
-  diff=1
-else
-  src="$1"
-fi
-
 # defaults
 out=out.prof
+src=t/data/tvctestsyn.txt
+diff=1
 # use test data
-HOME=t/
+fakehome=t/
+
+while getopts "o:i:h:" optl; do
+  case "$optl" in
+  i)
+    diff=""
+    src="$OPTARG";;
+  o)
+    out="$OPTARG";;
+  h)
+    fakehome="$OPTARG";;
+  *)
+    echo "unknown option '$optl'" 1>&2;
+  esac
+done
+
+HOME="$fakehome"
 
 # vim @VIM_OPTIONS source.file -s commands.vim
 vim -RXZ -i NONE -u NONE -N -n '+set nomodeline' "$src" -s "$dir/profile.vim"
