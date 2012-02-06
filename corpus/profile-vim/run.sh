@@ -14,6 +14,8 @@ else
   src="$1"
 fi
 
+# defaults
+out=out.prof
 # use test data
 HOME=t/
 
@@ -24,4 +26,9 @@ if [[ "$diff" ]]; then
   diff -u "$dir/expectation.txt" "$dir/marked.txt" && echo 'got expected markup'
 fi
 
-echo "profile output in $dir/out.prof"
+resd="$dir/results"
+if [[ "$out" != "out.prof" ]]; then
+  mv -v "$resd/out.prof" "$resd/${out%.prof}.prof"
+else
+  echo "profile output in $resd/out.prof"
+fi
