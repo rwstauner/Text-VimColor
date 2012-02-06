@@ -7,12 +7,21 @@ if [[ "$0" != "$dir/run.sh" ]]; then
   exit 1
 fi
 
+if [[ $# -eq 0 ]]; then
+  src=t/data/tvctestsyn.txt
+  diff=1
+else
+  src="$1"
+fi
+
 # use test data
 HOME=t/
 
 # vim @VIM_OPTIONS source.file -s commands.vim
-vim -RXZ -i NONE -u NONE -N -n '+set nomodeline' t/data/tvctestsyn.txt -s "$dir/profile.vim"
+vim -RXZ -i NONE -u NONE -N -n '+set nomodeline' "$src" -s "$dir/profile.vim"
 
-diff -u "$dir/expectation.txt" "$dir/out.marked" && echo 'got expected markup'
+if [[ "$diff" ]]; then
+  diff -u "$dir/expectation.txt" "$dir/marked.txt" && echo 'got expected markup'
+fi
 
 echo "profile output in $dir/out.prof"

@@ -4,5 +4,5 @@
 :profile! file share/mark.vim
 
 :source share/mark.vim
-:write! corpus/profile-vim/out.marked
+:write! corpus/profile-vim/marked.txt
 :qall!
