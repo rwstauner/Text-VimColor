@@ -881,9 +881,3 @@ Bram Moolenaar E<lt>Bram@vim.orgE<gt> and
 David Ne\v{c}as (Yeti) E<lt>yeti@physics.muni.czE<gt>.
 
 =cut
-
-# Local Variables:
-# mode: perl
-# perl-indent-level: 3
-# perl-continued-statement-offset: 3
-# End:
