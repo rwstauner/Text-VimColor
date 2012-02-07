@@ -868,11 +868,9 @@ who knows Windows can sort it out let me know.
 * L<https://github.com/rwstauner/Text-VimColor/issues/1>
 * option for 'set number'
 * option for path to executable?
-* die if `vim --version` =~ /-syntax/
 * extra_vim_options (additional instead of overwriting defaults)
 * make global vars available through methods
 * test constructor and then simplify it: copy default values into it
-* vim_version method (vim -e --cmd "echo version" --cmd q 2>&1)
 * list available syntaxes? (see L<IkiWiki::Plugin::syntax::Vim>)
 
 =for :stopwords Moolenaar
