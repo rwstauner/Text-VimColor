@@ -867,7 +867,6 @@ who knows Windows can sort it out let me know.
 =for :list
 * L<https://github.com/rwstauner/Text-VimColor/issues/1>
 * option for 'set number'
-* option for path to executable?
 * extra_vim_options (additional instead of overwriting defaults)
 * make global vars available through methods
 * test constructor and then simplify it: copy default values into it
