@@ -7,6 +7,10 @@ Revision history for Text-VimColor
     Thanks to Joe Mullally (jhackworth) for the profiling tips
     and for finding the first improvement.
 
+  [Installation]
+  - Abort Makefile.PL before writing Makefile if vim >= 5.4 not found
+  - Try not to hang the installation if an old vim is found
+
   [Testing]
   - Allow debugging based on TEXT_VIMCOLOR_DEBUG env var
   - Attempt to fix sparse test failures related to 'b:is_bash'
