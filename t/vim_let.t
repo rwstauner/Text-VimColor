@@ -40,26 +40,17 @@ SKIP: {
 # test the actual effects of different vim_let vars
 # (using shell vs bash as an example)
 
-# If the version of Vim is too old to do the right shell-script highlighting,
-# then just don't bother.
-{
-  # TODO: move this vesion check to t/lib (or lib) - see t/000-vim-version.t
-  open my $vim, '-|', 'vim --version'
-    or die "error running 'vim --version': $!";
-  my $line = <$vim>;
-  die "couldn't read version from 'vim --version'"
-    unless defined $line;
-  if ($line =~ / (\d+)\.(\d+) / && ($1 >= 7 || ($1 == 6 && $2 >= 3))) {
-    ok 1, 'vim >= 6.3'
-  }
-  else {
-    plan skip => 8, 'need Vim 6.3 for this to work';
-  }
-}
+# Text::VimColor historically set b:is_bash.
+# We'll test that functionality with our custom syntax for portability.
 
-my $input                = slurp_data('shell.sh');
-my $expected_sh_output   = slurp_data('shell-sh.xml');
-my $expected_bash_output = slurp_data('shell-bash.xml');
+my $input            = "# vim\nisbash\n";
+my ($expected_bash_output, $expected_sh_output) =
+  map {
+    qq[<syn:syntax xmlns:syn="http://ns.laxan.com/text-vimcolor/1">] .
+    qq[<syn:Special>#</syn:Special> <syn:Todo>vim</syn:Todo>\n$_\n</syn:syntax>\n]
+  }
+    'isbash',
+    '<syn:Error>isbash</syn:Error>';
 
 foreach my $test (
   [$expected_bash_output, undef,
@@ -72,12 +63,13 @@ foreach my $test (
     'shell should enable bash features with b:is_bash=1'],
 ){
   my ($exp, $let, $desc) = @$test;
+  my $filetype = 'tvctestsyn';
 
   # First test setting 'let' values in the constructor.
   {
     my $syntax = Text::VimColor->new(
       string   => $input,
-      filetype => 'sh',
+      filetype => $filetype,
       ( $let ? (vim_let => $let) : ()),
     );
     is $syntax->xml, $exp, "$desc via new()";
@@ -87,7 +79,7 @@ foreach my $test (
   {
     my $syntax = Text::VimColor->new;
     $syntax->vim_let(%$let) if $let;
-    $syntax->syntax_mark_string($input, filetype => 'sh');
+    $syntax->syntax_mark_string($input, filetype => $filetype);
     is $syntax->xml, $exp, "$desc via vim_let()";
   }
 }

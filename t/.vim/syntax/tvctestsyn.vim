@@ -17,6 +17,10 @@ syn keyword tvctThisThat this that contained
 syn match   tvctArrow   "[-<>]" contained
 syn region  tvctParens matchgroup=tvctChars start=/(/ end=/)/ contains=tvctThisThat,tvctVim,tvctArrow
 
+if !exists("b:is_bash")
+  syn keyword tvctNotBash isbash
+endif
+
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
 " For version 5.8 and later: only when an item doesn't have highlighting yet
@@ -34,6 +38,9 @@ if version >= 508 || !exists("tvctestsyn")
     HiLink tvctFile       String
     HiLink tvctThisThat   Type
     HiLink tvctParens     Comment
+    if !exists("b:is_bash")
+      HiLink tvctNotBash     Error
+    endif
   delcommand HiLink
 endif
 
