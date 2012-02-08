@@ -30,8 +30,10 @@ is nothing($filetype, "( hi )\n"),
   qq[<span class="synSpecial">)</span>\n],
   'ascii is fine';
 
-isnt nothing($filetype, $input), $html,
-  'doing nothing mangles the encoding';
+# This test only passes on vims compiled with +multi_byte.
+# As long as the other (explicit) tests pass this one isn't valuable
+# but we'll keep it commented for reference/debugging.
+##isnt nothing($filetype, $input), $html, 'doing nothing mangles the encoding';
 
 # can we alter $input (en/decode or change the utf8 flag) and get a different result?
 
