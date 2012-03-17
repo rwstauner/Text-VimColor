@@ -22,6 +22,7 @@ my @EXPECTED_PERL_SYN = qw(
    Statement Constant Identifier Constant
    Constant Special Constant
 );
+# vim will guess that string input is 'conf'
 my @EXPECTED_NOFT_SYN = qw(
    Comment
    Constant
@@ -44,17 +45,24 @@ my $filename = 't/data/has_tabs.pl';
 my $file = IO::File->new($filename, 'r')
    or die "error opening file '$filename': $!";
 my $data = do { local $/; <$file> };
+
+# The value of these tests is not vim's filetype detection, so set it
+# explicitly for portability across vim versions - rwstauner 2012-03-17
 my $syntax = Text::VimColor->new(
    file => $filename,
+   filetype => 'perl',
 );
 my $syntax_noroot = Text::VimColor->new(
    file => $filename, xml_root_element => 0,
+   filetype => 'perl',
 );
 my $syntax_str = Text::VimColor->new(
    string => $data,
+   filetype => 'conf',
 );
 my $syntax_str_noroot = Text::VimColor->new(
    string => $data, xml_root_element => 0,
+   filetype => 'conf',
 );
 
 my %syntax = (
@@ -90,6 +98,7 @@ foreach my $test_type (sort keys %syntax) {
    }
 
    # Reset globals.
+   # These get modified by the Handler subs in the next call to $parser->parse.
    $text = '';
    $root_elem_count = 0;
    $inside_element = 0;
@@ -102,15 +111,14 @@ foreach my $test_type (sort keys %syntax) {
    is($root_elem_count, 1,
       "there should only be one root element");
 
-   if ($test_type =~ /string/) {
-      # Only expected to find string literals and comments.
-      is_deeply(\@EXPECTED_NOFT_SYN, \@syntax_types,
-                "check that the syntax types marked come in the right order");
-   }
-   else {
-      is_deeply(\@EXPECTED_PERL_SYN, \@syntax_types,
-                "check that the syntax types marked come in the right order");
-   }
+  my $expected = ($test_type =~ /string/)
+    # Only expected to find string literals and comments.
+    ? \@EXPECTED_NOFT_SYN
+    : \@EXPECTED_PERL_SYN;
+
+  is_deeply($expected, \@syntax_types,
+    "syntax types marked in the right order for '$test_type'")
+      or diag explain { exp => $expected, got => \@syntax_types };
 }
 
 
