@@ -1,0 +1,35 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+my @vims;
+my @prove = qw(prove -lr t);
+
+# args following -- are alternate command... any args before are vim dirs
+while( my $arg = shift(@ARGV) ){
+  if( $arg eq '--' ){
+    @prove = @ARGV;
+    last;
+  }
+  push @vims, $arg;
+}
+
+die <<USAGE unless @vims;
+No vims specified.  Please pass directories of vim installations:
+  $0 ~/vim5 ~/vim6
+
+This will run the test suite (or anything added after "--")
+with ~/vim5/bin prepended to the PATH:
+  PATH=~vim5/bin:\$PATH prove -lr t
+  PATH=~vim6/bin:\$PATH prove -lr t
+
+Or
+  $0 ~/vim6 -- which vim
+Will just run
+  PATH=~vim6/bin:\$PATH which vim
+USAGE
+
+foreach my $vim ( @vims ){
+  local $ENV{PATH} = "$vim/bin:$ENV{PATH}";
+  system(@prove);
+}
