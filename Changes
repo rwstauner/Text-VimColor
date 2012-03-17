@@ -13,7 +13,7 @@ Revision history for Text-VimColor
 
   [Testing]
   - Allow debugging based on TEXT_VIMCOLOR_DEBUG env var
-  - Attempt to fix sparse test failures related to 'b:is_bash'
+  - Attempt to make tests more portable across vim versions
   - More tests
 
 0.14      2011-10-20T17:09:53Z
