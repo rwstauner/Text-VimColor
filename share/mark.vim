@@ -5,6 +5,12 @@
 " Maintainer: Randy Stauner <rwstauner@cpan.org>
 " Based loosely on 2html.vim, by Bram Moolenaar <Bram@vim.org>,
 "   modified by David Ne\v{c}as (Yeti) <yeti@physics.muni.cz>.
+"
+" vim versions/features (see :help version[567])
+" 5.2 - setline(), --version
+" 5.4 - &filetype
+" 6.0 - :wincmd, --cmd
+" 7.0 - lists ([], add())
 
 set report=1000000
 
