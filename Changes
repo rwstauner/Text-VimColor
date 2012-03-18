@@ -8,7 +8,7 @@ Revision history for Text-VimColor
     for finding this and for the vim profiling tips (gh-2).
 
   [Installation]
-  - Abort Makefile.PL before writing Makefile if vim >= 5.4 not found
+  - Abort Makefile.PL before writing Makefile if minimum vim not found
   - Try not to hang the installation if an old vim is found
   - Lower Term::ANSIColor requirement to 1.03
     and make bright colors normal if Term::ANSIColor version < 3
