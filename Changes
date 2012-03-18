@@ -3,9 +3,9 @@ Revision history for Text-VimColor
 {{$NEXT}}
 
   [Performance]
-  - Improve efficiency of vim script.
-    Thanks to Joe Mullally (jhackworth) for the profiling tips
-    and for finding the first improvement.
+  - Remove extraneous vim statement that caused delays on
+    some files.  Thanks to Joe Mullally (jhackworth)
+    for finding this and for the vim profiling tips (gh-2).
 
   [Installation]
   - Abort Makefile.PL before writing Makefile if vim >= 5.4 not found
@@ -14,7 +14,8 @@ Revision history for Text-VimColor
   [Testing]
   - Allow debugging based on TEXT_VIMCOLOR_DEBUG env var
   - Attempt to make tests more portable across vim versions
-  - More tests
+    (addressing rt-75829 and a few sparse smoke reports).
+  - Reorganized the test suite increasing coverage and number
 
 0.14      2011-10-20T17:09:53Z
 
