@@ -876,6 +876,8 @@ who knows Windows can sort it out let me know.
 
 =back
 
+=for :stopwords TODO syntaxes
+
 =head1 TODO
 
 =for :list
