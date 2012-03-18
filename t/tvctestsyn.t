@@ -23,7 +23,12 @@ my $syntax = Text::VimColor->new(
 
 $syntax->syntax_mark_string(slurp_data("$filetype.txt"));
 
-is $syntax->$_, slurp_data("$filetype.$_"), "got expected marked text from $_"
+my %data = map { ($_ => slurp_data("$filetype.$_")) } @formats;
+# NOTE: this hack is very specific and very fragile
+require Term::ANSIColor;
+$data{ansi} =~ s/\e\[95m/\e\[35m/g if Term::ANSIColor->VERSION < 3;
+
+is $syntax->$_, $data{$_}, "got expected marked text from $_"
   for @formats;
 
 is_deeply

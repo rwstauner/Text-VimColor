@@ -10,6 +10,8 @@ Revision history for Text-VimColor
   [Installation]
   - Abort Makefile.PL before writing Makefile if vim >= 5.4 not found
   - Try not to hang the installation if an old vim is found
+  - Lower Term::ANSIColor requirement to 1.03
+    and make bright colors normal if Term::ANSIColor version < 3
 
   [Testing]
   - Allow debugging based on TEXT_VIMCOLOR_DEBUG env var

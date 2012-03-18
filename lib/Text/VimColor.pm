@@ -136,9 +136,16 @@ sub ansi
     $ENV{TEXT_VIMCOLOR_ANSI} ? split(/\s*[=;]\s*/, $ENV{TEXT_VIMCOLOR_ANSI}) : ()
   );
 
+  local $_;
+
+  # Term::ANSIColor didn't support bright values until version 3
+  # Handle this here to cover custom colors and not require T::AC until needed
+  if( Term::ANSIColor->VERSION < 3 ){
+    s/bright_// for values %colors;
+  }
+
   # compared to join/map or foreach/my this benched as the fastest:
   my $ansi = '';
-  local $_;
   for ( @$syntax ){
     $ansi .= $_->[0] eq ''
       ? $_->[1]

@@ -37,6 +37,9 @@ my $syntax = Text::VimColor->new(
 
 sub tag_input {
   my %c = @_;
+  if( Term::ANSIColor->VERSION < 3 ){
+    s/bright_// for values %c;
+  }
   return "[$c{Special}]#[] [cyan]Text[][$c{Special}]::[][cyan]VimColor[] " .
     "[$c{Special}]#[] [$c{Special}]([][$c{Comment}]test[][$c{Special}])[]\n";
 }
