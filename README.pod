@@ -1,7 +1,7 @@
 =for :stopwords Geoff Richards Randy Stauner ACKNOWLEDGEMENTS ansi html xml DOCTYPE XHTML
-XSL XSLT XSL-FO pdf inline stylesheet filetype PreProc Todo Moolenaar cpan
-testmatrix url annocpan anno bugtracker rt cpants kwalitee diff irc mailto
-metadata placeholders metacpan
+XSL XSLT XSL-FO pdf inline stylesheet filetype PreProc Todo TODO syntaxes
+Moolenaar cpan testmatrix url annocpan anno bugtracker rt cpants kwalitee
+diff irc mailto metadata placeholders metacpan
 
 =encoding utf-8
 
@@ -453,6 +453,13 @@ produced.
 
 With Vim versions earlier than 6.2 there is a 2 second delay each time
 Vim is run.
+
+=item *
+
+This requires vim version 6 (it has since 2003).
+There may be workarounds to support version 5 (technically 5.4+).
+Upgrading vim is a much better idea, but if you need support
+for older versions please file a ticket (with patches if possible).
 
 =item *
 
