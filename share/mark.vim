@@ -9,7 +9,7 @@
 " vim versions/features (see :help version[567])
 " 5.2 - setline(), --version
 " 5.4 - &filetype
-" 6.0 - :wincmd, --cmd
+" 6.0 - :wincmd, --cmd, -X
 " 7.0 - lists ([], add())
 
 set report=1000000

@@ -3,7 +3,8 @@ use warnings;
 
 # This module is overly defensive, but hopefully will handle all portability issues
 package inc::VimCommand;
-our $MIN = '5.4';
+#our $MIN = '5.4';
+our $MIN = '6.0';
 
 use IPC::Open3 'open3'; # core
 

@@ -13,6 +13,10 @@ Revision history for Text-VimColor
   - Lower Term::ANSIColor requirement to 1.03
     and make bright colors normal if Term::ANSIColor version < 3
 
+  [Documentation]
+  - Document that the minimum vim version is 6.
+    (It has been that way since 2003.)
+
   [Testing]
   - Allow debugging based on TEXT_VIMCOLOR_DEBUG env var
   - Attempt to make tests more portable across vim versions

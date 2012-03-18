@@ -864,6 +864,13 @@ Vim is run.
 
 =item *
 
+This requires vim version 6 (it has since 2003).
+There may be workarounds to support version 5 (technically 5.4+).
+Upgrading vim is a much better idea, but if you need support
+for older versions please file a ticket (with patches if possible).
+
+=item *
+
 It doesn't work on Windows.  I am unlikely to fix this, but if anyone
 who knows Windows can sort it out let me know.
 
