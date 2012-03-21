@@ -2,6 +2,10 @@ Revision history for Text-VimColor
 
 {{$NEXT}}
 
+  [Installation]
+  - Simplify version detection using vim script
+
+  [Testing]
   - Mark encoding tests as TODO tests for now (still under development)
 
 0.15      2012-03-18T23:43:36Z
