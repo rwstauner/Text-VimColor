@@ -49,7 +49,7 @@ done_testing;
 sub compare (&$$) {
   my ($get, $exp, $name) = @_;
 
-  local @ENV{qw(LANG LC_ALL)} = ();
+  local @ENV{qw(LANG LC_ALL)};
   foreach my $env (
     { LANG   => 'en_US.UTF-8' },
     { LC_ALL => 'C' },
