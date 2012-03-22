@@ -110,6 +110,10 @@ sub vim {
     alarm $timeout;
 
     my $pid = open3(my ($i, $o), undef, vim => @args);
+
+    # read handle before waitpid to avoid hanging (and timing out) on older systems
+    $output = do { local $/; <$o>; };
+
     waitpid($pid, 0);
     #my $stat = $?;
 
@@ -118,9 +122,6 @@ sub vim {
     # open3 will probably die if vim isn't found (in unix environments)
     # we can't really trust the exit status to mean anything...
     # vim might exit 1 or 2 (or 0) for -h/--version, cmd.exe exits 1 if not found...
-
-    local $/;
-    $output = <$o>;
   };
   if( my $e = $@ ){
     $e = "Command aborted after $timeout seconds."
