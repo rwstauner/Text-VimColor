@@ -457,7 +457,7 @@ sub _run
       if ($^O eq 'MSWin32') {
           open STDIN, 'NUL';
           open STDOUT, '>NUL';
-          open STDERR, "2>$err_filename";
+          open STDERR, ">$err_filename";
           exec $prog $prog, @args;
       } else {
           open STDIN, '/dev/null';
