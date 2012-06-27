@@ -344,6 +344,7 @@ sub _do_markup
    print $script_fh (map { ":let $_=$vim_let->{$_}\n" }
                      grep { defined $vim_let->{$_} }
                      keys %$vim_let),
+                    ":edit $filename\n",
                     ":filetype on\n",
                     "$filetype_set\n",
                     ":source $vim_syntax_script\n",
@@ -354,8 +355,8 @@ sub _do_markup
    $self->_run(
       $self->{vim_command},
       @{$self->{vim_options}},
-      $filename,
-      '-s', $script_filename,
+      "--cmd",
+      "silent! so $script_filename",
    );
 
    unlink $filename
@@ -456,11 +457,18 @@ sub _run
       }
 
       ## no critic (TwoArgOpen)
-      open STDIN, '/dev/null';
-      open STDOUT, '>/dev/null';
-      open STDERR, '>&=' . fileno($err_fh)
-         or croak "can't connect STDERR to temporary file '$err_filename': $!";
-      exec $prog $prog, @args;
+      if ($^O eq 'MSWin32') {
+          open STDIN, 'NUL';
+          open STDOUT, '>NUL';
+          open STDERR, "2>$err_filename";
+          exec $prog $prog, @args;
+      } else {
+          open STDIN, '/dev/null';
+          open STDOUT, '>/dev/null';
+          open STDERR, '>&=' . fileno($err_fh)
+             or croak "can't connect STDERR to temporary file '$err_filename': $!";
+          exec $prog $prog, @args;
+      }
       die "\n";   # exec() will already have sent a suitable error message.
    }
 }
