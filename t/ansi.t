@@ -2,6 +2,7 @@
 use strict;
 use warnings;
 use Test::More;
+plan skip_all => "Windows don't support ANSI color" if $^O eq 'MSWin32';
 use lib 't/lib';
 use TVC_Test;
 use Term::ANSIColor;
