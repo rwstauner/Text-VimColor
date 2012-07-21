@@ -2,6 +2,9 @@ Revision history for Text-VimColor
 
 {{$NEXT}}
 
+  [Installaion]
+  - Try to show any available version information before aborting Makefile.PL
+
 0.17      2012-03-22T02:49:27Z
 
   - Minor installation and test fixes for older systems

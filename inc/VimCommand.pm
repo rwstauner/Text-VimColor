@@ -30,15 +30,20 @@ sub import {
 }
 
 sub require_minimum_with_message {
-  eval {
+  my $req = eval {
     require_minimum();
   };
-  my $msg = $@;
-  if( $msg ){
+  if( my $msg = $@ ){
     $msg .= "\n$MESSAGE\n";
+
+    # include version_output in test report unless we know vim isn't available
+    $msg .= "\n" . version_output() . "\n"
+      unless $msg =~ /^\s*open3:/m;
+
     $msg =~ s/^/# /mg;
     die $msg;
   }
+  return $req;
 }
 
 sub require_minimum {
@@ -129,6 +134,11 @@ sub vim {
     die "Error attemting to execute 'vim':\n  $e\n";
   }
   return $output;
+}
+
+sub version_output {
+  # if we know version is less than 5.2 don't even try --version
+  vim(($INFO->{version} && $INFO->{version} < 502) ? '-h' : '--version');
 }
 
 sub write_temp {
