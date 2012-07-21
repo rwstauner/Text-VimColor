@@ -1,9 +1,9 @@
+=encoding utf-8
+
 =for :stopwords Geoff Richards Randy Stauner ACKNOWLEDGEMENTS ansi html xml DOCTYPE XHTML
 XSL XSLT XSL-FO pdf inline stylesheet filetype PreProc Todo TODO syntaxes
 Moolenaar cpan testmatrix url annocpan anno bugtracker rt cpants kwalitee
 diff irc mailto metadata placeholders metacpan
-
-=encoding utf-8
 
 =head1 NAME
 
@@ -11,7 +11,7 @@ Text::VimColor - Syntax highlight text using Vim
 
 =head1 VERSION
 
-version 0.17
+version 0.18
 
 =head1 SYNOPSIS
 
