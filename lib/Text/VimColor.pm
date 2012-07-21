@@ -386,6 +386,9 @@ sub _add_markup
 {
    my ($syntax, $type, $text) = @_;
 
+   # TODO: make this optional
+   # (https://github.com/petdance/vim-perl/blob/master/t/01_highlighting.t#L12)
+
    # Ignore types we don't know about.  At least one syntax file (xml.vim)
    # can produce these.  It happens when a syntax type isn't 'linked' to
    # one of the predefined types.
