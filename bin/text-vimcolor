@@ -56,6 +56,7 @@ if ($usage) {
       "                 don't include the stylesheet in a complete HTML page\n",
       "    --let        set a Vim variable with the Vim :let command\n",
       "    --unlet      turn off default setting of a Vim variable\n";
+    exit 0;
 }
 
 defined $format
