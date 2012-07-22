@@ -418,9 +418,8 @@ sub _run
    my ($self, $prog, @args) = @_;
 
    if ($DEBUG) {
-      ## no critic (MutatingListFunctions)
       print STDERR __PACKAGE__."::_run: $prog " .
-            join(' ', map { s/'/'\\''/g; "'$_'" } @args) . "\n";
+            join(' ', map { "'$_'" } @args) . "\n";
    }
 
    my ($err_fh, $err_filename) = tempfile();
