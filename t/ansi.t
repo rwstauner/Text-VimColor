@@ -2,10 +2,11 @@
 use strict;
 use warnings;
 use Test::More;
-plan skip_all => "Windows don't support ANSI color" if $^O eq 'MSWin32';
 use lib 't/lib';
 use TVC_Test;
-use Term::ANSIColor;
+
+eval { require Term::ANSIColor }
+  or plan skip_all => 'Term::ANSIColor required for these tests';
 
 no warnings 'redefine';
 local *Term::ANSIColor::colored = sub {

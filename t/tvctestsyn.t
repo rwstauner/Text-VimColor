@@ -4,7 +4,6 @@
 use strict;
 use warnings;
 use Test::More;
-plan skip_all => "Windows don't support ANSI color" if $^O eq 'MSWin32';
 use lib 't/lib';
 use TVC_Test;
 
@@ -14,8 +13,12 @@ $ENV{TEXT_VIMCOLOR_ANSI} = '';
 my @formats = qw(
   html
   xml
-  ansi
 );
+
+my $have_ansicolor = eval { require Term::ANSIColor; };
+
+push @formats, 'ansi'
+  if $have_ansicolor;
 
 my $filetype = 'tvctestsyn';
 my $syntax = Text::VimColor->new(
@@ -25,9 +28,16 @@ my $syntax = Text::VimColor->new(
 $syntax->syntax_mark_string(slurp_data("$filetype.txt"));
 
 my %data = map { ($_ => slurp_data("$filetype.$_")) } @formats;
-# NOTE: this hack is very specific and very fragile
-require Term::ANSIColor;
-$data{ansi} =~ s/\e\[95m/\e\[35m/g if Term::ANSIColor->VERSION < 3;
+
+SKIP: {
+  # count it as a skipped test rather than just not doing it
+  skip 'Term::ANSIColor required to test ansi output', 1
+    if !$have_ansicolor;
+
+  # NOTE: this hack is very specific and very fragile
+  $data{ansi} =~ s/\e\[95m/\e\[35m/g
+    if $data{ansi} && eval { Term::ANSIColor->VERSION < 3; };
+}
 
 is $syntax->$_, $data{$_}, "got expected marked text from $_"
   for @formats;
