@@ -11,6 +11,8 @@ use File::ShareDir ();
 use File::Temp qw( tempfile );
 use Path::Class qw( file );
 use Carp;
+use IPC::Open3 (); # core
+use Symbol (); # core
 
 # for backward compatibility
 our $SHARED = File::ShareDir::dist_dir('Text-VimColor');
@@ -422,53 +424,25 @@ sub _run
             join(' ', map { "'$_'" } @args) . "\n";
    }
 
-   my ($err_fh, $err_filename) = tempfile();
-   my $old_fh = select($err_fh);
-   $| = 1;
-   select($old_fh);
+  {
+    my ($in, $out) = (Symbol::gensym(), Symbol::gensym());
+    my $err_fh = Symbol::gensym();
 
-   my $pid = fork;
-   if ($pid) {
+    # TODO: close($in)?
+    my $pid = IPC::Open3::open3($in, $out, $err_fh, $prog => @args);
+
+    # read handle before waitpid to avoid hanging on older systems
+    my $errout = do { local $/; <$err_fh> };
+
       my $gotpid = waitpid($pid, 0);
       croak "couldn't run the program '$prog'" if $gotpid == -1;
       my $error = $? >> 8;
       if ($error) {
-         seek $err_fh, 0, 0;
-         my $errout = do { local $/; <$err_fh> };
          $errout =~ s/\n+\z//;
-         close $err_fh;
-         unlink $err_filename;
          my $details = $errout eq '' ? '' :
                        "\nVim wrote this error output:\n$errout\n";
          croak "$prog returned an error code of '$error'$details";
       }
-      close $err_fh;
-      unlink $err_filename;
-   }
-   else {
-      defined $pid
-         or croak "error forking to run $prog: $!";
-
-      {
-        no warnings 'untie';
-        # if tied we may get "Not a GLOB reference" errors (or other issues).
-        tied $_ and untie $_ for *STDIN, *STDOUT, *STDERR;
-      }
-
-      ## no critic (TwoArgOpen)
-      if ($^O eq 'MSWin32') {
-          open STDIN, 'NUL';
-          open STDOUT, '>NUL';
-          open STDERR, ">&$err_filename";
-          exec $prog $prog, @args;
-      } else {
-          open STDIN, '/dev/null';
-          open STDOUT, '>/dev/null';
-          open STDERR, '>&=' . fileno($err_fh)
-             or croak "can't connect STDERR to temporary file '$err_filename': $!";
-          exec $prog $prog, @args;
-      }
-      die "\n";   # exec() will already have sent a suitable error message.
    }
 }
 
