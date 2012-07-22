@@ -5,8 +5,25 @@ use warnings;
 package # hide from indexer
   TVC_Test;
 
+use Path::Class 0.04 qw( file ); # mkpath
+
 # don't allow user-customized syntax files to throw off test results
 $ENV{HOME} = 't';
+
+if( $^O eq 'MSWin32' ){
+  $ENV{USERPROFILE} = 't';
+
+  # NOTE: we'll need to simulate cp -r if we ever add any other files
+  my ($src, $dest) =
+    map { file(t => $_, qw(syntax tvctestsyn.vim)) }
+      qw( .vim vimfiles );
+
+  if( !-e $dest ){
+    $dest->parent->mkpath;
+    require File::Copy; # core
+    File::Copy::copy($src, $dest);
+  }
+}
 
 use Text::VimColor;
 use Path::Class qw(file dir);
