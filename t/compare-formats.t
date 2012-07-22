@@ -16,8 +16,13 @@ my $syntax1 = Text::VimColor->new(
   file => $filename,
   filetype => 'c',
 );
-open my $file, '<', $filename or die "error opening file '$filename': $!";
-my $text = do { local $/; <$file> };
+
+my $text = do {
+  open my $file, '<', $filename
+    or die "error opening file '$filename': $!";
+  local $/;
+  <$file>;
+};
 
 my $syntax2 = Text::VimColor->new(
   string  => $text,
