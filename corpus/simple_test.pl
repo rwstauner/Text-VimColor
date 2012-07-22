@@ -7,7 +7,7 @@ use Path::Class qw( file );
 use Timer::Simple;
 
 my $timer = Timer::Simple->new;
-#$ENV{TEXT_VIMCOLOR_ALT} = shift @ARGV;
+$Text::VimColor::DEBUG = shift @ARGV;
 
 print Text::VimColor->new(
   string => scalar file(__FILE__)->slurp,
