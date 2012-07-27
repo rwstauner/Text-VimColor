@@ -8,6 +8,7 @@ use Test::More;
 use lib 't/lib';
 use TVC_Test;
 use IO::File;
+use Path::Class qw( file );
 
 my $NS = 'http://ns.laxan.com/text-vimcolor/1';
 my %SYNTYPES = map { $_ => 1 } qw(
@@ -41,7 +42,7 @@ else {
 # Syntax color a Perl program, and check the XML output for well-formedness
 # and validity.  The tests are run with and without a root element in the
 # output, and with both filename and string as input.
-my $filename = 't/data/has_tabs.pl';
+my $filename = file(qw( t data has_tabs.pl ))->stringify;
 my $file = IO::File->new($filename, 'r')
    or die "error opening file '$filename': $!";
 my $data = do { local $/; <$file> };
