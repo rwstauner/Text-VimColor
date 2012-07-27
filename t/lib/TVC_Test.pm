@@ -5,13 +5,13 @@ use warnings;
 package # hide from indexer
   TVC_Test;
 
-use Path::Class 0.04 qw( file ); # mkpath
+use Path::Class 0.04 qw( file dir ); # mkpath
 
 # don't allow user-customized syntax files to throw off test results
-$ENV{HOME} = 't';
+$ENV{HOME} = dir('t')->absolute;
 
 if( $^O eq 'MSWin32' ){
-  $ENV{USERPROFILE} = 't';
+  $ENV{USERPROFILE} = $ENV{HOME};
 
   # NOTE: we'll need to simulate cp -r if we ever add any other files
   my ($src, $dest) =
