@@ -428,8 +428,12 @@ sub _run
     my ($in, $out) = (Symbol::gensym(), Symbol::gensym());
     my $err_fh = Symbol::gensym();
 
-    # TODO: close($in)?
     my $pid = IPC::Open3::open3($in, $out, $err_fh, $prog => @args);
+
+    # close these to avoid any ambiguity that might cause this to block
+    # (see also the paragraph about "select" in IPC::Open3)
+    close($in);
+    close($out);
 
     # read handle before waitpid to avoid hanging on older systems
     my $errout = do { local $/; <$err_fh> };
