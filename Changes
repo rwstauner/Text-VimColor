@@ -2,6 +2,8 @@ Revision history for Text-VimColor
 
 {{$NEXT}}
 
+0.19-TRIAL 2012-07-28T03:44:54Z
+
   - Use IPC::Open3 for portability instead of doing fork/exec manually.
   - Various other fixes to attempt to make this usable on Windows.
     Thanks to Yasuhiro Matsumoto (mattn) for helping to port to Windows (gh-5).
