@@ -342,23 +342,48 @@ sub _do_markup
    my $filetype = $self->{filetype};
    my $filetype_set = defined $filetype ? ":set filetype=$filetype" : '';
    my $vim_let = $self->{vim_let};
-   # TODO: make this script a method and print it for debugging
-   print $script_fh (map { ":let $_=$vim_let->{$_}\n" }
-                     grep { defined $vim_let->{$_} }
-                     keys %$vim_let),
-                    ":edit $filename\n",
-                    ":filetype on\n",
-                    "$filetype_set\n",
-                    ":source $vim_syntax_script\n",
-                    ":write! $out_filename\n",
-                    ":qall!\n";
+
+  # on linux '-s' is fast and '--cmd' adds the 2-second startup delay
+  # are there situations where --cmd is necessary or useful?
+  # XXX: for debugging, may be removed in the future
+  my $use_cmd_opt = $ENV{TEXT_VIMCOLOR_CMD_OPT};
+
+  # Specify filename as argument to command (rather than using :edit in script).
+  # If using --cmd then the filename needs to be in the script.
+  # For some reason windows doesn't seem to like the filename being in the arg list.
+  # Are there other times that this is needed?
+  my $file_as_arg = ($use_cmd_opt || $^O ne 'MSWin32');
+
+  my @script_lines = (
+    map { "$_\n" }
+      # do :edit before :let or the buffer variables may get reset
+      (!$file_as_arg ? ":edit $filename" : ()),
+      (
+        map  { ":let $_=$vim_let->{$_}" }
+        grep { defined  $vim_let->{$_} }
+          keys %$vim_let
+      ),
+      ':filetype on',
+       $filetype_set,
+      ":source $vim_syntax_script",
+      ":write! $out_filename",
+      ':qall!',
+  );
+
+  print STDERR map { __PACKAGE__ . " | $_" } @script_lines if $DEBUG;
+
+   print $script_fh @script_lines;
    close $script_fh;
 
    $self->_run(
       $self->{vim_command},
       @{$self->{vim_options}},
-      "--cmd",
-      "silent! so $script_filename",
+      ($file_as_arg ? $filename : ()),
+      (
+        $use_cmd_opt
+          ? ( '--cmd' => "silent! so $script_filename" )
+          : ( '-s'    => $script_filename )
+      ),
    );
 
    unlink $filename
