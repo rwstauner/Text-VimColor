@@ -2,6 +2,10 @@ Revision history for Text-VimColor
 
 {{$NEXT}}
 
+0.20      2012-08-11T02:05:18Z
+
+  - Releasing as stable.
+
 0.19-TRIAL 2012-07-28T03:44:54Z
 
   - Use IPC::Open3 for portability instead of doing fork/exec manually.

@@ -11,7 +11,7 @@ Text::VimColor - Syntax highlight text using Vim
 
 =head1 VERSION
 
-version 0.19
+version 0.20
 
 =head1 SYNOPSIS
 
