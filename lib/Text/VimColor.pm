@@ -55,31 +55,33 @@ our %ANSI_COLORS = (
 # Set to true to print the command line used to run Vim.
 our $DEBUG = $ENV{TEXT_VIMCOLOR_DEBUG};
 
-sub new
-{
-   my ($class, %options) = @_;
+sub new {
+  my $class = shift;
+  my $self = {
+    html_inline_stylesheet => 1,
+    xml_root_element       => 1,
+    vim_let                => {},
+    @_,
+  };
 
-   $options{vim_command} = $VIM_COMMAND
-      unless defined $options{vim_command};
-   $options{vim_options} = \@VIM_OPTIONS
-      unless defined $options{vim_options};
+  $self->{vim_command} = $VIM_COMMAND
+    unless defined $self->{vim_command};
 
-   $options{html_inline_stylesheet} = 1
-      unless exists $options{html_inline_stylesheet};
-   $options{xml_root_element} = 1
-      unless exists $options{xml_root_element};
+  # NOTE: this should be [ @VIM_OPTIONS ] but \@VIM_OPTIONS is backward-compatible
+  $self->{vim_options} = \@VIM_OPTIONS
+    unless defined $self->{vim_options};
 
-   $options{vim_let} = {
-      %VIM_LET,
-      (exists $options{vim_let} ? %{$options{vim_let}} : ()),
-   };
+  # always include these (back-compat)
+  $self->{vim_let} = { %VIM_LET, %{ $self->{vim_let} } };
 
-   croak "only one of the 'file' or 'string' options should be used"
-      if defined $options{file} && defined $options{string};
+  croak "only one of the 'file' or 'string' options should be used"
+    if defined $self->{file} && defined $self->{string};
 
-   my $self = bless \%options, $class;
+   bless $self, $class;
+
+   # run automatically if given a source
    $self->_do_markup
-      if defined $options{file} || defined $options{string};
+      if defined $self->{file} || defined $self->{string};
 
    return $self;
 }
