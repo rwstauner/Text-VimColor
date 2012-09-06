@@ -911,9 +911,7 @@ for older versions please file a ticket (with patches if possible).
 =for :list
 * L<https://github.com/rwstauner/Text-VimColor/issues/1>
 * option for 'set number'
-* extra_vim_options (additional instead of overwriting defaults)
 * make global vars available through methods
-* test constructor and then simplify it: copy default values into it
 * list available syntaxes? (see L<IkiWiki::Plugin::syntax::Vim>)
 
 =for :stopwords Moolenaar
