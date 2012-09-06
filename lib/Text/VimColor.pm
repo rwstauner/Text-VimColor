@@ -58,6 +58,7 @@ our $DEBUG = $ENV{TEXT_VIMCOLOR_DEBUG};
 sub new {
   my $class = shift;
   my $self = {
+    extra_vim_options      => [],
     html_inline_stylesheet => 1,
     xml_root_element       => 1,
     vim_let                => {},
@@ -379,7 +380,7 @@ sub _do_markup
 
    $self->_run(
       $self->{vim_command},
-      @{$self->{vim_options}},
+      $self->vim_options,
       ($file_as_arg ? $filename : ()),
       (
         $use_cmd_opt
@@ -475,6 +476,14 @@ sub _run
          croak "$prog returned an error code of '$error'$details";
       }
    }
+}
+
+sub vim_options {
+  my ($self) = @_;
+  return (
+    @{ $self->{vim_options} },
+    @{ $self->{extra_vim_options} },
+  );
 }
 
 1;
@@ -642,7 +651,16 @@ The default is C<vim>.
 
 A reference to an array of options to pass to Vim.  The default options are:
 
-   qw( -RXZ -i NONE -u NONE -N -n ), "+set nomodeline"
+  [qw( -RXZ -i NONE -u NONE -N -n ), "+set nomodeline"]
+
+You can overwrite the default options by setting this.
+To merely append additional options to the defaults
+use C<extra_vim_options>.
+
+=item extra_vim_options
+
+A reference to an array of additional options to pass to Vim.
+These are appended to the default C<vim_options>.
 
 =item vim_let
 

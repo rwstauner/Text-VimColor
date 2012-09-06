@@ -6,37 +6,49 @@ use Test::More;
 use lib 't/lib';
 use TVC_Test;
 
-# TODO: define methods for $instance->vim_options and $class->default_vim_options
-
 my @defaults = @Text::VimColor::VIM_OPTIONS;
 
 # sanity check
 test_expected_options();
 
-# FIXME: make a method rather than breaking encapsulation
 is_deeply
-  tvc(vim_options => [text => vim => 'color'])->{vim_options},
+  [ tvc(vim_options => [text => vim => 'color'])->vim_options ],
   [qw(text vim color)],
   'overwrite vim_options';
 
 is_deeply
-  tvc(vim_options => [@defaults, '+set fenc=utf-8'])->{vim_options},
+  [ tvc(vim_options => [@defaults, '+set fenc=utf-8'])->vim_options ],
   [@defaults, '+set fenc=utf-8'],
   'overwrite vim_options with defaults plus one extra';
+
+is_deeply
+  [ tvc(extra_vim_options => ['+set fenc=utf-8'])->vim_options ],
+  [@defaults, '+set fenc=utf-8'],
+  'use extra_vim_options to get the same effect';
 
 {
   local @Text::VimColor::VIM_OPTIONS = qw(local vim options);
   is_deeply
-    tvc()->{vim_options},
+    [ tvc()->vim_options ],
     [qw(local vim options)],
+    'use localized @Text::VimColor::VIM_OPTIONS for backward compatibility';
+
+  is_deeply
+    [ tvc(extra_vim_options => ['foo'])->vim_options ],
+    [qw(local vim options foo)],
     'use localized @Text::VimColor::VIM_OPTIONS for backward compatibility';
 }
 
 # after all that the defaults are still the defaults:
 is_deeply
-  tvc()->{vim_options},
+  [ tvc()->vim_options ],
   [@defaults],
   'default vim_options';
+
+is_deeply
+  [ tvc(extra_vim_options => ['bar'])->vim_options ],
+  [@defaults, 'bar'],
+  'default vim_options plus extra_vim_options';
 
 # make sure nothing has altered them
 test_expected_options();
