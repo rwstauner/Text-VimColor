@@ -1,3 +1,5 @@
+=pod
+
 =encoding utf-8
 
 =for :stopwords Geoff Richards Randy Stauner ACKNOWLEDGEMENTS ansi html xml DOCTYPE XHTML
@@ -11,7 +13,7 @@ Text::VimColor - Syntax highlight text using Vim
 
 =head1 VERSION
 
-version 0.20
+version 0.21
 
 =head1 SYNOPSIS
 
@@ -178,7 +180,16 @@ The default is C<vim>.
 
 A reference to an array of options to pass to Vim.  The default options are:
 
-   qw( -RXZ -i NONE -u NONE -N -n ), "+set nomodeline"
+  [qw( -RXZ -i NONE -u NONE -N -n ), "+set nomodeline"]
+
+You can overwrite the default options by setting this.
+To merely append additional options to the defaults
+use C<extra_vim_options>.
+
+=item extra_vim_options
+
+A reference to an array of additional options to pass to Vim.
+These are appended to the default C<vim_options>.
 
 =item vim_let
 
@@ -477,15 +488,7 @@ option for 'set number'
 
 =item *
 
-extra_vim_options (additional instead of overwriting defaults)
-
-=item *
-
 make global vars available through methods
-
-=item *
-
-test constructor and then simplify it: copy default values into it
 
 =item *
 
