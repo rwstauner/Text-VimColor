@@ -160,7 +160,7 @@ sub test_html {
     my ($type, $key, $re) = @{ $tests->{style} };
     record_test(style => $type, $key);
 
-    my ($val) = 
+    my ($val) =
       ($type eq 'link'
         ? $html =~ m!<link rel="stylesheet" type="text/css" href="(.+?)" />!
         : $html =~ m!<style>\n(.+)</style>!s);

@@ -113,6 +113,7 @@ elsif ($format eq 'html') {
 }
 elsif ($format eq 'ansi') {
   # try to make the default output more useful on windows
+  ## no critic (InteractiveTest)
   if( $^O eq 'MSWin32' && !$ENV{TEXT_VIMCOLOR_NO_WIN32_ANSI} && -t STDOUT ){
     local $@;
     eval { require Win32::Console::ANSI };
