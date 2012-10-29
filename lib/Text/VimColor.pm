@@ -135,6 +135,7 @@ sub ansi
    my $syntax = $self->marked;
 
    require Term::ANSIColor;
+
   # allow the environment to overwrite:
   my %colors = (
     %ANSI_COLORS,

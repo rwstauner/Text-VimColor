@@ -112,6 +112,12 @@ elsif ($format eq 'html') {
       or die "$0: error writing to output file '$output_filename': $!\n";
 }
 elsif ($format eq 'ansi') {
+  # try to make the default output more useful on windows
+  if( $^O eq 'MSWin32' && !$ENV{TEXT_VIMCOLOR_NO_WIN32_ANSI} && -t STDOUT ){
+    local $@;
+    eval { require Win32::Console::ANSI };
+  }
+
    print $output $syntax->ansi
       or die "$0: error writing to output file '$output_filename': $!\n";
 }
@@ -199,6 +205,10 @@ environment variable in the format of C<< "SynGroup=color;" >>.
 For example:
 
    TEXT_VIMCOLOR_ANSI='Comment=green;Statement = magenta; '
+
+On windows the script will attempt to load L<Win32::Console::ANSI>
+if the output is to STDOUT in an attempt to make the output more useful.
+You can disable this by setting C<< TEXT_VIMCOLOR_NO_WIN32_ANSI=1 >>.
 
 =item html
 
