@@ -2,6 +2,8 @@ Revision history for Text-VimColor
 
 {{$NEXT}}
 
+0.22      2012-10-29T23:36:29Z
+
   - The included 'text-vimcolor' script will attempt to load
     Win32::Console::ANSI on windows when printing ANSI to STDOUT
     in an attempt to make the output more useful.
