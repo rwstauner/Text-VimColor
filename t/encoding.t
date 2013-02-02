@@ -5,6 +5,7 @@ use Test::More;
 use lib 't/lib';
 use TVC_Test;
 
+# TODO: possibly skip these if vim !~ +multi_byte
 BEGIN {
   eval 'use Encode qw(encode decode); 1' # core in 5.7.3
     or plan skip_all => 'Encode.pm is required for these tests';
@@ -31,6 +32,12 @@ sub env_compare {
   }
 }
 
+sub tvc_html {
+  qq!<span class="synSpecial">(</span>! .
+  qq!<span class="synComment"> $_[0] </span>! .
+  qq!<span class="synSpecial">)</span>\n!,
+}
+
 my $filetype = 'tvctestsyn';
 
 # use high latin1 chars (for portability)
@@ -51,16 +58,12 @@ ok Encode::is_utf8($html), 'expected output is a character string';
 # we'll test their usage here to ensure we don't break anything
 
 env_compare [qw(utf8 c)] => 'ascii is fine',
-  sub { nothing($filetype, "( hi )\n") },
-  qq[<span class="synSpecial">(</span>] .
-  qq[<span class="synComment"> hi </span>] .
-  qq[<span class="synSpecial">)</span>\n],
-;
+  sub { octet_string("( hi )\n") }, tvc_html('hi');
 
 # This test only passes on vims compiled with +multi_byte.
 # As long as the other (explicit) tests pass this one isn't valuable
 # but we'll keep it commented for reference/debugging.
-##isnt nothing($filetype, $input), $html, 'doing nothing mangles the encoding';
+##isnt octet_string($filetype, $input), $html, 'doing nothing mangles the encoding';
 
 env_compare utf8 => 'use BOM to get vim to honor encoded text',
   sub { prepend_bom($filetype, $input) }, $html;
@@ -68,13 +71,50 @@ env_compare utf8 => 'use BOM to get vim to honor encoded text',
 env_compare utf8 => 'specify encoding by adding "+set fenc=..." to vim_options',
   sub { pass_vim_options(undef, $input, {filetype => $filetype}) }, $html;
 
+env_compare [qw(utf8 c)] => 'detect character string and use utf-8 automatically',
+  sub { character_string($input) }, $html;
+
+# this doesn't work in utf8 but i'm not sure that i care
+env_compare c => 'octets in an old encoding',
+  sub { octet_string("( \xa4 )\n", encoding => 'iso-8859-15') }, tvc_html("\xa4");
+
+# TODO: ->new(encoding => "cp1252", string => $octets)
+# TODO: ->new(encoding => "cp1252", file => $path)
+# TODO: any other combinations?
+
 done_testing;
 
-sub nothing {
-  my ($filetype, $input) = @_;
-  Text::VimColor->new(filetype => $filetype, string => $input)->html;
+sub octet_string {
+  _string(0, @_);
 }
 
+sub character_string {
+  _string(1, @_);
+}
+
+sub _utf8_ok {
+  my ($exp_utf8, $str, $desc) = @_;
+  my $ok = Encode::is_utf8($str);
+  my $type = 'character';
+  if( !$exp_utf8 ){
+    $ok = !$ok;
+    $type = 'octet';
+  }
+  ok $ok, "$desc: $type";
+}
+
+sub _string {
+  my ($exp_utf8, $str, %extra) = @_;
+  _utf8_ok($exp_utf8, $str, 'input');
+  my $vim = Text::VimColor->new(
+    filetype => $filetype,
+    string   => $str,
+    %extra,
+  );
+  my $html = $vim->html;
+  _utf8_ok($exp_utf8, $html, 'output');
+  return $html;
+}
 # code from other modules copied verbatim
 
 sub prepend_bom {
