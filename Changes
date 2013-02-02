@@ -2,6 +2,13 @@ Revision history for Text-VimColor
 
 {{$NEXT}}
 
+0.23      2013-02-02T16:28:57Z
+
+  - Attempt to do the right thing with character strings:
+    Encode them in UTF-8, tell vim the file encoding (UTF-8),
+    and return a (decoded) character string.
+    Thanks to Ricardo Signes for the very helpful report (gh-1).
+
 0.22      2012-10-29T23:36:29Z
 
   - The included 'text-vimcolor' script will attempt to load

@@ -3,9 +3,9 @@
 =encoding utf-8
 
 =for :stopwords Geoff Richards Randy Stauner ACKNOWLEDGEMENTS ansi html xml DOCTYPE XHTML
-XSL XSLT XSL-FO pdf inline stylesheet filetype PreProc Todo TODO syntaxes
-Moolenaar cpan testmatrix url annocpan anno bugtracker rt cpants kwalitee
-diff irc mailto metadata placeholders metacpan
+XSL XSLT XSL-FO pdf inline stylesheet filetype unencoded PreProc Todo TODO
+syntaxes Moolenaar cpan testmatrix url annocpan anno bugtracker rt cpants
+kwalitee diff irc mailto metadata placeholders metacpan
 
 =head1 NAME
 
@@ -13,7 +13,7 @@ Text::VimColor - Syntax highlight text using Vim
 
 =head1 VERSION
 
-version 0.22
+version 0.23
 
 =head1 SYNOPSIS
 
@@ -95,6 +95,10 @@ Use this to pass a string to be used as the input.  This is an alternative
 to the C<file> option.  A reference to a string will also work.
 
 The L</syntax_mark_string> method is another way to use a string as input.
+
+If you provide a character (unencoded) string (recommended)
+it will be passed to vim encoded in UTF-8
+and your result will be character string.
 
 =item filetype
 
@@ -477,10 +481,6 @@ for older versions please file a ticket (with patches if possible).
 =head1 TODO
 
 =over 4
-
-=item *
-
-L<https://github.com/rwstauner/Text-VimColor/issues/1>
 
 =item *
 
