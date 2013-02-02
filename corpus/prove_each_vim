@@ -31,5 +31,6 @@ USAGE
 
 foreach my $vim ( @vims ){
   local $ENV{PATH} = "$vim/bin:$ENV{PATH}";
+  print STDERR "## $vim ##\n";
   system(@prove);
 }
