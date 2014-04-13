@@ -41,9 +41,11 @@ sub tvc_html {
 my $filetype = 'tvctestsyn';
 
 # use high latin1 chars (for portability)
-my $input = decode latin1 => qq[( \x{fe}\x{ea}rl + vim )\n];
+my $native = qq[( \x{fe}\x{ea}rl + vim )\n];
+my $utf8 = decode latin1 => $native;
+my $input = $utf8;
 
-ok Encode::is_utf8($input), 'input is a character string';
+ok Encode::is_utf8($utf8), 'input has wide characters';
 
 my $html = decode utf8 =>
   qq[<span class="synSpecial">(</span>] .
@@ -52,18 +54,13 @@ my $html = decode utf8 =>
   qq[<span class="synComment"> </span>] .
   qq[<span class="synSpecial">)</span>\n];
 
-ok Encode::is_utf8($html), 'expected output is a character string';
+ok Encode::is_utf8($html), 'expected output has wide characters';
 
 # some of these use cases were taken from actual code in other CPAN modules.
 # we'll test their usage here to ensure we don't break anything
 
 env_compare [qw(utf8 c)] => 'ascii is fine',
-  sub { octet_string("( hi )\n") }, tvc_html('hi');
-
-# This test only passes on vims compiled with +multi_byte.
-# As long as the other (explicit) tests pass this one isn't valuable
-# but we'll keep it commented for reference/debugging.
-##isnt octet_string($filetype, $input), $html, 'doing nothing mangles the encoding';
+  sub { string("( hi )\n") }, tvc_html('hi');
 
 env_compare utf8 => 'use BOM to get vim to honor encoded text',
   sub { prepend_bom($filetype, $input) }, $html;
@@ -71,8 +68,8 @@ env_compare utf8 => 'use BOM to get vim to honor encoded text',
 env_compare utf8 => 'specify encoding by adding "+set fenc=..." to vim_options',
   sub { pass_vim_options(undef, $input, {filetype => $filetype}) }, $html;
 
-env_compare [qw(utf8 c)] => 'detect character string and use utf-8 automatically',
-  sub { character_string($input) }, $html;
+env_compare [qw(utf8 c)] => 'detect utf8 string and use utf-8 automatically',
+  sub { string($utf8) }, $html;
 
 # this doesn't work in utf8 but i'm not sure that i care
 env_compare c => 'octets in an old encoding',
@@ -84,35 +81,14 @@ env_compare c => 'octets in an old encoding',
 
 done_testing;
 
-sub octet_string {
-  _string(0, @_);
-}
-
-sub character_string {
-  _string(1, @_);
-}
-
-sub _utf8_ok {
-  my ($exp_utf8, $str, $desc) = @_;
-  my $ok = Encode::is_utf8($str);
-  my $type = 'character';
-  if( !$exp_utf8 ){
-    $ok = !$ok;
-    $type = 'octet';
-  }
-  ok $ok, "$desc: $type";
-}
-
-sub _string {
-  my ($exp_utf8, $str, %extra) = @_;
-  _utf8_ok($exp_utf8, $str, 'input');
+sub string {
+  my ($str, %extra) = @_;
   my $vim = Text::VimColor->new(
     filetype => $filetype,
     string   => $str,
     %extra,
   );
   my $html = $vim->html;
-  _utf8_ok($exp_utf8, $html, 'output');
   return $html;
 }
 # code from other modules copied verbatim
