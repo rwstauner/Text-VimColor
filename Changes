@@ -2,6 +2,11 @@ Revision history for Text-VimColor
 
 {{$NEXT}}
 
+0.24      2014-04-13T18:16:06Z
+
+  - Simplify encoding tests and mark a few as TODO
+    while the library undergoes some refactoring.
+
 0.23      2013-02-02T16:28:57Z
 
   - Attempt to do the right thing with character strings:
