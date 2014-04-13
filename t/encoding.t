@@ -84,9 +84,6 @@ env_compare utf8 => 'specify encoding by adding "+set fenc=..." to vim_options',
 env_compare [qw(utf8 c)] => 'detect utf8 string and use utf-8 automatically',
   sub { string($utf8) }, $html;
 
-# this doesn't work in utf8 but i'm not sure that i care
-env_compare c => 'octets in an old encoding',
-  sub { octet_string("( \xa4 )\n", encoding => 'iso-8859-15') }, tvc_html("\xa4");
 
 # TODO: ->new(encoding => "cp1252", string => $octets)
 # TODO: ->new(encoding => "cp1252", file => $path)
