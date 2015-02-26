@@ -28,19 +28,6 @@ our %VIM_LET = (
    'b:is_bash' => 1,
 );
 
-our %SYNTAX_TYPE = (
-   Comment    => 1,
-   Constant   => 1,
-   Identifier => 1,
-   Statement  => 1,
-   PreProc    => 1,
-   Type       => 1,
-   Special    => 1,
-   Underlined => 1,
-   Error      => 1,
-   Todo       => 1,
-);
-
 our %ANSI_COLORS = (
    Comment    =>  'blue',
    Constant   =>  'red',
@@ -50,9 +37,40 @@ our %ANSI_COLORS = (
    Type       =>  'green',
    Special    =>  'bright_magenta',
    Underlined =>  'underline',
+   Ignore     =>  'bright_white',
    Error      =>  'on_red',
    Todo       =>  'on_cyan',
 );
+
+# These extra syntax group are available but linked to the groups above by
+# default in vim. They'll get their own highlighting if the user unlinks them.
+$ANSI_COLORS{String}         = $ANSI_COLORS{Constant};
+$ANSI_COLORS{Character}      = $ANSI_COLORS{Constant};
+$ANSI_COLORS{Number}         = $ANSI_COLORS{Constant};
+$ANSI_COLORS{Boolean}        = $ANSI_COLORS{Constant};
+$ANSI_COLORS{Float}          = $ANSI_COLORS{Constant};
+$ANSI_COLORS{Function}       = $ANSI_COLORS{Identifier};
+$ANSI_COLORS{Conditional}    = $ANSI_COLORS{Statement};
+$ANSI_COLORS{Repeat}         = $ANSI_COLORS{Statement};
+$ANSI_COLORS{Label}          = $ANSI_COLORS{Statement};
+$ANSI_COLORS{Operator}       = $ANSI_COLORS{Statement};
+$ANSI_COLORS{Keyword}        = $ANSI_COLORS{Statement};
+$ANSI_COLORS{Exception}      = $ANSI_COLORS{Statement};
+$ANSI_COLORS{Include}        = $ANSI_COLORS{PreProc};
+$ANSI_COLORS{Define}         = $ANSI_COLORS{PreProc};
+$ANSI_COLORS{Macro}          = $ANSI_COLORS{PreProc};
+$ANSI_COLORS{PreCondit}      = $ANSI_COLORS{PreProc};
+$ANSI_COLORS{StorageClass}   = $ANSI_COLORS{Type};
+$ANSI_COLORS{Structure}      = $ANSI_COLORS{Type};
+$ANSI_COLORS{Typedef}        = $ANSI_COLORS{Type};
+$ANSI_COLORS{Tag}            = $ANSI_COLORS{Special};
+$ANSI_COLORS{SpecialChar}    = $ANSI_COLORS{Special};
+$ANSI_COLORS{Delimiter}      = $ANSI_COLORS{Special};
+$ANSI_COLORS{SpecialComment} = $ANSI_COLORS{Special};
+$ANSI_COLORS{Debug}          = $ANSI_COLORS{Special};
+
+our %SYNTAX_TYPE;
+%SYNTAX_TYPE = map { $_ => 1 } %ANSI_COLORS;
 
 # Set to true to print the command line used to run Vim.
 our $DEBUG = $ENV{TEXT_VIMCOLOR_DEBUG};
@@ -60,6 +78,7 @@ our $DEBUG = $ENV{TEXT_VIMCOLOR_DEBUG};
 sub new {
   my $class = shift;
   my $self = {
+    all_syntax_groups      => 0,
     extra_vim_options      => [],
     html_inline_stylesheet => 1,
     xml_root_element       => 1,
@@ -155,9 +174,9 @@ sub ansi
   # compared to join/map or foreach/my this benched as the fastest:
   my $ansi = '';
   for ( @$syntax ){
-    $ansi .= $_->[0] eq ''
-      ? $_->[1]
-      : Term::ANSIColor::colored([ $colors{ $_->[0] } ], $_->[1]);
+    $ansi .= $colors{$_->[0]}
+      ? Term::ANSIColor::colored([ $colors{ $_->[0] } ], $_->[1])
+      : $_->[1];
   }
 
    return $ansi;
@@ -304,6 +323,7 @@ sub _do_markup
 {
    my ($self) = @_;
    my $vim_syntax_script = $self->dist_file('mark.vim');
+   my $vim_define_all = $self->dist_file('define_all.vim');
 
    croak "Text::VimColor syntax script '$vim_syntax_script' not installed"
       unless -f $vim_syntax_script && -r $vim_syntax_script;
@@ -395,6 +415,7 @@ sub _do_markup
 
       ':filetype on',
        $filetype_set,
+       $self->{all_syntax_groups} ? ":source $vim_define_all" : (),
       ":source $vim_syntax_script",
       ":write! $out_filename",
       ':qall!',
@@ -447,9 +468,6 @@ sub _do_markup
 sub _add_markup
 {
    my ($syntax, $type, $text) = @_;
-
-   # TODO: make this optional
-   # (https://github.com/petdance/vim-perl/blob/master/t/01_highlighting.t#L12)
 
    # Ignore types we don't know about.  At least one syntax file (xml.vim)
    # can produce these.  It happens when a syntax type isn't 'linked' to
@@ -617,6 +635,55 @@ distribution.
 This option, whether or not it is passed to L</new>, can be overridden
 when calling L</syntax_mark_file> and L</syntax_mark_string>, so you can
 use the same object to process multiple files of different types.
+
+=item all_syntax_groups
+
+By default, this option is disabled. That means that the highlighting will
+only use the following syntax groups:
+
+  Comment
+  Constant
+  Identifier
+  Statement
+  PreProc
+  Type
+  Special
+  Underlined
+  Ignore
+  Error
+  Todo
+
+This mirrors vim's default behavior of linking more specific syntax groups
+to the main groups above. However, most syntax files support more specific
+groups, so if you want to benefit from finer-grained syntax highlighting
+you can turn on this option. The additional syntax groups are:
+
+  Group             Linked to by default
+  ---------------------------------------
+  String            Constant
+  Character         Constant
+  Number            Constant
+  Boolean           Constant
+  Float             Constant
+  Function          Identifier
+  Conditional       Statement
+  Repeat            Statement
+  Label             Statement
+  Operator          Statement
+  Keyword           Statement
+  Exception         Statement
+  Include           PreProc
+  Define            PreProc
+  Macro             PreProc
+  PreCondit         PreProc
+  StorageClass      Type
+  Structure         Type
+  Typedef           Type
+  Tag               Special
+  SpecialChar       Special
+  Delimiter         Special
+  SpecialComment    Special
+  Debug             Special
 
 =item html_full_page
 
