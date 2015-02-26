@@ -1,0 +1,14 @@
+language: perl
+perl:
+  - "5.20"
+  - "5.18"
+  - "5.8"
+
+env:
+  global:
+    - COVERAGE=1
+    # Make share dir available to xt so the helpers can use lib instead of blib.
+    - HARNESS_PERL_SWITCHES="-Mlib=t/lib -MTVC_Share"
+
+before_install:
+  - eval $(curl https://travis-perl.github.io/init) --auto
