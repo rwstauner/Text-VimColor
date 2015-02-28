@@ -4,7 +4,7 @@ Text::VimColor - Syntax highlight text using Vim
 
 # VERSION
 
-version 0.24
+version 0.25
 
 # SYNOPSIS
 
@@ -100,6 +100,55 @@ The following options are recognized:
     This option, whether or not it is passed to ["new"](#new), can be overridden
     when calling ["syntax\_mark\_file"](#syntax_mark_file) and ["syntax\_mark\_string"](#syntax_mark_string), so you can
     use the same object to process multiple files of different types.
+
+- all\_syntax\_groups
+
+    By default, this option is disabled. That means that the highlighting will
+    only use the following syntax groups:
+
+        Comment
+        Constant
+        Identifier
+        Statement
+        PreProc
+        Type
+        Special
+        Underlined
+        Ignore
+        Error
+        Todo
+
+    This mirrors vim's default behavior of linking more specific syntax groups
+    to the main groups above. However, most syntax files support more specific
+    groups, so if you want to benefit from finer-grained syntax highlighting
+    you can turn on this option. The additional syntax groups are:
+
+        Group             Linked to by default
+        ---------------------------------------
+        String            Constant
+        Character         Constant
+        Number            Constant
+        Boolean           Constant
+        Float             Constant
+        Function          Identifier
+        Conditional       Statement
+        Repeat            Statement
+        Label             Statement
+        Operator          Statement
+        Keyword           Statement
+        Exception         Statement
+        Include           PreProc
+        Define            PreProc
+        Macro             PreProc
+        PreCondit         PreProc
+        StorageClass      Type
+        Structure         Type
+        Typedef           Type
+        Tag               Special
+        SpecialChar       Special
+        Delimiter         Special
+        SpecialComment    Special
+        Debug             Special
 
 - html\_full\_page
 
@@ -422,7 +471,7 @@ in addition to those websites please use your favorite search engine to discover
 ## Bugs / Feature Requests
 
 Please report any bugs or feature requests by email to `bug-text-vimcolor at rt.cpan.org`, or through
-the web interface at [http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Text-VimColor](http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Text-VimColor). You will be automatically notified of any
+the web interface at [https://rt.cpan.org/Public/Bug/Report.html?Queue=Text-VimColor](https://rt.cpan.org/Public/Bug/Report.html?Queue=Text-VimColor). You will be automatically notified of any
 progress on the request by the system.
 
 ## Source Code
@@ -445,12 +494,11 @@ David Ne\\v{c}as (Yeti) <yeti@physics.muni.cz>.
 # CONTRIBUTORS
 
 - Geoff Richards <geoffr@cpan.org>
+- Hinrik Örn Sigurðsson <hinrik.sig@gmail.com>
 - Vyacheslav Matyukhin <mmcleric@yandex-team.ru>
 - mattn <mattn.jp@gmail.com>
 
 # COPYRIGHT AND LICENSE
-
-This software is copyright (c) 2002-2006 by Geoff Richards.
 
 This software is copyright (c) 2011 by Randy Stauner.
 
