@@ -30,12 +30,18 @@ use Path::Class qw(file dir);
 use Exporter ();
 our @ISA = qw(Exporter);
 our @EXPORT = qw(
+  ansi_color
   file
   dir
   slurp_data
+  syntax_type_exists
   tvc
   xml_minus_filename
 );
+
+sub ansi_color {
+  $Text::VimColor::ANSI_COLORS{ $_[0] };
+}
 
 sub slurp_data {
   my ($filename) = @_;
@@ -44,6 +50,10 @@ sub slurp_data {
     or die "error opening file '$filename': $!";
 
   return do { local $/; <$file> };
+}
+
+sub syntax_type_exists {
+  exists $Text::VimColor::SYNTAX_TYPE{ $_[0] };
 }
 
 sub tvc {

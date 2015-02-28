@@ -6,8 +6,6 @@ use Test::More;
 use lib 't/lib';
 use TVC_Test;
 
-plan tests => 2;
-
 my $linked = Text::VimColor->new(
     string   => "()",
     filetype => 'vim',
@@ -21,3 +19,17 @@ my $unlinked = Text::VimColor->new(
 
 is($linked->[0][0], 'Special', 'The Delimiter group is linked to Special by default');
 is($unlinked->[0][0], 'Delimiter', 'The Delimiter group is used if it has its own coloring');
+
+is ansi_color('String'), ansi_color('Constant'),
+  'String is linked to Constant';
+
+ok syntax_type_exists('Function'),
+  'Function syntax type declared';
+
+{
+  # regression test
+  ok !syntax_type_exists('red'),
+    'ansi color not copied to syntax type';
+}
+
+done_testing;
