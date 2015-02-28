@@ -13,8 +13,13 @@ use Path::Class;
   }
 
 my $script = file(bin => 'text-vimcolor')->stringify;
+
 like qx{$thisperl -Ilib $script --format xml t/data/hello.c},
      qr{<syn:PreProc>\#include </syn:PreProc><syn:Constant>&lt;stdio\.h&gt;</syn:Constant>},
+     "$script output html ok";
+
+like qx{$thisperl -Ilib $script --format xml --all-syntax-groups t/data/hello.c},
+     qr{<syn:Include>\#include </syn:Include><syn:String>&lt;stdio\.h&gt;</syn:String>},
      "$script output html ok";
 
 done_testing;
