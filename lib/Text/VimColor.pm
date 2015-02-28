@@ -42,35 +42,40 @@ our %ANSI_COLORS = (
    Todo       =>  'on_cyan',
 );
 
+
 # These extra syntax group are available but linked to the groups above by
 # default in vim. They'll get their own highlighting if the user unlinks them.
-$ANSI_COLORS{String}         = $ANSI_COLORS{Constant};
-$ANSI_COLORS{Character}      = $ANSI_COLORS{Constant};
-$ANSI_COLORS{Number}         = $ANSI_COLORS{Constant};
-$ANSI_COLORS{Boolean}        = $ANSI_COLORS{Constant};
-$ANSI_COLORS{Float}          = $ANSI_COLORS{Constant};
-$ANSI_COLORS{Function}       = $ANSI_COLORS{Identifier};
-$ANSI_COLORS{Conditional}    = $ANSI_COLORS{Statement};
-$ANSI_COLORS{Repeat}         = $ANSI_COLORS{Statement};
-$ANSI_COLORS{Label}          = $ANSI_COLORS{Statement};
-$ANSI_COLORS{Operator}       = $ANSI_COLORS{Statement};
-$ANSI_COLORS{Keyword}        = $ANSI_COLORS{Statement};
-$ANSI_COLORS{Exception}      = $ANSI_COLORS{Statement};
-$ANSI_COLORS{Include}        = $ANSI_COLORS{PreProc};
-$ANSI_COLORS{Define}         = $ANSI_COLORS{PreProc};
-$ANSI_COLORS{Macro}          = $ANSI_COLORS{PreProc};
-$ANSI_COLORS{PreCondit}      = $ANSI_COLORS{PreProc};
-$ANSI_COLORS{StorageClass}   = $ANSI_COLORS{Type};
-$ANSI_COLORS{Structure}      = $ANSI_COLORS{Type};
-$ANSI_COLORS{Typedef}        = $ANSI_COLORS{Type};
-$ANSI_COLORS{Tag}            = $ANSI_COLORS{Special};
-$ANSI_COLORS{SpecialChar}    = $ANSI_COLORS{Special};
-$ANSI_COLORS{Delimiter}      = $ANSI_COLORS{Special};
-$ANSI_COLORS{SpecialComment} = $ANSI_COLORS{Special};
-$ANSI_COLORS{Debug}          = $ANSI_COLORS{Special};
+our %SYNTAX_LINKS;
 
-our %SYNTAX_TYPE;
-%SYNTAX_TYPE = map { $_ => 1 } %ANSI_COLORS;
+$SYNTAX_LINKS{ $_ } = 'Constant'
+  for qw( String Character Number Boolean Float );
+
+$SYNTAX_LINKS{ $_ } = 'Identifier'
+  for qw( Function );
+
+$SYNTAX_LINKS{ $_ } = 'Statement'
+  for qw( Conditional Repeat Label Operator Keyword Exception );
+
+$SYNTAX_LINKS{ $_ } = 'PreProc'
+  for qw( Include Define Macro PreCondit );
+
+$SYNTAX_LINKS{ $_ } = 'Type'
+  for qw( StorageClass Structure Typedef );
+
+$SYNTAX_LINKS{ $_ } = 'Special'
+  for qw( Tag SpecialChar Delimiter SpecialComment Debug );
+
+
+# Copy ansi color for main group to all subgroups.
+$ANSI_COLORS{ $_ } = $ANSI_COLORS{ $SYNTAX_LINKS{ $_ } }
+  for keys %SYNTAX_LINKS;
+
+
+# Build a lookup table to determine if a syntax exists.
+our %SYNTAX_TYPE = map { ($_ => 1) }
+  # Re-use ansi color hash.
+  keys %ANSI_COLORS;
+
 
 # Set to true to print the command line used to run Vim.
 our $DEBUG = $ENV{TEXT_VIMCOLOR_DEBUG};
