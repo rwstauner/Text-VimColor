@@ -2,6 +2,9 @@ Revision history for Text-VimColor
 
 {{$NEXT}}
 
+  - Add 'all_syntax_groups' option to enable additional syntax groups
+    instead of just the primary ones.  Thanks Hinrik Örn Sigurðsson!
+
 0.24      2014-04-13T18:16:06Z
 
   - Simplify encoding tests and mark a few as TODO
