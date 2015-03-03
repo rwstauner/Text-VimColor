@@ -8,6 +8,7 @@ use Text::VimColor;
 my %files =
   map { ($_ => Text::VimColor->dist_file($_)) }
     qw(
+      define_all.vim
       light.css
       light.xsl
       mark.vim
