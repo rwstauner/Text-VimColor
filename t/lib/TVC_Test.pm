@@ -6,6 +6,11 @@ package # hide from indexer
   TVC_Test;
 
 use Path::Class 0.04 qw( file dir ); # mkpath
+use TVC_Share;
+
+sub perl {
+  qx{$^X -Ilib -It/lib -MTVC_Share @_};
+}
 
 # don't allow user-customized syntax files to throw off test results
 $ENV{HOME} = dir('t')->absolute;
@@ -33,6 +38,7 @@ our @EXPORT = qw(
   ansi_color
   file
   dir
+  perl
   slurp_data
   syntax_type_exists
   tvc
