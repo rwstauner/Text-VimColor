@@ -3,7 +3,6 @@ use warnings;
 use Test::More;
 use lib 't/lib';
 use TVC_Test;
-use Text::VimColor;
 
 # windows prints everything when STDIN is tied, don't know why
 plan skip_all => "Skipped on windows"

@@ -3,7 +3,6 @@
 use strict;
 use warnings;
 use Test::More;
-use Text::VimColor;
 use lib 't/lib';
 use TVC_Test;
 
