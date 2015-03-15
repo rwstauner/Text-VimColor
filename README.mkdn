@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/rwstauner/Text-VimColor.svg?branch=master)](https://travis-ci.org/rwstauner/Text-VimColor)
+[![Coverage Status](https://coveralls.io/repos/rwstauner/Text-VimColor/badge.svg?branch=master)](https://coveralls.io/r/rwstauner/Text-VimColor?branch=master)
+
 # NAME
 
 Text::VimColor - Syntax highlight text using Vim
