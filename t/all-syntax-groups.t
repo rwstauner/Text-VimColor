@@ -6,19 +6,25 @@ use Test::More;
 use lib 't/lib';
 use TVC_Test;
 
-my $linked = Text::VimColor->new(
-    string   => "()",
-    filetype => 'vim',
-)->marked;
+sub marked {
+  return Text::VimColor->new(
+    string   => '#include <stdio.h>',
+    filetype => 'c',
+    @_
+  )->marked;
+}
 
-my $unlinked = Text::VimColor->new(
-    all_syntax_groups => 1,
-    string            => "()",
-    filetype          => 'vim',
-)->marked;
+sub first_syntax_group {
+  marked(@_)->[0][0];
+}
 
-is($linked->[0][0], 'Special', 'The Delimiter group is linked to Special by default');
-is($unlinked->[0][0], 'Delimiter', 'The Delimiter group is used if it has its own coloring');
+is first_syntax_group(),
+  'PreProc',
+  'linked to default group';
+
+is first_syntax_group(all_syntax_groups => 1),
+  'Include',
+  'more specific group is used with all_syntax_groups enabled';
 
 is ansi_color('String'), ansi_color('Constant'),
   'String is linked to Constant';

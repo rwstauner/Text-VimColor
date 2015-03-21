@@ -2,6 +2,7 @@ Revision history for Text-VimColor
 
 {{$NEXT}}
 
+  - Fix test failures for vim 6.
   - Use Test::File::ShareDir to simplify testing.
 
 0.25      2015-02-28T23:41:39Z
