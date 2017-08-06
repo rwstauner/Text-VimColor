@@ -500,6 +500,8 @@ David Ne\\v{c}as (Yeti) <yeti@physics.muni.cz>.
 
 # COPYRIGHT AND LICENSE
 
+This software is copyright (c) 2002-2006 by Geoff Richards.
+
 This software is copyright (c) 2011 by Randy Stauner.
 
 This is free software; you can redistribute it and/or modify it under
