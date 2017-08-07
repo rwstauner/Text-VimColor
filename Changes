@@ -2,6 +2,10 @@ Revision history for Text-VimColor
 
 {{$NEXT}}
 
+0.28      2017-08-07T03:09:07Z
+
+  - Fix tests for 5.26
+
 0.27      2017-08-07T01:42:02Z
 
   - Fix installer for 5.24.1+
