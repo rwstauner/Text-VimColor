@@ -10,6 +10,7 @@ env:
     - COVERAGE=1
     # Make share dir available to xt so the helpers can use lib instead of blib.
     - HARNESS_PERL_SWITCHES="-Mlib=t/lib -MTVC_Share"
+    - SKIP_POD_LINKCHECK=1
 
 before_install:
   - eval $(curl https://travis-perl.github.io/init) --auto
