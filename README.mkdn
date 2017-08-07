@@ -1,10 +1,14 @@
+[![Build Status](https://travis-ci.org/rwstauner/Text-VimColor.svg?branch=master)](https://travis-ci.org/rwstauner/Text-VimColor)
+[![Coverage Status](https://coveralls.io/repos/rwstauner/Text-VimColor/badge.svg?branch=master)](https://coveralls.io/r/rwstauner/Text-VimColor?branch=master)
+[![Kwalitee status](http://cpants.cpanauthors.org/dist/Text-VimColor.png)](http://cpants.charsbar.org/dist/overview/Text-VimColor)
+
 # NAME
 
 Text::VimColor - Syntax highlight text using Vim
 
 # VERSION
 
-version 0.26
+version 0.27
 
 # SYNOPSIS
 
@@ -495,12 +499,10 @@ David Ne\\v{c}as (Yeti) <yeti@physics.muni.cz>.
 
 - Geoff Richards <geoffr@cpan.org>
 - Hinrik Örn Sigurðsson <hinrik.sig@gmail.com>
-- Vyacheslav Matyukhin <mmcleric@yandex-team.ru>
 - mattn <mattn.jp@gmail.com>
+- Vyacheslav Matyukhin <mmcleric@yandex-team.ru>
 
 # COPYRIGHT AND LICENSE
-
-This software is copyright (c) 2002-2006 by Geoff Richards.
 
 This software is copyright (c) 2011 by Randy Stauner.
 
