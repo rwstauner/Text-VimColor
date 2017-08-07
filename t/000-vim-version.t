@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use Test::More tests => 1;
+use lib '.';
 use inc::VimCommand;
 
 # Include the vim version and feature list in test reports.
