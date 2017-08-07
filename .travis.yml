@@ -13,4 +13,5 @@ env:
     - SKIP_POD_LINKCHECK=1
 
 before_install:
+  - '[ $TRAVIS_PERL_VERSION = 5.8 ] && unset COVERAGE || :'
   - eval $(curl https://travis-perl.github.io/init) --auto
