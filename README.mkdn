@@ -8,7 +8,7 @@ Text::VimColor - Syntax highlight text using Vim
 
 # VERSION
 
-version 0.28
+version 0.29
 
 # SYNOPSIS
 
@@ -203,6 +203,13 @@ The following options are recognized:
     to be referenced from the HTML `<link>` element in the header.
     If this isn't given it will default to using a `file://` URL to reference
     the supplied `light.css` stylesheet, which is only really useful for testing.
+
+- xhtml5
+
+    If true (by default it is false), then output XHTML5 instead of XHTML 1.x when
+    `html_full_page` is specified.
+
+    New in version 0.29 .
 
 - xml\_root\_element
 
@@ -470,7 +477,7 @@ in addition to those websites please use your favorite search engine to discover
 
     A modern, open-source CPAN search engine, useful to view POD in HTML format.
 
-    [http://metacpan.org/release/Text-VimColor](http://metacpan.org/release/Text-VimColor)
+    [https://metacpan.org/release/Text-VimColor](https://metacpan.org/release/Text-VimColor)
 
 ## Bugs / Feature Requests
 
@@ -500,11 +507,11 @@ David Ne\\v{c}as (Yeti) <yeti@physics.muni.cz>.
 - Geoff Richards <geoffr@cpan.org>
 - Hinrik Örn Sigurðsson <hinrik.sig@gmail.com>
 - mattn <mattn.jp@gmail.com>
+- Randy Stauner <randy@r4s6.net>
+- Shlomi Fish <shlomif@shlomifish.org>
 - Vyacheslav Matyukhin <mmcleric@yandex-team.ru>
 
 # COPYRIGHT AND LICENSE
-
-This software is copyright (c) 2002-2006 by Geoff Richards.
 
 This software is copyright (c) 2011 by Randy Stauner.
 
