@@ -135,6 +135,18 @@ check_all_tested(qw( title ));
 check_all_tested(qw( style inline ));
 check_all_tested(qw( style link ));
 
+{
+  my $html = tvc(
+    filetype       => $filetype,
+    html_full_page => 1,
+    string => $string,
+    xhtml5 => 1,
+  )->html;
+
+  like($html, qr{<!DOCTYPE html>}, "XHTML 5");
+  like($html, qr{<meta charset="utf-8" */ *>}, "XHTML 5 charset");
+}
+
 done_testing;
 
 sub test_html {
