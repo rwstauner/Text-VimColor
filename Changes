@@ -2,6 +2,9 @@ Revision history for Text-VimColor
 
 {{$NEXT}}
 
+  - Add `xhtml5` option.
+    Thanks to Shlomi Fish! for the pull request (gh-8).
+
 0.28      2017-08-07T03:09:07Z
 
   - Fix tests for 5.26
