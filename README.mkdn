@@ -420,7 +420,7 @@ environments:
 
 - [Apache::VimColor](https://metacpan.org/pod/Apache::VimColor)
 - [Kwiki::VimMode](https://metacpan.org/pod/Kwiki::VimMode)
-- [Template-Plugin-VimColor](https://metacpan.org/pod/Template-Plugin-VimColor)
+- [Template::Plugin::VimColor](https://metacpan.org/pod/Template::Plugin::VimColor)
 
 # SEE ALSO
 
