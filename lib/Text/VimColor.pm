@@ -976,7 +976,7 @@ environments:
 =for :list
 * L<Apache::VimColor>
 * L<Kwiki::VimMode>
-* L<Template-Plugin-VimColor>
+* L<Template::Plugin::VimColor>
 
 =head1 SEE ALSO
 
